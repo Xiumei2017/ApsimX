@@ -26454,7 +26454,7 @@
                   },
                   "RemovalType": 0,
                   "StageToSet": "2",
-                  "RemovalDatesInput": "24/10/2014, 6/11/2014, 18/11/2014, 1/12/2014, 15/12/2014, 27/01/2015",
+                  "RemovalDatesInput": "24/10/2014, 6/11/2014, 18/11/2014, 1/12/2014, 15/12/2014",
                   "BiomassRemovals": [
                     {
                       "$type": "Models.Management.BiomassRemovalOfPlantOrganType, Models",
