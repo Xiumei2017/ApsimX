@@ -16732,7 +16732,7 @@
             },
             {
               "$type": "Models.Clock, Models",
-              "Start": "2017-07-03T00:00:00",
+              "Start": "2017-09-06T00:00:00",
               "End": "2018-02-01T00:00:00",
               "Name": "Clock",
               "ResourceName": null,
@@ -18159,7 +18159,7 @@
                   "YAxis": 0,
                   "ColourArgb": -16747854,
                   "FactorToVaryColours": "SimulationName",
-                  "FactorToVaryMarkers": null,
+                  "FactorToVaryMarkers": "SimulationName",
                   "FactorToVaryLines": null,
                   "Marker": 0,
                   "MarkerSize": 1,
