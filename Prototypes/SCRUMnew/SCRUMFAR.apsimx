@@ -16976,7 +16976,7 @@
                         1.23,
                         1.235,
                         1.37,
-                        1.66,
+                        1.52,
                         1.59,
                         1.44,
                         1.525,
@@ -17001,7 +17001,7 @@
                         0.15,
                         0.185,
                         0.15,
-                        0.185,
+                        0.165,
                         0.1,
                         0.12,
                         0.07,
@@ -17012,11 +17012,11 @@
                         0.23,
                         0.23,
                         0.35,
-                        0.335,
-                        0.375,
-                        0.325,
                         0.34,
-                        0.28,
+                        0.35,
+                        0.355,
+                        0.33,
+                        0.33,
                         0.3,
                         0.3
                       ],
@@ -17024,7 +17024,7 @@
                         0.535,
                         0.53,
                         0.482,
-                        0.374,
+                        0.4,
                         0.4,
                         0.45,
                         0.425,
@@ -17262,16 +17262,16 @@
                         300.0
                       ],
                       "InitialValues": [
-                        0.198,
-                        0.241,
-                        0.269,
-                        0.299,
-                        0.235,
-                        0.243,
-                        0.252,
-                        0.201
+                        0.23,
+                        0.29,
+                        0.34,
+                        0.375,
+                        0.325,
+                        0.333,
+                        0.34,
+                        0.287
                       ],
-                      "InitialPAWmm": 166.1,
+                      "InitialPAWmm": 281.20000000000005,
                       "RelativeTo": "LL15",
                       "FilledFromTop": false,
                       "Name": "Water",
@@ -17585,8 +17585,8 @@
                       "Acover": 0.97,
                       "ExtinctCoeff": 0.55,
                       "RootNConc": 0.01,
-                      "StoverNConc": 0.009,
-                      "ProductNConc": 0.012,
+                      "StoverNConc": 0.01,
+                      "ProductNConc": 0.02,
                       "SeedlingNConc": 0.03,
                       "BaseT": 10.0,
                       "OptT": 30.0,
@@ -17897,7 +17897,7 @@
                         },
                         {
                           "Key": "EstablishDate",
-                          "Value": "09/06/2017 00:00:00"
+                          "Value": "10/20/2017 00:00:00"
                         },
                         {
                           "Key": "EstablishStage",
@@ -17921,7 +17921,7 @@
                         },
                         {
                           "Key": "PotentialYield",
-                          "Value": "18"
+                          "Value": "15"
                         },
                         {
                           "Key": "FieldLoss",
@@ -18197,10 +18197,10 @@
                   "Type": 1,
                   "XAxis": 3,
                   "YAxis": 0,
-                  "ColourArgb": -16747854,
-                  "FactorToVaryColours": "SimulationName",
+                  "ColourArgb": -990142,
+                  "FactorToVaryColours": "N",
                   "FactorToVaryMarkers": null,
-                  "FactorToVaryLines": "SimulationName",
+                  "FactorToVaryLines": "N",
                   "Marker": 11,
                   "MarkerSize": 2,
                   "Line": 0,
@@ -18763,7 +18763,7 @@
                   "Axis": [
                     {
                       "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                      "Title": "Volumetric water content soil (mm3/mm3)",
+                      "Title": "",
                       "Position": 0,
                       "Inverted": false,
                       "CrossesAtZero": false,
@@ -19230,7 +19230,7 @@
                   "Axis": [
                     {
                       "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                      "Title": "Grain Biomass (g/m2)",
+                      "Title": "",
                       "Position": 0,
                       "Inverted": false,
                       "CrossesAtZero": false,
@@ -19962,7 +19962,7 @@
                   "Axis": [
                     {
                       "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                      "Title": "Product N  (g/m2)",
+                      "Title": "",
                       "Position": 0,
                       "Inverted": false,
                       "CrossesAtZero": false,
@@ -21054,7 +21054,7 @@
                       "Y2FieldName": null,
                       "ShowInLegend": true,
                       "IncludeSeriesNameInLegend": false,
-                      "Cumulative": false,
+                      "Cumulative": true,
                       "CumulativeX": false,
                       "Filter": null,
                       "Name": "Daily",
@@ -23243,7 +23243,7 @@
             {
               "$type": "Models.Clock, Models",
               "Start": "2021-04-22T00:00:00",
-              "End": "2023-02-17T00:00:00",
+              "End": "2022-02-17T00:00:00",
               "Name": "Clock",
               "ResourceName": null,
               "Children": [],
@@ -23376,11 +23376,11 @@
                         0.138
                       ],
                       "DUL": [
-                        0.34,
-                        0.325,
-                        0.327,
-                        0.251,
-                        0.24,
+                        0.4,
+                        0.4,
+                        0.35,
+                        0.32,
+                        0.35,
                         0.273
                       ],
                       "SAT": [
@@ -23595,14 +23595,14 @@
                         500.0
                       ],
                       "InitialValues": [
-                        0.34,
-                        0.325,
-                        0.327,
-                        0.251,
-                        0.24,
-                        0.269
+                        0.4,
+                        0.4,
+                        0.35,
+                        0.32,
+                        0.35,
+                        0.273
                       ],
-                      "InitialPAWmm": 202.65,
+                      "InitialPAWmm": 274.25,
                       "RelativeTo": "LL15",
                       "FilledFromTop": true,
                       "Name": "Water",
@@ -24199,7 +24199,7 @@
                         },
                         {
                           "Key": "PotentialYield",
-                          "Value": "25"
+                          "Value": "18"
                         },
                         {
                           "Key": "FieldLoss",
@@ -24275,6 +24275,8 @@
                     "[SCRUM].Root.WaterUptake",
                     "[SCRUM].Stover.Transpiration",
                     "[SCRUM].Stover.WaterDemand",
+                    "[SCRUM].Stover.Fw",
+                    "[SCRUM].Stover.Fn",
                     "[SCRUM].Root.Depth",
                     "(-[SCRUM].Root.NUptake) as UptakeN",
                     "[SCRUM].Stover.CoverTotal",
@@ -26167,7 +26169,7 @@
               "Axis": [
                 {
                   "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                  "Title": "Profile water content (mm)",
+                  "Title": "",
                   "Position": 0,
                   "Inverted": false,
                   "CrossesAtZero": false,
@@ -26193,7 +26195,104 @@
               "AnnotationLocation": 0,
               "DisabledSeries": [],
               "LegendOutsideGraph": false,
-              "Name": "SWC",
+              "Name": "Fn",
+              "ResourceName": null,
+              "Children": [
+                {
+                  "$type": "Models.Series, Models",
+                  "Type": 1,
+                  "XAxis": 3,
+                  "YAxis": 0,
+                  "ColourArgb": -16747854,
+                  "FactorToVaryColours": "SimulationName",
+                  "FactorToVaryMarkers": null,
+                  "FactorToVaryLines": "SimulationName",
+                  "Marker": 11,
+                  "MarkerSize": 0,
+                  "Line": 0,
+                  "LineThickness": 0,
+                  "TableName": "Report",
+                  "XFieldName": "Clock.Today",
+                  "YFieldName": "SCRUM.Arbitrator.FN",
+                  "X2FieldName": null,
+                  "Y2FieldName": null,
+                  "ShowInLegend": true,
+                  "IncludeSeriesNameInLegend": false,
+                  "Cumulative": false,
+                  "CumulativeX": false,
+                  "Filter": "",
+                  "Name": "Predicted11",
+                  "ResourceName": null,
+                  "Children": [],
+                  "Enabled": true,
+                  "ReadOnly": false
+                },
+                {
+                  "$type": "Models.Series, Models",
+                  "Type": 1,
+                  "XAxis": 3,
+                  "YAxis": 0,
+                  "ColourArgb": -16747854,
+                  "FactorToVaryColours": "SimulationName",
+                  "FactorToVaryMarkers": null,
+                  "FactorToVaryLines": "SimulationName",
+                  "Marker": 11,
+                  "MarkerSize": 0,
+                  "Line": 0,
+                  "LineThickness": 0,
+                  "TableName": "Report",
+                  "XFieldName": "Clock.Today",
+                  "YFieldName": "SCRUM.Stover.Fn",
+                  "X2FieldName": null,
+                  "Y2FieldName": null,
+                  "ShowInLegend": true,
+                  "IncludeSeriesNameInLegend": false,
+                  "Cumulative": false,
+                  "CumulativeX": false,
+                  "Filter": "",
+                  "Name": "Predicted1",
+                  "ResourceName": null,
+                  "Children": [],
+                  "Enabled": true,
+                  "ReadOnly": false
+                }
+              ],
+              "Enabled": true,
+              "ReadOnly": false
+            },
+            {
+              "$type": "Models.Graph, Models",
+              "Caption": null,
+              "Axis": [
+                {
+                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                  "Title": "",
+                  "Position": 0,
+                  "Inverted": false,
+                  "CrossesAtZero": false,
+                  "LabelOnOneLine": false,
+                  "Minimum": "NaN",
+                  "Maximum": "NaN",
+                  "Interval": null
+                },
+                {
+                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                  "Title": "",
+                  "Position": 3,
+                  "Inverted": false,
+                  "CrossesAtZero": false,
+                  "LabelOnOneLine": false,
+                  "Minimum": "NaN",
+                  "Maximum": "NaN",
+                  "Interval": null
+                }
+              ],
+              "LegendPosition": 2,
+              "LegendOrientation": 0,
+              "AnnotationLocation": 0,
+              "DisabledSeries": [],
+              "LegendOutsideGraph": false,
+              "Name": "SWC1",
               "ResourceName": null,
               "Children": [
                 {
@@ -26249,6 +26348,74 @@
                   "CumulativeX": false,
                   "Filter": "",
                   "Name": "Observed",
+                  "ResourceName": null,
+                  "Children": [],
+                  "Enabled": true,
+                  "ReadOnly": false
+                }
+              ],
+              "Enabled": true,
+              "ReadOnly": false
+            },
+            {
+              "$type": "Models.Graph, Models",
+              "Caption": null,
+              "Axis": [
+                {
+                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                  "Title": "",
+                  "Position": 0,
+                  "Inverted": false,
+                  "CrossesAtZero": false,
+                  "LabelOnOneLine": false,
+                  "Minimum": "NaN",
+                  "Maximum": "NaN",
+                  "Interval": null
+                },
+                {
+                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                  "Title": "",
+                  "Position": 3,
+                  "Inverted": false,
+                  "CrossesAtZero": false,
+                  "LabelOnOneLine": false,
+                  "Minimum": "NaN",
+                  "Maximum": "NaN",
+                  "Interval": null
+                }
+              ],
+              "LegendPosition": 2,
+              "LegendOrientation": 0,
+              "AnnotationLocation": 0,
+              "DisabledSeries": [],
+              "LegendOutsideGraph": false,
+              "Name": "Fw1",
+              "ResourceName": null,
+              "Children": [
+                {
+                  "$type": "Models.Series, Models",
+                  "Type": 1,
+                  "XAxis": 3,
+                  "YAxis": 0,
+                  "ColourArgb": -16747854,
+                  "FactorToVaryColours": "SimulationName",
+                  "FactorToVaryMarkers": null,
+                  "FactorToVaryLines": "SimulationName",
+                  "Marker": 11,
+                  "MarkerSize": 0,
+                  "Line": 0,
+                  "LineThickness": 0,
+                  "TableName": "Report",
+                  "XFieldName": "Clock.Today",
+                  "YFieldName": "SCRUM.Stover.Fw",
+                  "X2FieldName": null,
+                  "Y2FieldName": null,
+                  "ShowInLegend": true,
+                  "IncludeSeriesNameInLegend": false,
+                  "Cumulative": false,
+                  "CumulativeX": false,
+                  "Filter": "",
+                  "Name": "Predicted",
                   "ResourceName": null,
                   "Children": [],
                   "Enabled": true,
