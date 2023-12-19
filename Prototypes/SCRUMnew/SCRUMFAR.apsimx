@@ -4587,6 +4587,78 @@
               "Children": [],
               "Enabled": true,
               "ReadOnly": false
+            },
+            {
+              "$type": "Models.PMF.SimplePlantModels.ScrumCrop, Models",
+              "HarvestIndex": 0.45,
+              "MoisturePc": 14.0,
+              "Proot": 0.1,
+              "MaxRD": 1500.0,
+              "MaxHeight": 800.0,
+              "Acover": 0.97,
+              "ExtinctCoeff": 0.55,
+              "RootNConc": 0.01,
+              "StoverNConc": 0.009,
+              "ProductNConc": 0.016,
+              "SeedlingNConc": 0.05,
+              "BaseT": 0.0,
+              "OptT": 30.0,
+              "MaxT": 40.0,
+              "Legume": false,
+              "WaterStress": true,
+              "Name": "WheatFARAblock",
+              "ResourceName": null,
+              "Children": [],
+              "Enabled": true,
+              "ReadOnly": false
+            },
+            {
+              "$type": "Models.PMF.SimplePlantModels.ScrumCrop, Models",
+              "HarvestIndex": 0.55,
+              "MoisturePc": 14.0,
+              "Proot": 0.1,
+              "MaxRD": 1500.0,
+              "MaxHeight": 800.0,
+              "Acover": 0.97,
+              "ExtinctCoeff": 0.55,
+              "RootNConc": 0.01,
+              "StoverNConc": 0.007,
+              "ProductNConc": 0.02,
+              "SeedlingNConc": 0.05,
+              "BaseT": 0.0,
+              "OptT": 30.0,
+              "MaxT": 40.0,
+              "Legume": false,
+              "WaterStress": false,
+              "Name": "WheatChertsey2022",
+              "ResourceName": null,
+              "Children": [],
+              "Enabled": true,
+              "ReadOnly": false
+            },
+            {
+              "$type": "Models.PMF.SimplePlantModels.ScrumCrop, Models",
+              "HarvestIndex": 0.4,
+              "MoisturePc": 14.0,
+              "Proot": 0.1,
+              "MaxRD": 1500.0,
+              "MaxHeight": 800.0,
+              "Acover": 0.97,
+              "ExtinctCoeff": 0.55,
+              "RootNConc": 0.01,
+              "StoverNConc": 0.003,
+              "ProductNConc": 0.018,
+              "SeedlingNConc": 0.05,
+              "BaseT": 0.0,
+              "OptT": 30.0,
+              "MaxT": 40.0,
+              "Legume": false,
+              "WaterStress": false,
+              "Name": "WheatChertsey2023",
+              "ResourceName": null,
+              "Children": [],
+              "Enabled": true,
+              "ReadOnly": false
             }
           ],
           "Enabled": true,
@@ -17918,7 +17990,7 @@
                         },
                         {
                           "Key": "HarvestStage",
-                          "Value": "Ripe"
+                          "Value": "Maturity"
                         },
                         {
                           "Key": "PotentialYield",
@@ -23640,14 +23712,14 @@
                         500.0
                       ],
                       "InitialValues": [
-                        5.0,
-                        4.0,
-                        1.5,
-                        1.5,
-                        1.5,
-                        0.78
+                        150.0,
+                        140.0,
+                        75.0,
+                        75.0,
+                        75.0,
+                        75.78
                       ],
-                      "InitialValuesUnits": 0,
+                      "InitialValuesUnits": 1,
                       "WaterTableConcentration": 0.0,
                       "D0": 0.0,
                       "Exco": null,
@@ -23857,23 +23929,23 @@
                   "Children": [
                     {
                       "$type": "Models.PMF.SimplePlantModels.ScrumCrop, Models",
-                      "HarvestIndex": 0.5,
-                      "MoisturePc": 14.0,
-                      "Proot": 0.1,
-                      "MaxRD": 2000.0,
-                      "MaxHeight": 1800.0,
+                      "HarvestIndex": 0.0,
+                      "MoisturePc": 0.0,
+                      "Proot": 0.0,
+                      "MaxRD": 0.0,
+                      "MaxHeight": 0.0,
                       "Acover": 0.97,
                       "ExtinctCoeff": 0.55,
                       "RootNConc": 0.01,
                       "StoverNConc": 0.009,
-                      "ProductNConc": 0.012,
-                      "SeedlingNConc": 0.03,
-                      "BaseT": 10.0,
+                      "ProductNConc": 0.016,
+                      "SeedlingNConc": 0.05,
+                      "BaseT": 0.0,
                       "OptT": 30.0,
                       "MaxT": 40.0,
                       "Legume": false,
                       "WaterStress": true,
-                      "Name": "Wheat",
+                      "Name": "WheatChertsey2022",
                       "ResourceName": null,
                       "Children": [],
                       "Enabled": true,
@@ -24173,7 +24245,7 @@
                       "Parameters": [
                         {
                           "Key": "CropName",
-                          "Value": "Wheat"
+                          "Value": "WheatChertsey2022"
                         },
                         {
                           "Key": "EstablishDate",
@@ -24197,11 +24269,11 @@
                         },
                         {
                           "Key": "HarvestStage",
-                          "Value": "Ripe"
+                          "Value": "Maturity"
                         },
                         {
                           "Key": "PotentialYield",
-                          "Value": "18"
+                          "Value": "13"
                         },
                         {
                           "Key": "FieldLoss",
@@ -24491,7 +24563,7 @@
                   "LineThickness": 0,
                   "TableName": "Report",
                   "XFieldName": "Clock.Today",
-                  "YFieldName": "Total.Wt",
+                  "YFieldName": "AboveTotal.Wt",
                   "X2FieldName": null,
                   "Y2FieldName": null,
                   "ShowInLegend": true,
@@ -25318,6 +25390,74 @@
               ],
               "Enabled": true,
               "ReadOnly": false
+            },
+            {
+              "$type": "Models.Graph, Models",
+              "Caption": null,
+              "Axis": [
+                {
+                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                  "Title": null,
+                  "Position": 3,
+                  "Inverted": false,
+                  "CrossesAtZero": false,
+                  "LabelOnOneLine": false,
+                  "Minimum": "NaN",
+                  "Maximum": "NaN",
+                  "Interval": null
+                },
+                {
+                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                  "Title": null,
+                  "Position": 0,
+                  "Inverted": false,
+                  "CrossesAtZero": false,
+                  "LabelOnOneLine": false,
+                  "Minimum": "NaN",
+                  "Maximum": "NaN",
+                  "Interval": null
+                }
+              ],
+              "LegendPosition": 0,
+              "LegendOrientation": 0,
+              "AnnotationLocation": 0,
+              "DisabledSeries": [],
+              "LegendOutsideGraph": false,
+              "Name": "Height",
+              "ResourceName": null,
+              "Children": [
+                {
+                  "$type": "Models.Series, Models",
+                  "Type": 1,
+                  "XAxis": 3,
+                  "YAxis": 0,
+                  "ColourArgb": -16777216,
+                  "FactorToVaryColours": "SimulationName",
+                  "FactorToVaryMarkers": null,
+                  "FactorToVaryLines": null,
+                  "Marker": 0,
+                  "MarkerSize": 0,
+                  "Line": 4,
+                  "LineThickness": 0,
+                  "TableName": "Report",
+                  "XFieldName": "Clock.Today",
+                  "YFieldName": "SCRUM.Stover.Height",
+                  "X2FieldName": null,
+                  "Y2FieldName": null,
+                  "ShowInLegend": false,
+                  "IncludeSeriesNameInLegend": false,
+                  "Cumulative": false,
+                  "CumulativeX": false,
+                  "Filter": null,
+                  "Name": "observed",
+                  "ResourceName": null,
+                  "Children": [],
+                  "Enabled": true,
+                  "ReadOnly": false
+                }
+              ],
+              "Enabled": true,
+              "ReadOnly": false
             }
           ],
           "Enabled": true,
@@ -25574,7 +25714,7 @@
                   "Inverted": false,
                   "CrossesAtZero": false,
                   "LabelOnOneLine": false,
-                  "Minimum": -0.14879636682435474,
+                  "Minimum": "NaN",
                   "Maximum": 15.02743304928509,
                   "Interval": null
                 },
@@ -29442,14 +29582,14 @@
                         500.0
                       ],
                       "InitialValues": [
-                        5.0,
-                        4.0,
-                        1.5,
-                        1.5,
-                        1.5,
-                        0.78
+                        150.0,
+                        120.0,
+                        75.0,
+                        75.0,
+                        75.0,
+                        75.0
                       ],
-                      "InitialValuesUnits": 0,
+                      "InitialValuesUnits": 1,
                       "WaterTableConcentration": 0.0,
                       "D0": 0.0,
                       "Exco": null,
@@ -29668,23 +29808,23 @@
                   "Children": [
                     {
                       "$type": "Models.PMF.SimplePlantModels.ScrumCrop, Models",
-                      "HarvestIndex": 0.5,
+                      "HarvestIndex": 0.45,
                       "MoisturePc": 14.0,
                       "Proot": 0.1,
-                      "MaxRD": 2000.0,
-                      "MaxHeight": 1800.0,
+                      "MaxRD": 1500.0,
+                      "MaxHeight": 800.0,
                       "Acover": 0.97,
                       "ExtinctCoeff": 0.55,
                       "RootNConc": 0.01,
                       "StoverNConc": 0.009,
-                      "ProductNConc": 0.012,
-                      "SeedlingNConc": 0.03,
-                      "BaseT": 10.0,
+                      "ProductNConc": 0.016,
+                      "SeedlingNConc": 0.05,
+                      "BaseT": 0.0,
                       "OptT": 30.0,
                       "MaxT": 40.0,
                       "Legume": false,
                       "WaterStress": true,
-                      "Name": "Wheat",
+                      "Name": "WheatChertsey2023",
                       "ResourceName": null,
                       "Children": [],
                       "Enabled": true,
@@ -29984,7 +30124,7 @@
                       "Parameters": [
                         {
                           "Key": "CropName",
-                          "Value": "Wheat"
+                          "Value": "WheatChertsey2023"
                         },
                         {
                           "Key": "EstablishDate",
@@ -30008,11 +30148,11 @@
                         },
                         {
                           "Key": "HarvestStage",
-                          "Value": "Ripe"
+                          "Value": "Maturity"
                         },
                         {
                           "Key": "PotentialYield",
-                          "Value": "20"
+                          "Value": "13"
                         },
                         {
                           "Key": "FieldLoss",
@@ -30302,7 +30442,7 @@
                   "LineThickness": 0,
                   "TableName": "Report",
                   "XFieldName": "Clock.Today",
-                  "YFieldName": "Total.Wt",
+                  "YFieldName": "AboveTotal.Wt",
                   "X2FieldName": null,
                   "Y2FieldName": null,
                   "ShowInLegend": true,
@@ -36245,7 +36385,7 @@
                     "ReadOnly": false
                   },
                   "RemovalType": 0,
-                  "StageToSet": "2",
+                  "StageToSet": "4",
                   "RemovalDatesInput": "24/10/2014, 6/11/2014, 18/11/2014, 1/12/2014, 15/12/2014",
                   "BiomassRemovals": [
                     {
@@ -36253,7 +36393,7 @@
                       "PlantName": "SCRUM",
                       "OrganName": "Product",
                       "TypeString": "Cutting",
-                      "LiveToRemove": 0.5,
+                      "LiveToRemove": 0.95,
                       "DeadToRemove": 0.0,
                       "LiveToResidue": 0.0,
                       "DeadToResidue": 0.0
@@ -36263,7 +36403,7 @@
                       "PlantName": "SCRUM",
                       "OrganName": "Stover",
                       "TypeString": "Cutting",
-                      "LiveToRemove": 0.6,
+                      "LiveToRemove": 0.85,
                       "DeadToRemove": 0.0,
                       "LiveToResidue": 0.0,
                       "DeadToResidue": 0.0
