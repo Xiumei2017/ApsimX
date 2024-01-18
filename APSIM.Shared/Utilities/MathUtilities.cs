@@ -192,9 +192,12 @@ namespace APSIM.Shared.Utilities
         /// <summary>
         /// Divide value1 by value2. On error, the value errVal will be returned.
         /// </summary>
-        public static double Divide(double value1, double value2, double errVal, double tol = tolerance)
+        public static double Divide(double value1, double value2, double errVal)
         {
-            return MathUtilities.FloatsAreEqual(value2, 0.0, tol) ? errVal : value1 / value2;
+            double returnValue = value1 / value2;
+            if (double.IsInfinity(returnValue) || double.IsNaN(returnValue))
+                return errVal;
+            return returnValue;
         }
 
         /// <summary>
@@ -481,6 +484,48 @@ namespace APSIM.Shared.Utilities
             double Multiplier = System.Math.Pow(10.0, NumDecPlaces);  // gives 1 or 10 or 100 for decplaces=0, 1, or 2 etc
             Value = System.Math.Truncate(Value * Multiplier + 0.5);
             return Value / Multiplier;
+        }
+
+        /// <summary>
+        /// Round the specified number to the specified number of decimal places.
+        /// This allows numbers less than 1 to be rounded to the nearest sig fig.
+        /// Uses Demical to maintain correctness.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="NumDecPlaces"></param>
+        /// <returns></returns>
+        static public double RoundSignificant(double Value, int NumDecPlaces)
+        {
+            if (Value == 0) 
+                return 0;
+
+            Decimal v = (Decimal)Value;
+            bool isNegative = false;
+            if (Value < 0)
+            {
+                isNegative = true;
+                v = Math.Abs(v);
+            }
+
+            int count = 0;
+            while(v < 1)
+            {
+                v = v * 10;
+                count += 1;
+            }
+
+            v = Decimal.Round(v, NumDecPlaces);
+
+            while (count > 0)
+            {
+                v = v * (Decimal)0.1;
+                count -= 1;
+            }
+
+            if (isNegative)
+                return -(double)v;
+            else
+                return (double)v;
         }
 
         /// <summary>
