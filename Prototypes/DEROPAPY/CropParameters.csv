@@ -17,7 +17,7 @@ WaterStressRUE_Fw_X,0-1,Fractional degree of water stress,Stress,(0 0.8 1),(0 0.
 WaterStressRUE_Fract_Y,0-1,Fractional multiplier of extinction coefficient,Stress,(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1),(0 1 1)
 WaterStressLAISenes_X,0-1,Fractional degree of water stress,Stress,(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1),(0 0.3 1)
 WaterStressLAISenes_Y,0-1,The proportion of LAI senesced each day due to water stress,Stress,(1 0 0),(1 0 0),(1 0 0),(1 0 0),(1 0 0),(0.3 0 0),(0.3 0 0),(0.1 0 0),(0.3 0 0),(1 0 0),(1 0 0)
-FlowerMaxTempStress_Temp_X,oC,Maximum temperature at flowering,Stress,(0 35 45),(0 28 45),(0 17 30 45),(0 5 30 35),(7 17 33 45),(0 17 30 45),(0 15 30 45),(0 17 30 45),(0 30 45),(0 30 45),(0 30 45)
+FlowerMaxTempStress_Temp_X,oC,Maximum temperature at flowering,Stress,(0 35 45),(0 28 45),(0 17 30 45),(0 5 30 35),(7 17 33 45),(0 17 35 45),(0 15 39 45),(0 17 33 45),(0 30 45),(0 30 45),(0 30 45)
 FlowerMaxTempStress_Factor_Y,0-1,Multiplier of potential flower number at threshold MAXIMUM temperature,Stress,(1 1 0),(1 1 0),(1 1 1 0),(0 1 1 0),(0 1 1 0),(0 1 1 0),(0 1 1 0),(0 1 1 0),(1 1 0),(1 1 0),(1 1 1)
 FlowerMinTempStress_Temp_X,oC,Minimum temperature at flowering,Stress,(-5 0),(-7 -2),(-5 0),(-5 0),(0 1),(-2 0),(-2 0),(-2 0),(-2 0),(0 10),(0 10)
 FlowerMinTempStress_Factor_Y,0-1,Multiplier of potential flower number at threshold MINIMUM temperature,Stress,(0 1),(0 1),(0 1),(0 1),(0 1),(0 1),(0 1),(0 1),(0 1),(1 1),(1 1)
