@@ -12,6 +12,7 @@ using Models.Climate;
 using Models.Core;
 using UserInterface.Views;
 using System.Linq;
+using Gtk.Sheet;
 
 namespace UserInterface.Presenters
 {
@@ -67,7 +68,7 @@ namespace UserInterface.Presenters
             ContainerView sheetContainer = this.weatherDataView.container;
 
             gridPresenter = new GridPresenter();
-            gridPresenter.Attach(new DataTableProvider(new DataTable()), sheetContainer, explorerPresenter);
+            gridPresenter.Attach(new DataTableProvider(new DataTable(), isReadOnly: true), sheetContainer, explorerPresenter);
             gridPresenter.AddContextMenuOptions(new string[] { "Copy", "Select All" });
 
             this.weatherDataView.BrowseClicked += this.OnBrowse;
@@ -394,8 +395,8 @@ namespace UserInterface.Presenters
 
                 double[] yearlyRainfall = DataTableUtilities.YearlyTotals(table, "Rain", this.dataFirstDate, this.dataLastDate);
                 double[] monthlyRainfall = DataTableUtilities.AverageMonthlyTotals(table, "rain", this.dataFirstDate, this.dataLastDate);
-                double[] monthlyMaxT = DataTableUtilities.AverageDailyTotalsForEachMonth(table, "maxt", this.dataFirstDate, this.dataLastDate);
-                double[] monthlyMinT = DataTableUtilities.AverageDailyTotalsForEachMonth(table, "mint", this.dataFirstDate, this.dataLastDate);
+                double[] monthlyMaxT = DataTableUtilities.AverageMonthlyAverages(table, "maxt", this.dataFirstDate, this.dataLastDate);
+                double[] monthlyMinT = DataTableUtilities.AverageMonthlyAverages(table, "mint", this.dataFirstDate, this.dataLastDate);
 
                 // what do we do if the date range is less than 1 year.
                 // modlmc - 15/03/2016 - modified to pass in the "Month" values, and they may/may not contain a full year.
@@ -931,7 +932,7 @@ namespace UserInterface.Presenters
         public void PopulateData(DataTable data)
         {
             //fill the grid with data
-            DataTableProvider provider = new DataTableProvider(data);
+            DataTableProvider provider = new DataTableProvider(data, isReadOnly: true);
             gridPresenter.PopulateWithDataProvider(provider, 0, 1);
         }
 

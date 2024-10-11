@@ -1,14 +1,8 @@
 ﻿using APSIM.Shared.Utilities;
-using DocumentFormat.OpenXml.Drawing;
 using Models.Climate;
 using Models.Core;
-using Models.Core.ApsimFile;
 using Models.Functions;
 using Models.Interfaces;
-using Models.Management;
-using Models.PMF.Interfaces;
-using Models.PMF.Library;
-using Models.PMF.Organs;
 using Models.PMF.Phen;
 using Models.Soils;
 using Models.Utilities;
@@ -16,8 +10,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -126,7 +118,7 @@ namespace Models.PMF.SimplePlantModels
         private EnergyBalance canopy = null;
 
         [Link(Type = LinkType.Scoped, ByName = true)]
-        private Organ Leaf = null;
+        private Organ leaf = null;
 
         [Link(Type = LinkType.Ancestor)]
         private Zone zone = null;
@@ -144,6 +136,7 @@ namespace Models.PMF.SimplePlantModels
         {
             DataTable readData = new DataTable();
             readData = ApsimTextFile.ToTable(FullFileName);
+            
             if (readData.Rows.Count == 0)
                 throw new Exception("Failed to read any rows of data from " + FullFileName);
             if ((CurrentCropName != null)&&(CurrentCropName != ""))
@@ -191,60 +184,10 @@ namespace Models.PMF.SimplePlantModels
         /// </summary>
         public DataTable ConvertDisplayToModel(DataTable dt)
         {
-            saveToCSV(FullFileName, dt);
-
+            //TextWriter writer = new StreamWriter(FullFileName, false);
+            //DataTableUtilities.DataTableToText(dt, startColumnIndex: 0, delimiter: ",", showHeadings: true,writer:writer);
+            //writer.Close();
             return new DataTable();
-        }
-
-        /// <summary>
-        /// Writes the data from the grid to the csv file
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="dt"></param>
-        /// <exception cref="Exception"></exception>
-        private void saveToCSV(string filepath, DataTable dt)
-        {
-            try
-            {
-                string contents = "";
-
-                for (int i = 0; i < dt.Columns.Count; i++)
-                {
-                    if (!Convert.IsDBNull(dt.Columns[i].ColumnName))
-                    {
-                        contents += dt.Columns[i].ColumnName.ToString();
-                    }
-                    if (i < dt.Columns.Count - 1)
-                    {
-                        contents += ",";
-                    }
-                }
-                contents += "\n";
-
-                foreach (DataRow dr in dt.Rows)
-                {
-                    for (int i = 0; i < dt.Columns.Count; i++)
-                    {
-                        if (!Convert.IsDBNull(dr[i]))
-                        {
-                            contents += dr[i].ToString();
-                        }
-                        if (i < dt.Columns.Count - 1)
-                        {
-                            contents += ",";
-                        }
-                    }
-                    contents += "\n";
-                }
-
-                StreamWriter s = new StreamWriter(filepath, false);
-                s.Write(contents);
-                s.Close();
-            }
-            catch
-            {
-                throw new Exception("Error Writing File");
-            }
         }
 
         /// <summary>
@@ -269,7 +212,7 @@ namespace Models.PMF.SimplePlantModels
         [EventSubscribe("StartOfDay")]
         private void OnStartOfDay(object sender, EventArgs e)
         {
-            if (!deropapy.IsAlive)
+            if ((!deropapy.IsAlive) &&(CurrentCropName!="None"))
             {
                 readCSVandUpdateProperties();
                 Establish();
@@ -307,8 +250,8 @@ namespace Models.PMF.SimplePlantModels
 
             double rootDepth = Math.Min(Double.Parse(CurrentCropParams["MaxRootDepth"]), soilDepthMax);
 
-            bool RootThyNeighbour = bool.Parse(CurrentCropParams["RootTheNeighboursZone"]);
-            if (RootThyNeighbour)
+            bool RootsInNeighbourZone = bool.Parse(CurrentCropParams["RootsInNeighbourZone"]);
+            if (RootsInNeighbourZone)
             {  //Must add root zone prior to sowing the crop.  For some reason they (silently) dont add if you try to do so after the crop is established
                 string neighbour = "";
                 List<Zone> zones = simulation.FindAllChildren<Zone>().ToList();
@@ -339,7 +282,7 @@ namespace Models.PMF.SimplePlantModels
 
             double AgeAtSimulationStart = Double.Parse(CurrentCropParams["AgeAtStartSimulation"]);
             string cropName = this.Name;
-            double depth = Math.Min(Double.Parse(CurrentCropParams["MaxRootDepth"]) * AgeAtSimulationStart / Double.Parse(CurrentCropParams["AgeToMaxDimension"]), rootDepth);
+            double depth = Math.Min(Double.Parse(CurrentCropParams["MaxRootDepth"]) * (AgeAtSimulationStart) / Double.Parse(CurrentCropParams["AgeToMaxDimension"]), rootDepth);
             double population = 1.0;
             double rowWidth = 0.0;
 
@@ -361,10 +304,6 @@ namespace Models.PMF.SimplePlantModels
         [EventSubscribe("EndCrop")]
         private void onEndCrop(object sender, EventArgs e)
         {
-            //Set Root Depth back to zero.
-            root.Depth = 0;
-            //ClearCanopy
-            canopy.resetCanopy();
             HasRewondThisSeason = true;
         }
 
@@ -392,7 +331,7 @@ namespace Models.PMF.SimplePlantModels
             //Reset leaf biomass so it is ready for new growth
             if (CurrentCropParams["DefoliateOrDevelop"] == "FullCover")
             {
-                Leaf.initialiseBiomass();
+                leaf.initialiseBiomass();
                 HasRewondThisSeason = false;
                 HasStartedGrowthhisSeason = true;
             }
@@ -450,8 +389,12 @@ namespace Models.PMF.SimplePlantModels
             thisDero["MaxCanopyWidth"] += clean(CurrentCropParams["MaxCanopyWidth"]);
             thisDero["AgeToMaxDimension"] += clean(CurrentCropParams["AgeToMaxDimension"]);
             thisDero["SeasonalDimensionPattern"] += clean(CurrentCropParams["SeasonalDimensionPattern"]);
+            thisDero["Gsmax350"] += clean(CurrentCropParams["Gsmax350"]);
+            thisDero["R50"] += clean(CurrentCropParams["R50"]);
+            thisDero["RelSlowLAI"] += clean(CurrentCropParams["RelSlowLAI"]);
             thisDero["LAIbase"] += clean(CurrentCropParams["LAIbase"]);
-            thisDero["LAImax"] += clean(CurrentCropParams["LAImax"]);
+            thisDero["LAIbaseInitial"] += clean(CurrentCropParams["LAIbase"]);
+            thisDero["LAIAnnualGrowth"] += clean(CurrentCropParams["LAIAnnualGrowth"]);
             thisDero["ExtCoeff"] += clean(CurrentCropParams["ExtCoeff"]);
             thisDero["RUEtotal"] += clean(CurrentCropParams["RUEtotal"]);
             thisDero["RUETempThresholds"] += clean(CurrentCropParams["RUETempThresholds"]);
@@ -464,7 +407,7 @@ namespace Models.PMF.SimplePlantModels
                                                      Double.Parse(clean(CurrentCropParams["AgeToMaxDimension"])), 0);
             double initialTrunkwt = Double.Parse(clean(CurrentCropParams["TrunkWtAtMaxDimension"])) * relativeAge;
             thisDero["InitialTrunkWt"] += initialTrunkwt.ToString();
-            thisDero["InitialRootWt"] += (200 * relativeAge).ToString();
+            thisDero["InitialRootWt"] += (50 * relativeAge).ToString();
             thisDero["LeafMaxNConc"] += clean(CurrentCropParams["LeafMaxNConc"]);
             thisDero["LeafMinNConc"] += clean(CurrentCropParams["LeafMinNConc"]);
             thisDero["ProductMaxNConc"] += clean(CurrentCropParams["ProductMaxNConc"]);
@@ -482,11 +425,15 @@ namespace Models.PMF.SimplePlantModels
             thisDero["WaterStressExtCoeff_Frac_Y"] += clean(CurrentCropParams["WaterStressExtCoeff_Frac_Y"]);
             thisDero["WaterStressRUE_Fw_X"] += clean(CurrentCropParams["WaterStressRUE_Fw_X"]);
             thisDero["WaterStressRUE_Fract_Y"] += clean(CurrentCropParams["WaterStressRUE_Fract_Y"]);
+            thisDero["WaterStressLAISenes_X"] += clean(CurrentCropParams["WaterStressLAISenes_X"]);
+            thisDero["WaterStressLAISenes_Y"] += clean(CurrentCropParams["WaterStressLAISenes_Y"]);
             thisDero["FlowerNumberMax"] += clean(CurrentCropParams["FlowerNumberMax"]);
             thisDero["FlowerMaxTempStress_Temp_X"] += clean(CurrentCropParams["FlowerMaxTempStress_Temp_X"]);
             thisDero["FlowerMaxTempStress_Factor_Y"] += clean(CurrentCropParams["FlowerMaxTempStress_Factor_Y"]);
             thisDero["FlowerMinTempStress_Temp_X"] += clean(CurrentCropParams["FlowerMinTempStress_Temp_X"]);
             thisDero["FlowerMinTempStress_Factor_Y"] += clean(CurrentCropParams["FlowerMinTempStress_Factor_Y"]);
+            thisDero["FlowerWaterStress_X"] += clean(CurrentCropParams["FlowerWaterStress_X"]);
+            thisDero["FlowerWaterStress_Y"] += clean(CurrentCropParams["FlowerWaterStress_Y"]);
             thisDero["ProduceDryMatterFrac"] += clean(CurrentCropParams["ProduceDryMatterFrac"]);
             thisDero["FruitWeightPotential"] += clean(CurrentCropParams["FruitWeightPotential"]);
             thisDero["RainfallExcessDamage_mm_X"] += clean(CurrentCropParams["RainfallExcessDamage_mm_X"]);
@@ -509,6 +456,25 @@ namespace Models.PMF.SimplePlantModels
             Regex sWhitespace = new Regex(@"\s+");
             return sWhitespace.Replace(ret, ",");
         }
+
+        /// <summary>
+        /// Method to extract a value from an array of parameter inputs for DEROPAPY.  Inputs as comma seperated string
+        /// </summary>
+        /// <param name="vect"></param>
+        /// <param name="pos"></param>
+        /// <returns>The number you want</returns>
+        public double GetValueFromStringVector(string vect, int pos)
+        {
+            string cleaned = clean(vect);
+            string[] strung = cleaned.Split(',');
+            double[] doubles = new double[strung.Length];
+            for (int i = 0; i < strung.Length; i++) 
+            {
+                doubles[i] = Double.Parse(strung[i]);
+            }
+            return doubles[pos];
+        }
+
         /// <summary>
         /// Base dictionary with DEROPAPY parameters and the locations they map to in the DEROPAPY.json model.
         /// </summary>
@@ -527,8 +493,8 @@ namespace Models.PMF.SimplePlantModels
             {"Tt_Senescent_03","[DEROPAPY].Phenology.Senescent.Target.FixedValue = " },
             {"Tt_Mature_04","[DEROPAPY].Phenology.Mature.Target.FixedValue = " },
             {"EndOrHarvest"," [DEROPAPY].Phenology.EndOrHarvest.PhaseNameToGoto = " },
-            {"Chill_Temp_X","[DEROPAPY].Phenology.Chill.DailyChill.XYPairs.X = " },
-            {"Chill_Acc_Y","[DEROPAPY].Phenology.Chill.DailyChill.XYPairs.Y = "},
+            {"Chill_Temp_X","[DEROPAPY].Phenology.DailyChill.XYPairs.X = " },
+            {"Chill_Acc_Y","[DEROPAPY].Phenology.DailyChill.XYPairs.Y = "},
             {"AC_Dormant_05","[DEROPAPY].Phenology.Dormant.Target.XYPairs.X = " },
             {"Tt_Dormant_05","[DEROPAPY].Phenology.Dormant.Target.XYPairs.Y = " },
             {"VegetativeStartStage","[DEROPAPY].Phenology.Vegetative.StartStage = "},
@@ -543,15 +509,19 @@ namespace Models.PMF.SimplePlantModels
             {"MaxCanopyWidth","[DEROPAPY].Width.SeasonalGrowth.Maximum.MaxWidth.FixedValue = " },
             {"AgeToMaxDimension","[DEROPAPY].RelativeAnnualDimension.XYPairs.X[2] = " },
             {"SeasonalDimensionPattern","[DEROPAPY].RelativeSeasonalDimension.XYPairs.Y = " },
-            {"LAIbase","[DEROPAPY].Leaf.Canopy.GreenAreaIndex.WinterBase.FixedValue = " },
-            {"LAImax","[DEROPAPY].Leaf.Canopy.ExpandedGreenArea.Expansion.Delta.Integral.LAIMax.FixedValue = " },
+            {"Gsmax350", "[DEROPAPY].Leaf.Canopy.Gsmax350 = " },
+            {"R50", "[DEROPAPY].Leaf.Canopy.R50 = " },
+            {"RelSlowLAI",  "[DEROPAPY].Leaf.Canopy.ExpandedGreenArea.Expansion.Delta.Integral.GrowthPattern.XYPairs.X[2] = "},
+            {"LAIbase","[DEROPAPY].Leaf.Canopy.GreenAreaIndex.GreenAreaIndex.WinterBase.PrunThreshold.FixedValue = " },                                   
+            {"LAIbaseInitial", "[DEROPAPY].Leaf.Canopy.GreenAreaIndex.GreenAreaIndex.WinterBase.GAICarryover.PreEventValue.FixedValue = "},
+            {"LAIAnnualGrowth","[DEROPAPY].Leaf.Canopy.ExpandedGreenArea.Expansion.Delta.Integral.LAIAnnualGrowth.FixedValue = " },
             {"ExtCoeff","[DEROPAPY].Leaf.Canopy.GreenExtinctionCoefficient.PotentialExtinctionCoeff.FixedValue = " },
             {"RUEtotal","[DEROPAPY].Leaf.Photosynthesis.RUE.FixedValue = " },
             {"RUETempThresholds","[DEROPAPY].Leaf.Photosynthesis.FT.XYPairs.X = " },
             {"PhotosynthesisType","[DEROPAPY].Leaf.Photosynthesis.FCO2.PhotosyntheticPathway = " },
-            {"LeafPartitionFrac","[DEROPAPY].Leaf.TotalCarbonDemand.PartitionFraction.FixedValue = " },
+            {"LeafPartitionFrac","[DEROPAPY].Leaf.TotalCarbonDemand.TotalDMDemand.PartitionFraction.FixedValue = " },
             {"ProductPartitionFrac","[DEROPAPY].Product.TotalCarbonDemand.TotalDMDemand.AllometricDemand.AllometricDemand.Const = " },
-            {"RootPartitionFrac","[DEROPAPY].Root.TotalCarbonDemand.PartitionFraction.FixedValue = " },
+            {"RootPartitionFrac","[DEROPAPY].Root.TotalCarbonDemand.TotalDMDemand.PartitionFraction.FixedValue = " },
             {"TrunkWtAtMaxDimension","[DEROPAPY].Trunk.MatureWt.FixedValue = "},
             {"InitialTrunkWt","[DEROPAPY].Trunk.InitialWt.FixedValue = "},
             {"InitialRootWt","[DEROPAPY].Root.InitialWt.FixedValue = "},
@@ -572,11 +542,15 @@ namespace Models.PMF.SimplePlantModels
             {"WaterStressExtCoeff_Frac_Y","[DEROPAPY].Leaf.Canopy.GreenExtinctionCoefficient.WaterStress.XYPairs.Y = " },
             {"WaterStressRUE_Fw_X","[DEROPAPY].Leaf.Photosynthesis.FW.XYPairs.X = " },
             {"WaterStressRUE_Fract_Y","[DEROPAPY].Leaf.Photosynthesis.FW.XYPairs.Y = " },
+            {"WaterStressLAISenes_X", "[DEROPAPY].Leaf.Canopy.DeadAreaIndex.DroughtedLAI.DailyDroughtSenescence.WaterStressFactor.XYPairs.X = " },
+            {"WaterStressLAISenes_Y", "[DEROPAPY].Leaf.Canopy.DeadAreaIndex.DroughtedLAI.DailyDroughtSenescence.WaterStressFactor.XYPairs.Y = " },
             {"FlowerNumberMax","[DEROPAPY].Product.FlowerNumber.Maximum.FixedValue = " },
             {"FlowerMaxTempStress_Temp_X","[DEROPAPY].Product.FlowerNumber.StressDuringFlowering.MaxTempStress.XYPairs.X = " },
             {"FlowerMaxTempStress_Factor_Y","[DEROPAPY].Product.FlowerNumber.StressDuringFlowering.MaxTempStress.XYPairs.Y = " },
             {"FlowerMinTempStress_Temp_X","[DEROPAPY].Product.FlowerNumber.StressDuringFlowering.MinTempStress.XYPairs.X = " },
             {"FlowerMinTempStress_Factor_Y","[DEROPAPY].Product.FlowerNumber.StressDuringFlowering.MinTempStress.XYPairs.Y = " },
+            {"FlowerWaterStress_X","[DEROPAPY].Product.FlowerNumber.StressDuringFlowering.WaterStress.XYPairs.X = " },
+            {"FlowerWaterStress_Y","[DEROPAPY].Product.FlowerNumber.StressDuringFlowering.WaterStress.XYPairs.Y = " },
             {"ProduceDryMatterFrac","[DEROPAPY].Product.FreshWeight.DryMatterProportion.FixedValue = " },
             {"FruitWeightPotential","[DEROPAPY].Product.PotentialFruitDryWt.FixedValue = " },
             {"RainfallExcessDamage_mm_X","[DEROPAPY].Product.RainfallExcessFactor.XYPairs.X = " },
