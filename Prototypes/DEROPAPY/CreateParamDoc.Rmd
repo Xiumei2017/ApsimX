@@ -51,11 +51,11 @@ work_data<- data %>%
   )) %>% 
   mutate(CropName=fct_relevel(CropName, crop_select)) %>%
   arrange(CropName) %>%
-  inner_join(crop_type, by="CropName") 
-
-# work_data$ParamName <- ifelse(work_data$ParamName %in% fix_names$ParamName, 
-#                        fix_names$NewParamName[match(work_data$ParamName, fix_names$ParamName)], 
-#                        work_data$ParamName)
+  inner_join(crop_type, by="CropName") %>%
+  left_join(fix_names, by = "ParamName") %>%
+  mutate(ParamName = coalesce(NewParamName, ParamName)) %>%
+  select(-NewParamName) %>% # Drop NewParamName column
+  group_by(CropName,ParamName)
 
 #str(work_data)
 summary(work_data)
@@ -135,16 +135,25 @@ mutate(
     ParamValue = str_split(ParamValue, " ")                   # Split by single space
   )
 
+# fix rue missing x
+rue_y <- data.frame(ArrayPosition=c(1,2,3,4), Axis_Y = c(0, 1, 1, 0))
 
 # (v) Create new columns for X-axes, Y-axes, and ArrayPosition
 df5 <- df4 %>%
   unnest(ParamValue) %>%  # Unnest the list of arrays into rows
-  group_by(ParamName) %>%
+  group_by(ParamName, CropName) %>%
   mutate(ArrayPosition = row_number(),
          ParamValue = as.numeric(ParamValue)) %>%
   ungroup() %>%
   dplyr::select(-ParamNameFull, -ParamName, -Description, -ParamUnit) %>%
-  pivot_wider(names_from = GraphAxes, values_from = ParamValue, names_prefix = "Axis_")
+  pivot_wider(names_from = GraphAxes, values_from = ParamValue, names_prefix = "Axis_") %>%
+  mutate(Axis_Y = case_when(
+    VarName == "RUE" & ArrayPosition == 1 & is.na(Axis_Y) ~ 0,
+    VarName == "RUE" & ArrayPosition == 2 & is.na(Axis_Y) ~ 1,
+    VarName == "RUE" & ArrayPosition == 3 & is.na(Axis_Y) ~ 1,
+    VarName == "RUE" & ArrayPosition == 4 & is.na(Axis_Y) ~ 0,
+    TRUE ~ Axis_Y  # Keep original values if conditions aren't met
+  )) 
 
 # Create columns for X-axes and Y-axes based on 'GraphAxes'
 # df6 <- df5 %>%
