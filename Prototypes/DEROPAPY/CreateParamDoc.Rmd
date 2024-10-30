@@ -32,6 +32,11 @@ crop_type <- data.frame(
   CropName=c("Maize","Wheat",	"Hemp",	"OSR","Grapevine",	"Macadamia",	"Lemon",	"Avocado"),
   CropType=c("Arable","Arable",	"Arable",	"Arable", "Perennial", "Perennial", "Perennial", "Perennial"))
 
+# Fix bad var naming
+fix_names <- data.frame(ParamName = c("AC_Dormant_05", "Tt_Dormant_05","RUETempThresholds","RUE_Fact_Y"),
+                        NewParamName = c("Dorm_Temp_X", "Dorm_TtChill_Y",
+                                         "RUE_Temp_X","RUE_Fact_Y"))
+
 work_data<- data %>%
   dplyr::select(-one_of(out_crop)) %>%
   filter(ParamName!="CropType") %>%
@@ -48,13 +53,14 @@ work_data<- data %>%
   arrange(CropName) %>%
   inner_join(crop_type, by="CropName") 
 
-
+# work_data$ParamName <- ifelse(work_data$ParamName %in% fix_names$ParamName, 
+#                        fix_names$NewParamName[match(work_data$ParamName, fix_names$ParamName)], 
+#                        work_data$ParamName)
 
 #str(work_data)
 summary(work_data)
 #head(work_data)
 ```
-
 
 ```{r, fig.height== 40}
 
@@ -104,4 +110,86 @@ for(i in 1:length(cats)) {
 
 ```
 
+```{r, fig.height=20}
+# (ii) Create new column VarName using the first string element from ParName (split by '_')
+df2 <- work_data %>%
+  #filter(ParamName %in% c("TT_Temp_X", "TT_Acc_Y")) %>%
+  dplyr::filter(ParamType == "array") %>%
+  mutate(VarName = factor(sapply(strsplit(ParamName, "_"), `[`, 1))) 
+
+# (iii) Create new column GraphAxes using the last string element from ParName (split by '_')
+df3 <- df2 %>%
+  filter(grepl("_X$", ParamName) | grepl("_Y$", ParamName)) %>%
+  mutate(GraphAxes = factor(sapply(strsplit(ParamName, "_"), tail, n = 1)))
+
+# (iv) Read ParValues as arrays (remove parentheses, split by space, and convert to numeric)
+#df4 <- df3 %>%
+#  mutate(ParamValue = str_replace_all(ParamValue, "[()]", ""),  # Remove parentheses
+#         ParamValue = str_split(ParamValue, " "))  # Split by space into a list of arrays
+
+df4 <- df3 %>%
+mutate(
+    ParamValue = str_replace_all(ParamValue, "[()]", ""),     # Remove parentheses
+    ParamValue = str_replace_all(ParamValue, "\\s+", " "),    # Replace multiple spaces/tabs with a single space
+    ParamValue = str_trim(ParamValue),                        # Trim any leading or trailing spaces
+    ParamValue = str_split(ParamValue, " ")                   # Split by single space
+  )
+
+
+# (v) Create new columns for X-axes, Y-axes, and ArrayPosition
+df5 <- df4 %>%
+  unnest(ParamValue) %>%  # Unnest the list of arrays into rows
+  group_by(ParamName) %>%
+  mutate(ArrayPosition = row_number(),
+         ParamValue = as.numeric(ParamValue)) %>%
+  ungroup() %>%
+  dplyr::select(-ParamNameFull, -ParamName, -Description, -ParamUnit) %>%
+  pivot_wider(names_from = GraphAxes, values_from = ParamValue, names_prefix = "Axis_")
+
+# Create columns for X-axes and Y-axes based on 'GraphAxes'
+# df6 <- df5 %>%
+#   mutate(`X-axes` = ifelse(!is.na(Axis_X), Axis_X, NA),
+#          `Y-axes` = ifelse(!is.na(Axis_Y), Axis_Y, NA))
+
+# (vi) Check for VarName if X and Y have the same array size
+df_check <- df5 %>%
+  group_by(VarName) %>%
+  summarise(X_size = sum(!is.na(Axis_X)), Y_size = sum(!is.na(Axis_Y))) %>%
+  filter(X_size != Y_size)
+
+# If there are mismatches in sizes, print the result
+if (nrow(df_check) > 0) {
+  print("Mismatches found in array sizes for the following VarNames:")
+  print(df_check)
+} else {
+  print("All VarNames have consistent array sizes.")
+}
+
+xvar_names_full <- df4 %>% filter(GraphAxes == "X") %>%
+              dplyr::select(VarName, ParamUnit) %>%
+              mutate(ParamNameFull = paste0(VarName, " (",ParamUnit,")"))
+
+
+# (vii) Create geom_point graph for each ParName
+df6 <- df5 %>%
+  inner_join(xvar_names_full, by="VarName")%>%
+  dplyr::select(-ArrayPosition)
+             
+df6 %>%
+ggplot(aes(x = `Axis_X`, y = `Axis_Y`)) +
+  geom_point(aes(colour = CropName), shape=21, size=5,
+             position=position_jitter(w=0.05, h=0)
+             ) +
+  geom_line(aes(colour=CropName, linetype= CropType ), 
+            position=position_jitter(w=0.05, h=0)) +
+  facet_wrap(Category ~ ParamNameFull, scales = "free") +
+  labs(title = "Phenology and stress parameters for different crops",
+       x = "X-axes",
+       y = "Y-axes") +
+  theme_minimal() +
+  theme(text=element_text(size=35)) +
+  ylab("Multiplier of potential rates") +
+  xlab("Driving variable unit see panel title")
+
+```
 
