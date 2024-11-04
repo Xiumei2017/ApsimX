@@ -37,7 +37,7 @@ fix_names <- data.frame(ParamName = c("AC_Dormant_05", "Tt_Dormant_05","RUETempT
                         NewParamName = c("Dorm_Temp_X", "Dorm_TtChill_Y",
                                          "RUE_Temp_X","RUE_Fact_Y"))
 
-work_data<- data %>%
+work_data <- data %>%
   dplyr::select(-one_of(out_crop)) %>%
   filter(ParamName!="CropType") %>%
   filter(Category != "PlantNitrogen") %>%
@@ -54,15 +54,15 @@ work_data<- data %>%
   inner_join(crop_type, by="CropName") %>%
   left_join(fix_names, by = "ParamName") %>%
   mutate(ParamName = coalesce(NewParamName, ParamName)) %>%
-  select(-NewParamName) %>% # Drop NewParamName column
-  group_by(CropName,ParamName)
+  select(-NewParamName) # Drop NewParamName column
+
 
 #str(work_data)
 summary(work_data)
 #head(work_data)
 ```
 
-```{r, fig.height== 40}
+```{r, fig.height= 30}
 
 save_path <- "C:\\github\\ApsimX\\Prototypes\\DEROPAPY\\figures"
 
@@ -89,17 +89,19 @@ for(i in 1:length(cats)) {
   # plot
     
   p <- thisCat_data %>%
+  mutate(CropName=factor(CropName, levels=crop_select)) %>%
   ggplot() +
   geom_bar(stat="identity", aes(x=CropName,y=ParamValue, fill = CropType)) +
   facet_wrap(.~ParamNameFull, scales="free", ncol=2) +
   coord_flip() +
   ylab("Parameter value")+
   xlab("Crop name")+
-  labs(title = cats[i] ) 
+  labs(title = cats[i] ) +
+    theme(text=element_text(size=38))
   
   print(p)
   
-  ggsave(filename = paste0(cats[i],".jpg"), dpi=100 )
+  ggsave(filename = file.path(save_path,paste0(cats[i],".jpg")), dpi=100 )
 
     
   }
@@ -110,7 +112,7 @@ for(i in 1:length(cats)) {
 
 ```
 
-```{r, fig.height=20}
+```{r}
 # (ii) Create new column VarName using the first string element from ParName (split by '_')
 df2 <- work_data %>%
   #filter(ParamName %in% c("TT_Temp_X", "TT_Acc_Y")) %>%
@@ -183,16 +185,28 @@ xvar_names_full <- df4 %>% filter(GraphAxes == "X") %>%
 df6 <- df5 %>%
   inner_join(xvar_names_full, by="VarName")%>%
   dplyr::select(-ArrayPosition)
-             
-df6 %>%
+
+head(df6)
+
+```
+
+
+```{r, fig.height=20}
+
+cats <- unique(df6$Category)
+
+for(i in 1:length(cats)) {
+      
+p <- df6 %>%
+filter(Category== cats[i]) %>%
 ggplot(aes(x = `Axis_X`, y = `Axis_Y`)) +
   geom_point(aes(colour = CropName), shape=21, size=5,
              position=position_jitter(w=0.05, h=0)
              ) +
   geom_line(aes(colour=CropName, linetype= CropType ), 
             position=position_jitter(w=0.05, h=0)) +
-  facet_wrap(Category ~ ParamNameFull, scales = "free") +
-  labs(title = "Phenology and stress parameters for different crops",
+  facet_wrap(Category ~ ParamNameFull, scales = "free", ncol=2) +
+  labs(title = "Parameters for different crops",
        x = "X-axes",
        y = "Y-axes") +
   theme_minimal() +
@@ -200,5 +214,11 @@ ggplot(aes(x = `Axis_X`, y = `Axis_Y`)) +
   ylab("Multiplier of potential rates") +
   xlab("Driving variable unit see panel title")
 
+    
+  print(p)
+  
+  ggsave(filename = file.path(save_path,paste0(paste0("Array_",cats[i]),".jpg")), dpi=100 )
+
+}
 ```
 
