@@ -72,12 +72,15 @@ select_cat <- "Carbon"
 select_cat <- "Transpiration"
 select_cat <- "Canopy"
 
-cats <- unique(work_data$Category)
+df_temp <- work_data %>%
+  mutate(Category = if_else(str_detect(Category, "Carbon"), "Carbon", Category))
+
+cats <- unique(df_temp$Category)
 
 for(i in 1:length(cats)) {
   
   # filter  
-  thisCat_data <- work_data %>%
+  thisCat_data <- df_temp %>%
  # filter(ParamName == select_param) %>%
   #filter(Category == select_cat) %>%
   filter(grepl(cats[i], Category)) %>%
@@ -89,6 +92,7 @@ for(i in 1:length(cats)) {
   # plot
     
   p <- thisCat_data %>%
+
   mutate(CropName=factor(CropName, levels=crop_select)) %>%
   ggplot() +
   geom_bar(stat="identity", aes(x=CropName,y=ParamValue, fill = CropType)) +
@@ -191,13 +195,18 @@ head(df6)
 ```
 
 
-```{r, fig.height=20}
+```{r, fig.height=30}
 
-cats <- unique(df6$Category)
+cats <- unique(df6$Category) 
+
+cats <- c("Phenology", "Stress")
+
+
 
 for(i in 1:length(cats)) {
       
 p <- df6 %>%
+mutate(Category = if_else(Category == "CarbonSupply", "Stress", Category)) %>%
 filter(Category== cats[i]) %>%
 ggplot(aes(x = `Axis_X`, y = `Axis_Y`)) +
   geom_point(aes(colour = CropName), shape=21, size=5,
