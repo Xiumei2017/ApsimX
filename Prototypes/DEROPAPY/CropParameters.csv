@@ -2,7 +2,7 @@ ParamName,ParamUnit,Description,Category,Maize,Wheat,Hemp,OSR,Grapevine,Macadami
 CropType,string,Type of crop (i.e. crop name) used for characterising organic matter residues composition,Type,Maize,Maize,Maize,Maize,Grapevine,Grapevine,Grapevine,Grapevine,Grapevine,pasture,whiteclover
 AgeToMaxDimension,Y,Years until plant reaches mature size,Structure,.000001,.000001,.000001,.000001,6,6,6,6,6,1,1
 AgeAtStartSimulation,Y,How old is the plant at the start of the simulation (needs to be 0 for annuals),Structure,0,0,0,0,6,6,6,6,6,0.3,1
-SeasonalDimensionPattern,0-1,Relative values for seasonal height and width at StartGrowth | FullCanopy | StartSenescence | Maturity,Structure,(0.05 .3 0.3 1),(0.05 .3 0.3 1),(0.05 1 1 1),(0.05 1 1 1),(0 1 1 1),0 1 1 1),(0 1 1 1),(0 1 1 1),(0 0.3 0.3 1.0),(0 1.0 1.0 1.0),(0 1.0 1.0 1.0)
+SeasonalDimensionPattern,0-1,Relative values for seasonal height and width at StartGrowth | FullCanopy | StartSenescence | Maturity,Structure,(0.05 .3 0.3 1),(0.05 .3 0.3 1),(0.05 1 1 1),(0.05 1 1 1),(0 1 1 1),(0 1 1 1),(0 1 1 1),(0 1 1 1),(0 0.3 0.3 1.0),(0 1.0 1.0 1.0),(0 1.0 1.0 1.0)
 TrunkWtAtMaxDimension,g/m2,The weight of perennial biomass when crop has reached max size,Structure,0,0,0,0,500,1500,1000,1500,1500,0,0
 MaxRootDepth,mm,Potential depth that roots achieve when plant is mature,Structure,2000,1500,2000,1400,3000,3000,3000,3000,2000,600,600
 RootsInNeighbourZone,bool,Do roots grow into neighbouring zone if multi simulation run?,Structure,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE
@@ -52,8 +52,8 @@ Tt_Flowering,oCd,Thermal time for flowering window,Phenology,500,300,600,200,400
 Tt_Reproductive,oCd,Thermal-time duration of produce growth post flowering,Phenology,600,800,760,600,900,1500,1500,1340,1000,700,700
 Chill_Temp_X,oC,Temperatures when chilling-time accumulation occurs,Phenology,(0 0 0 0),(-2 -1 16 17),(0 0 0 0),(0 2 8 15),(0 5 20),(0 0 0 0),(0 0 0 0),(0 0 0 0),(-5.0 0.0 8.0 12.0),(-5.0 0.0 8.0 12.0),(-5.0 0.0 8.0 12.0)
 Chill_Acc_Y,oCd,Chilling rate accumulation at a given cardinal temperature,Phenology,(0 0 0 0),(0 1 1 0),(0 0 0 0),(0 1 0.5 0),(1 0.8 0),(0 0 0 0),(0 0 0 0),(0 0 0 0),(0.0 1.0 1.0 0.0),(0.0 1.0 1.0 0.0),(0.0 1.0 1.0 0.0)
-TT_Temp_X,oC,Average temperature for thermal time calculation,Phenology,(0   18  26  34  44),(0  26  37),(1.9 26  40),(2  30  35),(3.9  29  37.9),(10  24 26  35),(7.2  28.9  40.1),(10 25 33 45),(0   18.0  26.0  34.0  44.0),(0   18.0  26.0  34.0  44.0),(0   18.0  26.0  34.0  44.0)
-TT_Acc_Y,oCd,Thermal time accumulation at average temperature,Phenology,(0   10  18  26   0),(0  26  0),(0 24.1 0),(0  28  0),(0  25  0),(0 14 16 0),(0 21.7 0),(0 15 23 0),(0   10.0  18.0  26.0   0.0),(0   10.0  18.0  26.0   0.0),(0   10.0  18.0  26.0   0.0)
+TT_Temp_X,oC,Average temperature for thermal time calculation,Phenology,(0 18 26 34 44),(0 26 37),(1.9 26  40),(2 30 35),(3.9 29 37.9),(10 24 26 35),(7.2 28.9 40.1),(10 25 33 45),(0  18.0 26.0 34.0 44.0),(0 18.0 26.0 34.0 44.0),(0 18.0 26.0 34.0 44.0)
+TT_Acc_Y,oCd,Thermal time accumulation at average temperature,Phenology,(0 10 18 26 0),(0 26 0),(0 24.1 0),(0 28 0),(0 25 0),(0 14 16 0),(0 21.7 0),(0 15 23 0),(0 10.0 18.0 26.0 0.0),(0 10.0 18.0 26.0 0.0),(0 10.0 18.0 26.0 0.0)
 RUEtotal,g DM/MJ global rad,Radiation use efficiency for total plant biomass (global solar radiation),CarbonSupply,1.8,1.4,1.2,1.4,0.9,1,1,.9,1.2,1,0.9
 PhotosynthesisType,C3 or C4,Select if a C3 or C4 crop to set sensitivity to atmospheric CO2,CarbonSupply,C4,C3,C3,C3,C3,C3,C3,C3,C3,C3,C3
 RUETempThresholds,oC,Radiation Use Efficiency temperatures for lower_minimum | lower_optima | upper_optima | upper_minimum,CarbonSupply,(8 20 35 50),(0 15 25 35),(5 25 30 45),(0  15 25 35),(5 25 30 45),(10  24 26  35),(10 25 30 45),(10 25 33 45),(5 20 30 40),(3 18 25 35),(5 20 25 35)
@@ -70,6 +70,6 @@ MaxCanopyWidth,mm,Width of the canopy of mature plants before pruning,Canopy,800
 LAIbase,m2/m2,The LAI during the winter period for evergreen crops,Canopy,0,0,0,0,0,6,6,6,0,0,0
 LAIAnnualGrowth,m2/m2,Maximum achievable leaf are index less the LAI base (optimal management),Canopy,6,7,7,6,6,2,2,2,8,6,3
 ExtCoeff,0-1,Extinction coefficient for diffuse light across canopy,Canopy,.75,0.75,.9,.9,.7,.6,.7,.7,0.7,0.5,0.8
-RelSlowLAI,0-1,Releative progress through Growing Phase when LAI reaches 10% of its maximum (3.1 - 3.8),Canopy,3.5,3.5,3.5,3.5,3.2,3.2,3.2,3.2,3.2,3.2,3.2
+RelSlowLAI,3.1 to 3.8,Development phase code during Growing Phase when LAI reaches 10% of its maximum,Canopy,3.5,3.5,3.5,3.5,3.2,3.2,3.2,3.2,3.2,3.2,3.2
 Gsmax350,m/s,Maximum stomatal conductance at 350 ppm co2,Transpiration,0.011,0.012,0.011,0.012,0.011,0.011,0.011,0.011,0.011,0.011,0.011
 R50,MJ/m2,Net radiation levels at which gs is half gsmax,Transpiration,150,150,150,150,150,150,150,150,150,150,150
