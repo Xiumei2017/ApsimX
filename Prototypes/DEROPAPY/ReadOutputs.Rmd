@@ -4,7 +4,7 @@ output: html_notebook
 ---
 
 ```{r}
-thisPath <- "C:/Users/Cfleit/Downloads/P019_MBIEClimateChangeEconomics_hrajab_2024-03-27"
+thisPath <- "C:/github/ApsimX/Prototypes/DEROPAPY"
 
 thisFile <- "P019_MBIEClimateChangeEconomics_hrajab_2024-03-27.db"
 ```
@@ -44,6 +44,7 @@ dplyr::select(pixel_id,Lat,Lon)
 
 print(head(data_pixel))
 ```
+
 ```{r}
 # Read a specific table into R as a data frame
 # Replace 'table_name' with the actual table name from your database
@@ -54,6 +55,7 @@ dplyr::rename(GCM=name)
 
 print(head(data_gcm))
 ```
+
 ```{r}
 # Read a specific table into R as a data frame
 # Replace 'table_name' with the actual table name from your database
@@ -84,6 +86,7 @@ data_output <- dbReadTable(conn, table_name)
 
 print(head(data_output))
 ```
+
 # Merge coodinates and data
 ```{r}
 data_work <- data_output %>%
@@ -131,8 +134,6 @@ nz_bbox <- c(xmin = 166, xmax = 179, ymin = -47, ymax = -34)
 
 
 ```{r}
-
- 
 thisCrop <- unique(df$Crop)
 
 for (i in 1:length(thisCrop)) {
@@ -140,10 +141,12 @@ for (i in 1:length(thisCrop)) {
   
   print(thisCrop[i])
   
+  # prepare this df
   df_crop <- df %>% filter(Crop == thisCrop[i]) %>% 
-  mutate(RCP=factor(RCP, levels= c("RCPpast", "RCP4.5", "RCP8.5")))
+  mutate(RCP=factor(RCP, levels= c("RCPpast", "RCP4.5", "RCP8.5")))%>% 
+  mutate(TimeSlice=factor(TimeSlice, levels= c("Baseline", "Midcentury", "Endcentury")))
   
-  
+  # create plot
   p <- ggplot() +
   # Add New Zealand map contours
   geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
@@ -154,7 +157,7 @@ for (i in 1:length(thisCrop)) {
     shape=15, 
     size = 0.5
   ) +
-  facet_grid(Irrigation ~ RCP) + # Facet by RCP and Rainfed/Irrigated
+  facet_grid(Irrigation ~ RCP + TimeSlice) + # Facet by RCP and Rainfed/Irrigated
   scale_color_viridis_c(name = "kg/ha") +
   theme_minimal() +
   labs(
@@ -162,9 +165,29 @@ for (i in 1:length(thisCrop)) {
     x = "Longitude",
     y = "Latitude"
   )+
-  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), ylim = c(nz_bbox["ymin"], nz_bbox["ymax"]))
+  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
+    theme(text = element_text(size = 7),
+          axis.text.x = element_text(angle = 45, hjust = 1) )
   
   print(p)
+  
+  
+  thisOutFolder <- file.path(thisPath,"MapResults") 
+  
+  
+  # Create folder if it doesn't exist
+if (!dir.exists(thisOutFolder)) {
+  dir.create(thisOutFolder, recursive = TRUE)
+}
+
+ 
+  
+# Save the plot as a JPEG file with 300 DPI
+ggsave(filename = file.path(thisOutFolder,paste0("Map_",thisCrop[i],".jpg")),
+       plot = p,
+       width = 6,    # Width in inches
+       height = 4,   # Height in inches
+       dpi = 300)
   
 }
 
@@ -172,6 +195,25 @@ for (i in 1:length(thisCrop)) {
 ```
 
 
+# Create difference maps
+```{r}
+diff_df <- df %>%
+  tidyr::spread(TimeSlice, Yield) %>%
+  group_by(Lat,Lon,Crop,Irrigation) %>%
+  mutate(RCP=factor(RCP)) %>%
+  mutate(BaselineValue = ifelse(is.na(Baseline), 
+                           Baseline[RCP == "RCPpast"], 
+                           Baseline)) %>%
+  mutate(DiffAbs_mid=Midcentury-BaselineValue,
+         DiffAbs_end=Endcentury-BaselineValue,
+         DiffRel_mid=round(100*(DiffAbs_mid/BaselineValue),1),
+         DiffRel_end=round(100*(DiffAbs_end/BaselineValue),1)) %>%
+  dplyr::select(-Baseline) %>%
+  filter(RCP != "RCPpast")
+
+
+head(diff_df)
+```
 
 
 
