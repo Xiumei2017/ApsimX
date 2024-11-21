@@ -1,0 +1,194 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+thisPath <- "C:/Users/Cfleit/Downloads/P019_MBIEClimateChangeEconomics_hrajab_2024-03-27"
+
+thisFile <- "P019_MBIEClimateChangeEconomics_hrajab_2024-03-27.db"
+```
+
+# Read Deropapy outputs
+```{r}
+# Install necessary packages if not already installed
+if (!requireNamespace("DBI", quietly = TRUE)) install.packages("DBI")
+if (!requireNamespace("RSQLite", quietly = TRUE)) install.packages("RSQLite")
+
+# Load libraries
+library(DBI)
+library(RSQLite)
+library(tidyverse)
+
+```
+
+```{r}
+# Connect to the database
+# Replace 'my_database.sqlite' with your database file path
+db_file <- file.path(thisPath,thisFile)
+conn <- dbConnect(RSQLite::SQLite(), dbname = db_file)
+```
+
+```{r}
+# List all tables in the database
+tables <- dbListTables(conn)
+print(tables)
+```
+
+```{r}
+# Read a specific table into R as a data frame
+# Replace 'table_name' with the actual table name from your database
+table_name <- "Pixel_export"
+data_pixel <- dbReadTable(conn, table_name) %>% 
+dplyr::select(pixel_id,Lat,Lon) 
+
+print(head(data_pixel))
+```
+```{r}
+# Read a specific table into R as a data frame
+# Replace 'table_name' with the actual table name from your database
+table_name <- "GCM_export"
+data_gcm <- dbReadTable(conn, table_name) %>% 
+dplyr::select(gcm_id,name) %>% 
+dplyr::rename(GCM=name)
+
+print(head(data_gcm))
+```
+```{r}
+# Read a specific table into R as a data frame
+# Replace 'table_name' with the actual table name from your database
+table_name <- "RCP_export"
+data_rcp <- dbReadTable(conn, table_name) %>% 
+  dplyr::select(rcp_id,name) %>% 
+dplyr::rename(RCP=name)
+
+print(head(data_rcp))
+```
+
+```{r}
+# Read a specific table into R as a data frame
+# Replace 'table_name' with the actual table name from your database
+table_name <- "TimeSlice_export"
+data_time_slice <- dbReadTable(conn, table_name) %>% dplyr::select(time_slice_id,name) %>% 
+dplyr::rename(TimeSlice=name)
+
+print(head(data_time_slice))
+```
+
+
+```{r}
+# Read a specific table into R as a data frame
+# Replace 'table_name' with the actual table name from your database
+table_name <- "Simulation_export"
+data_output <- dbReadTable(conn, table_name)
+
+print(head(data_output))
+```
+# Merge coodinates and data
+```{r}
+data_work <- data_output %>%
+  inner_join(data_pixel, by = "pixel_id") %>%
+  inner_join(data_gcm, by = "gcm_id") %>%
+  inner_join(data_rcp, by = "rcp_id") %>%
+  inner_join(data_time_slice, by = "time_slice_id") %>%
+  dplyr::select(-ends_with("_id"))
+
+
+head(data_work)
+tail(data_work)
+```
+
+
+# Plot results
+```{r}
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+```
+
+
+# Find medians
+```{r}
+df <- data_work %>%
+  group_by(Lat,Lon, Crop, Irrigation, RCP, TimeSlice) %>%
+  summarise(Yield=median(ProductFresh_kgPerHa))
+
+head(df)
+```
+
+
+# map preparation
+```{r}
+# Get New Zealand map using rnaturalearth
+nz_map <- ne_countries(scale = "medium", country = "New Zealand", returnclass = "sf")
+
+# Define the bounding box for New Zealand (approximate coordinates)
+nz_bbox <- c(xmin = 166, xmax = 179, ymin = -47, ymax = -34)
+```
+
+
+
+```{r}
+
+ 
+thisCrop <- unique(df$Crop)
+
+for (i in 1:length(thisCrop)) {
+  
+  
+  print(thisCrop[i])
+  
+  df_crop <- df %>% filter(Crop == thisCrop[i]) %>% 
+  mutate(RCP=factor(RCP, levels= c("RCPpast", "RCP4.5", "RCP8.5")))
+  
+  
+  p <- ggplot() +
+  # Add New Zealand map contours
+  geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
+  # Add the median product data
+  geom_point(
+    data = df_crop,
+    aes(x = Lon, y = Lat, color = Yield),
+    shape=15, 
+    size = 0.5
+  ) +
+  facet_grid(Irrigation ~ RCP) + # Facet by RCP and Rainfed/Irrigated
+  scale_color_viridis_c(name = "kg/ha") +
+  theme_minimal() +
+  labs(
+    title = paste0(thisCrop[i], " - Median yield across New Zealand") ,
+    x = "Longitude",
+    y = "Latitude"
+  )+
+  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), ylim = c(nz_bbox["ymin"], nz_bbox["ymax"]))
+  
+  print(p)
+  
+}
+
+
+```
+
+
+
+
+
+
+
+
+
+```{r}
+# Run a custom SQL query (optional)
+query <- "SELECT * FROM your_table_name LIMIT 10"
+query_result <- dbGetQuery(conn, query)
+print(query_result)
+```
+
+```{r}
+# Disconnect from the database
+dbDisconnect(conn)
+```
+
+
