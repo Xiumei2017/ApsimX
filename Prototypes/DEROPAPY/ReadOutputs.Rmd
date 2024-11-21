@@ -4,7 +4,7 @@ output: html_notebook
 ---
 
 ```{r}
-thisPath <- "C:/Users/Cfleit/Downloads/P019_MBIEClimateChangeEconomics_hrajab_2024-03-27"
+thisPath <- "C:/github/ApsimX/Prototypes/DEROPAPY"
 
 thisFile <- "P019_MBIEClimateChangeEconomics_hrajab_2024-03-27.db"
 ```
@@ -140,10 +140,12 @@ for (i in 1:length(thisCrop)) {
   
   print(thisCrop[i])
   
+  # prepare this df
   df_crop <- df %>% filter(Crop == thisCrop[i]) %>% 
-  mutate(RCP=factor(RCP, levels= c("RCPpast", "RCP4.5", "RCP8.5")))
+  mutate(RCP=factor(RCP, levels= c("RCPpast", "RCP4.5", "RCP8.5")))%>% 
+  mutate(TimeSlice=factor(TimeSlice, levels= c("Baseline", "Midcentury", "Endcentury")))
   
-  
+  # create plot
   p <- ggplot() +
   # Add New Zealand map contours
   geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
@@ -154,7 +156,7 @@ for (i in 1:length(thisCrop)) {
     shape=15, 
     size = 0.5
   ) +
-  facet_grid(Irrigation ~ RCP) + # Facet by RCP and Rainfed/Irrigated
+  facet_grid(Irrigation ~ RCP + TimeSlice) + # Facet by RCP and Rainfed/Irrigated
   scale_color_viridis_c(name = "kg/ha") +
   theme_minimal() +
   labs(
@@ -165,6 +167,24 @@ for (i in 1:length(thisCrop)) {
   coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), ylim = c(nz_bbox["ymin"], nz_bbox["ymax"]))
   
   print(p)
+  
+  # Create folder if it doesn't exist
+if (!dir.exists("C:/Figure")) {
+  dir.create("C:/Figure", recursive = TRUE)
+}
+
+# Save the plot as a JPEG file with 300 DPI
+ggsave(filename = "C:/Figure/example_plot.jpeg",
+       plot = plot,
+       width = 6,    # Width in inches
+       height = 4,   # Height in inches
+       dpi = 300)
+  
+  
+  
+  
+  
+  
   
 }
 
