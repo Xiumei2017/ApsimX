@@ -13,6 +13,10 @@ thisPath <- "C:/github/ApsimX/Prototypes/DEROPAPY/outputs"
 thisFile <- "P019_MBIEClimateChangeEconomics_hrlxxy_2024-09-09.db"
 ```
 
+```{r}
+regions_csv<-read.csv2("C:/github/ShinyClimateChange/Projects/GlobalParameters/vcsn_nz_region.csv", sep=",")
+```
+
 # Read Deropapy outputs
 ```{r}
 # Install necessary packages if not already installed
@@ -89,9 +93,6 @@ table_name <- "Simulation_export"
 data_output <- dbReadTable(conn, table_name)
 
 print(head(data_output))
-```
-```{r}
-regions_csv<-read.csv2("C:/github/ShinyClimateChange/Projects/GlobalParameters/vcsn_nz_region.csv", sep=",")
 ```
 
 # Merge coodinates and data
@@ -235,7 +236,7 @@ ggsave(filename = file.path(thisOutFolder,paste0("Map_",thisCrop[i],".jpg")),
 
 ```
 
-# Plot using continuous values
+# Plot using yield classes
 ```{r}
 fontSize <- 8
 
@@ -316,15 +317,11 @@ ggsave(filename = file.path(thisOutFolder,paste0("CategMap_",thisCrop[i],".jpg")
 
 ```
 
-
-
-
-
 # Create difference maps
 ```{r}
 diff_df <- df %>%
   tidyr::spread(TimeSlice, Yield) %>%
-  group_by(Lat,Lon,Crop,Irrigation) %>%
+  group_by(Lat,Lon,Crop,REGC2015_N, Irrigation) %>%
   mutate(RCP=factor(RCP), Irrigation=factor(Irrigation)) %>%
   mutate(BaselineValue = ifelse(is.na(Baseline), 
                            Baseline[RCP == "RCPpast"], 
@@ -346,25 +343,46 @@ diff_plot <- diff_df %>%
   tidyr::gather("VarName","VarValue",Endcentury:DiffRel_end) %>%
   filter(VarName %in% c("DiffAbs_mid", "DiffAbs_end")) %>%
   mutate(VarName = factor(VarName,levels=c("DiffAbs_mid", "DiffAbs_end"),labels=c("Mid-century","End-of-century")))%>%
-  na.omit() %>%
-  inner_join(regions_csv)
+  na.omit()
+```
 
-  diff_plot %>%
+```{r, fig.height=25}
+
+crop_names <- unique(diff_plot$Crop)
+
+for(i in 1:length(crop_names)) {
+  
+  print(crop_names[i])
+  
+
+p <- diff_plot %>%
+    filter(Crop == crop_names[i]) %>%
   ggplot(aes(x=RCP, y=VarValue, colour=VarName)) + 
   
   geom_jitter(alpha=0.1,
               position = position_jitterdodge(jitter.width = 0.3, 
                                               dodge.width = 0.8))+
   geom_boxplot(alpha=0.5) +
-  facet_wrap(Crop~Irrigation, scales = "free") +
+  facet_wrap(REGC2015_N~Irrigation) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey", size = 1)+
   theme(text = element_text(size = 20),
           axis.text.x = element_text(angle = 45, hjust = 1) )+
   ylab("Absolute change in yield from baseline (kg/ha)")+
-  guides(color = guide_legend(title = NULL))
-  
-```
+  guides(color = guide_legend(title = NULL)) +
+  labs(title = paste0(crop_names[i], " - Yield changes across regions\n"))
 
+print(p)
+
+# Save the plot as a JPEG file with 300 DPI
+ggsave(filename = file.path(thisOutFolder,paste0("GraphReg_",crop_names[i],".jpg")),
+       plot = p,
+     #  width = 8,    # Width in inches
+     #  height = 4,   # Height in inches
+       dpi = 300)
+
+
+}
+```
 
 
 
