@@ -131,7 +131,7 @@ categorize_yield <- function(yield) {
 ```
 
 
-# Find medians
+# Find quantiles
 ```{r}
 
 df <- data_work %>%
@@ -141,9 +141,9 @@ df <- data_work %>%
   group_by(Crop) %>%
   # Dynamically calculate quartiles for each group
   mutate(
-    Q1 = quantile(Yield, 0.25),
+    Q1 = quantile(Yield, 0.10),
     Q2 = quantile(Yield, 0.5),
-    Q3 = quantile(Yield, 0.75),
+    Q3 = quantile(Yield, 0.90),
     Category = case_when(
       Yield <= Q1 ~ "Very Low",
       Yield > Q1 & Yield <= Q2 ~ "Low",
