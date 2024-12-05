@@ -134,16 +134,28 @@ categorize_yield <- function(yield) {
 # Find quantiles
 ```{r}
 
+quartiles <- data_work %>%
+  ungroup() %>%
+   filter(RCP == "RCPpast") %>%
+  group_by(Crop) %>%
+  # Dynamically calculate quartiles for each group
+  summarise(
+    Q1 = quantile(ProductFresh_kgPerHa, 0.10),
+    Q2 = quantile(ProductFresh_kgPerHa, 0.5),
+    Q3 = quantile(ProductFresh_kgPerHa, 0.90))
+
+
 df <- data_work %>%
   group_by(Lat,Lon, Crop, Irrigation, RCP, TimeSlice, AGENT_NO, REGC2015_N) %>%
   summarise(Yield=median(ProductFresh_kgPerHa)) %>%
   ungroup() %>%
+  inner_join(quartiles, by="Crop") %>%
   group_by(Crop) %>%
   # Dynamically calculate quartiles for each group
   mutate(
-    Q1 = quantile(Yield, 0.10),
-    Q2 = quantile(Yield, 0.5),
-    Q3 = quantile(Yield, 0.90),
+    # Q1 = quantile(Yield, 0.10),
+    # Q2 = quantile(Yield, 0.5),
+    # Q3 = quantile(Yield, 0.90),
     Category = case_when(
       Yield <= Q1 ~ "Very Low",
       Yield > Q1 & Yield <= Q2 ~ "Low",
@@ -253,7 +265,7 @@ for (i in 1:length(thisCrop)) {
   mutate(TimeSlice=factor(TimeSlice, 
                           levels= c("Baseline", "Midcentury", "Endcentury")))%>% 
   mutate(Category=factor(Category, 
-                         levels= c("Very High", "High", "Low","Very Low")))%>% 
+                         levels= c("Very High", "High", "Low","Very Low"))) %>% 
   mutate(LegendLabel=factor(LegendLabel))
   
   legend_label <- unique(df_crop$LegendLabel)
@@ -280,10 +292,10 @@ for (i in 1:length(thisCrop)) {
   )+
   theme_minimal() +
   labs(
-    title = paste0(thisCrop[i], " - Yield category ranges across New Zealand\n",
-                   legend_label[1],", ",legend_label[2],", ",
+    title = paste0(thisCrop[i], " - Yield category ranges across New Zealand\n\n",
+                   legend_label[2],", ",legend_label[1],", ",
                    legend_label[3],", ",legend_label[4],
-                   "\n ------------DRAFT IN CONFIDENCE------------") ,
+                   "\n\n ------------DRAFT IN CONFIDENCE------------") ,
     x = "Longitude",
     y = "Latitude"
   )+
@@ -342,7 +354,8 @@ head(diff_df)
 diff_plot <- diff_df %>%
   tidyr::gather("VarName","VarValue",Endcentury:DiffRel_end) %>%
   filter(VarName %in% c("DiffAbs_mid", "DiffAbs_end")) %>%
-  mutate(VarName = factor(VarName,levels=c("DiffAbs_mid", "DiffAbs_end"),labels=c("Mid-century","End-of-century")))%>%
+  mutate(VarName = factor(VarName,levels=c("DiffAbs_mid", "DiffAbs_end"),
+                        labels=c("Mid-century","End-of-century")))%>%
   na.omit()
 ```
 
@@ -384,6 +397,169 @@ ggsave(filename = file.path(thisOutFolder,paste0("GraphReg_",crop_names[i],".jpg
 }
 ```
 
+# Plot diff category maps
+```{r}
+
+
+diff_rel_plot <- diff_df %>%
+  tidyr::gather("VarName","VarValue",Endcentury:DiffRel_end) %>%
+  filter(VarName %in% c("DiffRel_mid", "DiffRel_end")) %>%
+  mutate(VarName = factor(VarName,levels=c("DiffRel_mid", "DiffRel_end"),
+                        labels=c("Mid-century","End-of-century")))%>%
+  na.omit() %>% 
+  group_by(Crop) %>%
+  # Dynamically calculate quartiles for each group
+  mutate(
+    Category2 = case_when(
+      VarValue < -100 ~ "> 100% down",
+      VarValue >= -100 & VarValue <= -50 ~ "100 to 50% down",
+      VarValue >= -50 & VarValue <= -5 ~ "50 to 5% down",
+      VarValue >= -5 & VarValue <= 5 ~ "Unchanged",
+       VarValue >= 5 & VarValue <= 50 ~ "5 to 50 up%",
+      VarValue >= 50 & VarValue <= 100 ~ "50 to 100% up",
+      VarValue > 100 ~ "> 100% up"
+    ))
+
+
+
+fontSize <- 8
+
+thisCrop <- unique(diff_rel_plot$Crop)
+
+
+for (i in 1:length(thisCrop)) {
+  
+  
+  print(thisCrop[i])
+  
+  # prepare this df
+  df_crop <- diff_rel_plot %>% filter(Crop == thisCrop[i]) %>% 
+  mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5")))
+  
+  # create plot
+  # create plot
+  p <- ggplot() +
+  # Add New Zealand map contours
+  geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
+  # Add the median product data
+  geom_point(
+    data = df_crop,
+    aes(x = Lon, y = Lat, color = Category2),
+    shape=15, 
+    size = 0.5,
+    alpha = 0.5
+  ) +
+  facet_grid(Irrigation ~ RCP + VarName) + # Facet by RCP and Rainfed/Irrigated
+  scale_color_manual(
+    values = c("> 100% down" = "darkred", 
+               "100 to 50% down" = "red",
+               "50 to 5% down" = "orange",
+               "Unchanged" = "white",
+               "5 to 50 up%" = "yellow",
+               "50 to 100% up" = "green",
+               "> 100% up" = "darkgreen"),
+    guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
+  )+
+  theme_minimal() +
+  labs(
+    title = paste0(thisCrop[i], " - Yield category ranges across New Zealand\n\n",
+                   "\n\n ------------DRAFT IN CONFIDENCE------------") ,
+    x = "Longitude",
+    y = "Latitude"
+  )+
+  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
+           ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
+    theme(text = element_text(size = fontSize),
+          axis.text.x = element_text(angle = 45, hjust = 1) )
+  
+  print(p)
+  
+  
+  thisOutFolder <- file.path(thisPath,"MapResults") 
+  
+  
+  # Create folder if it doesn't exist
+if (!dir.exists(thisOutFolder)) {
+  dir.create(thisOutFolder, recursive = TRUE)
+}
+
+ 
+  
+# Save the plot as a JPEG file with 300 DPI
+ggsave(filename = file.path(thisOutFolder,paste0("DiffRelCatMap_",thisCrop[i],".jpg")),
+       plot = p,
+       width = 6,    # Width in inches
+       height = 4,   # Height in inches
+       dpi = 300)
+  
+}
+
+
+
+```
+
+# Plot continuous difference percentage
+
+```{r}
+
+
+thisCrop <- unique(df$Crop)
+
+for (i in 1:length(thisCrop)) {
+  
+  
+  print(thisCrop[i])
+  
+  # prepare this df
+  df_crop <- diff_rel_plot %>% filter(Crop == thisCrop[i]) %>% 
+  mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5")))
+  
+  # create plot
+  p <- ggplot() +
+  # Add New Zealand map contours
+  geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
+  # Add the median product data
+  geom_point(
+    data = df_crop,
+    aes(x = Lon, y = Lat, color = VarValue),
+    shape=15, 
+    size = 0.5
+  ) +
+  facet_grid(Irrigation ~ RCP + VarName) + # Facet by RCP and Rainfed/Irrigated
+  scale_color_viridis_c(name = "% of \n baseline") +
+  theme_minimal() +
+  labs(
+    title = paste0(thisCrop[i], " - Median yield across New Zealand") ,
+    x = "Longitude",
+    y = "Latitude"
+  )+
+  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
+    theme(text = element_text(size = 7),
+          axis.text.x = element_text(angle = 45, hjust = 1) )
+  
+  print(p)
+  
+  
+  thisOutFolder <- file.path(thisPath,"MapResults") 
+  
+  
+  # Create folder if it doesn't exist
+if (!dir.exists(thisOutFolder)) {
+  dir.create(thisOutFolder, recursive = TRUE)
+}
+
+ 
+  
+# Save the plot as a JPEG file with 300 DPI
+ggsave(filename = file.path(thisOutFolder,paste0("DiffContMap_",thisCrop[i],".jpg")),
+       plot = p,
+       width = 6,    # Width in inches
+       height = 4,   # Height in inches
+       dpi = 300)
+  
+}
+
+```
 
 
 
