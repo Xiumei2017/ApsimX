@@ -639,8 +639,8 @@ for (i in 1:length(thisCrop)) {
   )+
   theme_minimal() +
   labs(
-    title = paste0(thisCrop[i],
-                   l1," | ",l2,",\n",
+    title = paste0(thisCrop[i],"\n\n",
+                   l1," | ",l2,"\n",
                    l3," | ",l4,
                    "\n\n ------------BASELINE YIELD ------------") ,
     x = "Longitude",
@@ -700,9 +700,7 @@ for (i in 1:length(thisCrop)) {
   )+
   theme_minimal() +
   labs(x = "Longitude",y = "Latitude", 
-       title = "\n\n -----------
-       YIELD CHANGE IN FUTURE \n (% BASELINE) 
-       ------------")+
+       title = "\n\n -----------YIELD CHANGE IN THE FUTURE (% BASELINE) ------------")+
   coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
            ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
     theme(text = element_text(size = fontSize),
