@@ -298,7 +298,7 @@ for (i in 1:length(thisCrop)) {
                    "\n\n ------------DRAFT IN CONFIDENCE------------") ,
     x = "Longitude",
     y = "Latitude"
-  )+
+  ) +
   coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
            ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
     theme(text = element_text(size = fontSize),
@@ -434,7 +434,12 @@ for (i in 1:length(thisCrop)) {
   
   # prepare this df
   df_crop <- diff_rel_plot %>% filter(Crop == thisCrop[i]) %>% 
-  mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5")))
+  mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5"))) %>% 
+  mutate(Category2=factor(Category2, 
+                          levels= c("> 100% down", "100 to 50% down",
+                                    "50 to 5% down","Unchanged",
+                                    "5 to 50 up%","50 to 100% up", 
+                                    "> 100% up")))
   
   # create plot
   # create plot
@@ -454,10 +459,11 @@ for (i in 1:length(thisCrop)) {
     values = c("> 100% down" = "darkred", 
                "100 to 50% down" = "red",
                "50 to 5% down" = "orange",
-               "Unchanged" = "white",
+               "Unchanged" = 'grey',
                "5 to 50 up%" = "yellow",
                "50 to 100% up" = "green",
                "> 100% up" = "darkgreen"),
+     drop = FALSE,
     guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
   )+
   theme_minimal() +
@@ -560,8 +566,180 @@ ggsave(filename = file.path(thisOutFolder,paste0("DiffContMap_",thisCrop[i],".jp
 }
 
 ```
+```{r}
+library(patchwork)
+library(grid)
+library(gtable)
+```
+
+# Plot RCPpast only using yield classes
+```{r, fig.width=12}
+
+# Function to add a black border around a plot
+add_black_border <- function(plot) {
+  grob <- ggplotGrob(plot)  # Convert ggplot to grob
+  gtable::gtable_add_grob(
+    grob,
+    grobTree(rectGrob(gp = gpar(fill = NA, col = "black", lwd = 2))),
+    t = 1, l = 1, b = nrow(grob), r = ncol(grob)
+  )
+}
 
 
+
+
+fontSize <- 8
+
+thisCrop <- unique(df$Crop)
+
+for (i in 1:length(thisCrop)) {
+  
+  
+  print(thisCrop[i])
+  
+  # --------------Graph Baseline Yild categories ------------
+  #----------------------------------------------------------
+  df_crop <- df %>% 
+    filter(RCP == "RCPpast") %>%
+    filter(Crop == thisCrop[i]) %>% 
+  mutate(RCP=factor(RCP, levels= c("RCPpast", "RCP4.5", "RCP6.0","RCP8.5")))%>% 
+  mutate(TimeSlice=factor(TimeSlice, 
+                          levels= c("Baseline", "Midcentury", "Endcentury")))%>% 
+  mutate(Category=factor(Category, 
+                         levels= c("Very High", "High", "Low","Very Low"))) %>% 
+  mutate(LegendLabel=factor(LegendLabel))
+  
+  # Sort labeling order
+  legend_label <- unique(df_crop$LegendLabel)
+  l1 <- legend_label[match(TRUE, grepl("Very High", legend_label))]
+  l2 <- legend_label[match(TRUE, grepl("High", legend_label))]
+  l3 <- legend_label[match(TRUE, grepl("Low", legend_label))] 
+  l4 <- legend_label[match(TRUE, grepl("Very Low", legend_label))]
+  
+  # create plot
+  p1 <- ggplot() +
+  # Add New Zealand map contours
+  geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
+  # Add the median product data
+  geom_point(
+    data = df_crop,
+    aes(x = Lon, y = Lat, color = Category),
+    shape=15, 
+    size = 0.5,
+    alpha = 0.5
+  ) +
+  facet_wrap(Irrigation~., ncol=1) + # Facet by RCP and Rainfed/Irrigated
+  scale_color_manual(
+    name = "Yield category",
+    values = c("Very Low" = "red", 
+               "Low" = "orange", 
+               "High" = "yellow", 
+               "Very High" = "green"),
+    guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
+  )+
+  theme_minimal() +
+  labs(
+    title = paste0(thisCrop[i],
+                   l1," | ",l2,",\n",
+                   l3," | ",l4,
+                   "\n\n ------------BASELINE YIELD ------------") ,
+    x = "Longitude",
+    y = "Latitude"
+  ) +
+  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
+           ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
+    theme(text = element_text(size = fontSize),
+          axis.text.x = element_text(angle = 45, hjust = 1) ) +
+  theme(legend.position = "left") +
+  theme(
+    plot.title = element_text(hjust = 0.5) # Center the title
+  ) 
+  
+   p1_border <- add_black_border(p1)
+  
+  
+  # --------------Graph Categorical yield changes ------------
+  #----------------------------------------------------------
+  # prepare this df
+  df_crop <- diff_rel_plot %>% filter(Crop == thisCrop[i]) %>% 
+  mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5"))) %>% 
+  mutate(Category2=factor(Category2, 
+                          levels= c("> 100% down", "100 to 50% down",
+                                    "50 to 5% down","Unchanged",
+                                    "5 to 50 up%","50 to 100% up", 
+                                    "> 100% up"))) %>%
+  filter(RCP == "RCP8.5" & VarName == "End-of-century" |
+         RCP == "RCP6.0" & VarName == "End-of-century"  |
+         RCP == "RCP4.5" & VarName == "Mid-century"  
+           )
+  
+  
+  p2 <- ggplot() +
+  # Add New Zealand map contours
+  geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
+  # Add the median product data
+  geom_point(
+    data = df_crop,
+    aes(x = Lon, y = Lat, color = Category2),
+    shape=15, 
+    size = 0.5,
+    alpha = 0.5
+  ) +
+  facet_grid(Irrigation ~ RCP + VarName) + # Facet by RCP and Rainfed/Irrigated
+  scale_color_manual(
+    name = "Yield change (%)",
+    values = c("> 100% down" = "darkred", 
+               "100 to 50% down" = "red",
+               "50 to 5% down" = "orange",
+               "Unchanged" = 'grey',
+               "5 to 50 up%" = "yellow",
+               "50 to 100% up" = "green",
+               "> 100% up" = "darkgreen"),
+     drop = FALSE,
+    guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
+  )+
+  theme_minimal() +
+  labs(x = "Longitude",y = "Latitude", 
+       title = "\n\n -----------
+       YIELD CHANGE IN FUTURE \n (% BASELINE) 
+       ------------")+
+  coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
+           ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
+    theme(text = element_text(size = fontSize),
+          axis.text.x = element_text(angle = 45, hjust = 1) ) +
+  theme(
+    plot.title = element_text(hjust = 0.5) # Center the title
+  ) 
+
+  
+  p2_border <- add_black_border(p2)
+  
+  # combine plots
+  combined_plot <- p1 | p2
+  
+  print(combined_plot)
+  
+  # thisOutFolder <- file.path(thisPath,"MapResults") 
+  
+  
+  # Create folder if it doesn't exist
+# if (!dir.exists(thisOutFolder)) {
+#   dir.create(thisOutFolder, recursive = TRUE)
+# }
+
+ 
+  
+# Save the plot as a JPEG file with 300 DPI
+# ggsave(filename = file.path(thisOutFolder,paste0("CategMap_",thisCrop[i],".jpg")),
+#        plot = p,
+#      #  width = 8,    # Width in inches
+#      #  height = 4,   # Height in inches
+#        dpi = 300)
+  
+}
+
+
+```
 
 ```{r}
 # Run a custom SQL query (optional)
