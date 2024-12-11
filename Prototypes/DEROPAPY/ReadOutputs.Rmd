@@ -411,13 +411,13 @@ diff_rel_plot <- diff_df %>%
   # Dynamically calculate quartiles for each group
   mutate(
     Category2 = case_when(
-      VarValue < -100 ~ "> 100% down",
-      VarValue >= -100 & VarValue <= -50 ~ "100 to 50% down",
-      VarValue >= -50 & VarValue <= -5 ~ "50 to 5% down",
-      VarValue >= -5 & VarValue <= 5 ~ "Unchanged",
-       VarValue >= 5 & VarValue <= 50 ~ "5 to 50 up%",
-      VarValue >= 50 & VarValue <= 100 ~ "50 to 100% up",
-      VarValue > 100 ~ "> 100% up"
+      VarValue < -50 ~ "> 50% decline",
+      VarValue >= -50 & VarValue <= -25 ~ "25 to 50% decline",
+      VarValue >= -25 & VarValue <= -5 ~ "5 to 50% decline",
+      VarValue >= -5 & VarValue <= 5 ~ "-5 to 5% change",
+      VarValue >= 5 & VarValue <= 50 ~ "5 to 50% increase",
+      VarValue >= 50 & VarValue <= 100 ~ "50 to 100% increase",
+      VarValue > 100 ~ "> 100% increase"
     ))
 
 
@@ -436,10 +436,10 @@ for (i in 1:length(thisCrop)) {
   df_crop <- diff_rel_plot %>% filter(Crop == thisCrop[i]) %>% 
   mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5"))) %>% 
   mutate(Category2=factor(Category2, 
-                          levels= c("> 100% down", "100 to 50% down",
-                                    "50 to 5% down","Unchanged",
-                                    "5 to 50 up%","50 to 100% up", 
-                                    "> 100% up")))
+                          levels= c("> 50% decline", "25 to 50% decline",
+                                    "5 to 50% decline","-5 to 5% change",
+                                    "5 to 50% increase","50 to 100% increase", 
+                                    "> 100% increase")))
   
   # create plot
   # create plot
@@ -456,13 +456,13 @@ for (i in 1:length(thisCrop)) {
   ) +
   facet_grid(Irrigation ~ RCP + VarName) + # Facet by RCP and Rainfed/Irrigated
   scale_color_manual(
-    values = c("> 100% down" = "darkred", 
-               "100 to 50% down" = "red",
-               "50 to 5% down" = "orange",
-               "Unchanged" = 'grey',
-               "5 to 50 up%" = "yellow",
-               "50 to 100% up" = "green",
-               "> 100% up" = "darkgreen"),
+    values = c("> 50% decline" = "darkred", 
+               "25 to 50% decline" = "red",
+               "5 to 50% decline" = "orange",
+               "-5 to 5% change" = 'grey',
+               "5 to 50% increase" = "yellow",
+               "50 to 100% increase" = "green",
+               "> 100% increase" = "darkgreen"),
      drop = FALSE,
     guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
   )+
