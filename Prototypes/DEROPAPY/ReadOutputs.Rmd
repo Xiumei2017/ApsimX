@@ -421,36 +421,39 @@ diff_abs_plot <- diff_df %>%
 head(diff_abs_plot)
 ```
 
-# Plot absolute diferences
-```{r, fig.height=25}
+# Plot absolute diferences as GRAPHS
+```{r, fig.height=15}
 
-crop_names <- unique(diff_abs_plot$Crop)
+fontSize2 <- 15
 
-for(i in 1:length(crop_names)) {
+for(i in 1:length(thisCrop)) {
   
-  print(crop_names[i])
+  print(thisCrop[i])
   
 
 p <- diff_abs_plot %>%
-    filter(Crop == crop_names[i]) %>%
-  ggplot(aes(x=RCP, y=VarValue, colour=VarName)) + 
+  mutate(Irrifgation = factor(Irrigation, levels=c("Rainfed","Irrigated"))) %>%
+    filter(Crop == thisCrop[i]) %>%
+  ggplot(aes(x=RCP, y=VarValue, colour=Irrigation)) + 
   
   geom_jitter(alpha=0.1,
               position = position_jitterdodge(jitter.width = 0.3, 
                                               dodge.width = 0.8))+
   geom_boxplot(alpha=0.5) +
-  facet_wrap(REGC2015_N~Irrigation, scales = "free") +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey", size = 1)+
-  theme(text = element_text(size = 20),
+  scale_fill_brewer (palette = 5, direction =-1) +
+ # facet_wrap(REGC2015_N~VarName, scales = "free") +
+  facet_wrap(REGC2015_N~VarName) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "darkgrey", size = 1) +
+  theme(text = element_text(size = fontSize2),
           axis.text.x = element_text(angle = 45, hjust = 1) )+
   ylab("Absolute change in yield from baseline (kg/ha)")+
   guides(color = guide_legend(title = NULL)) +
-  labs(title = paste0(crop_names[i], " - Yield changes across regions\n"))
+  labs(title = paste0(thisCrop[i], " - Yield changes across regions\n"))
 
 print(p)
 
 # Save the plot as a JPEG file with 300 DPI
-ggsave(filename = file.path(thisOutFolder,paste0("GraphReg_",crop_names[i],".jpg")),
+ggsave(filename = file.path(thisOutFolder,paste0("GraphReg_",thisCrop[i],".jpg")),
        plot = p,
      #  width = 8,    # Width in inches
      #  height = 4,   # Height in inches
@@ -474,7 +477,7 @@ diff_rel_plot <- diff_df %>%
     YieldChangeCategory = case_when(
       VarValue < -50 ~ "> 50% decline",
       VarValue >= -50 & VarValue <= -25 ~ "25 to 50% decline",
-      VarValue >= -25 & VarValue <= -5 ~ "5 to 50% decline",
+      VarValue >= -25 & VarValue <= -5 ~ "5 to 25% decline",
       VarValue >= -5 & VarValue <= 5 ~ "-5 to 5% change",
       VarValue >= 5 & VarValue <= 50 ~ "5 to 50% increase",
       VarValue >= 50 & VarValue <= 100 ~ "50 to 100% increase",
@@ -752,7 +755,7 @@ for (i in 1:length(thisCrop)) {
     name = "Yield change (%)",
     values = c("> 50% decline" = "darkred", 
                "25 to 50% decline" = "red",
-               "5 to 50% decline" = "orange",
+               "5 to 25% decline" = "orange",
                "-5 to 5% change" = 'grey',
                "5 to 50% increase" = "yellow",
                "50 to 100% increase" = "green",
