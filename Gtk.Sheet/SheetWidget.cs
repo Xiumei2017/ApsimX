@@ -1,11 +1,5 @@
-﻿using APSIM.Shared.Utilities;
-using Cairo;
-using CommandLine;
+﻿using Cairo;
 using Gdk;
-using Gtk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("UnitTests")]
@@ -14,12 +8,12 @@ namespace Gtk.Sheet
     /// <summary>
     /// This is a sheet (grid) widget for GTK. It can display a table (rows and columns)
     /// of data. The grid widget is intentionally very simple and does not contain
-    /// any cell selection or editing capability. Instead, this widget relies on 
+    /// any cell selection or editing capability. Instead, this widget relies on
     /// other classes that work with this widget e.g. SingleCellSelect.
     /// </summary>
     /// <remarks>
     /// The caller can provide column widths or the widget will auto-calculate them.
-    /// 
+    ///
     /// </remarks>
     public class SheetWidget : EventBox
     {
@@ -35,11 +29,13 @@ namespace Gtk.Sheet
 
         /// <summary>Constructor</summary>
         public SheetWidget(Container container,
-                           ISheetDataProvider dataProvider, 
+                           IDataProvider dataProvider,
                            bool multiSelect,
                            int numberFrozenColumns = 0,
                            int numberFrozenRows = -1,
+                           bool blankRowAtBottom = false,
                            int[] columnWidths = null,
+                           bool gridIsEditable = true,
                            Action<Exception> onException = null)
         {
             this.onException = onException;
@@ -48,17 +44,21 @@ namespace Gtk.Sheet
             Sheet = new Sheet(dataProvider,
                               numberFrozenColumns,
                               numberFrozenRows,
-                              columnWidths);
+                              columnWidths,
+                              blankRowAtBottom);
 
             if (multiSelect)
-                Sheet.CellSelector = new MultiCellSelect(Sheet, this);
+                Sheet.CellSelector = new MultiCellSelect(Sheet);
             else
-                Sheet.CellSelector = new SingleCellSelect(Sheet, this);
+                Sheet.CellSelector = new SingleCellSelect(Sheet);
 
             SetDataProvider(dataProvider);
 
             Sheet.ScrollBars = new SheetScrollBars(Sheet, this);
-            Sheet.CellPainter = new DefaultCellPainter(Sheet, this);
+            if (gridIsEditable)
+                Sheet.CellPainter = new DefaultCellPainter(Sheet, this);
+            else
+                Sheet.CellPainter = new CellPainterNoCellStates(Sheet, this);
             if (container != null)
                 AddChild(container, Sheet.ScrollBars.MainWidget);
 
@@ -67,45 +67,21 @@ namespace Gtk.Sheet
         }
 
         /// <summary>The number of rows in the grid.</summary>
-        public int RowCount
-        {
-            get
-            {
-                return Sheet.RowCount;
-            }
-            set
-            {
-                Sheet.RowCount = value;
-            }
-        }
-        
+        public int RowCount => Sheet.RowCount;
 
         /// <summary>The number of rows that are frozen (can not be scrolled).</summary>
-        public int NumberFrozenRows => Sheet.NumberFrozenRows;              
+        public int NumberFrozenRows => Sheet.NumberFrozenRows;
 
         /// <summary>
         /// Set a new data provider for the sheet.
         /// </summary>
         /// <param name="dataProvider">The data provider.</param>
-        public void SetDataProvider(ISheetDataProvider dataProvider)
+        public void SetDataProvider(IDataProvider dataProvider)
         {
-            Sheet.DataProvider = dataProvider;
+            Sheet.SetDataProvider(dataProvider);
             if (dataProvider != null)
             {
-                bool hasUnits = false;
-                for (int colIndex = 0; colIndex < dataProvider.ColumnCount; colIndex++)
-                    hasUnits = hasUnits || dataProvider.GetColumnUnits(colIndex) != null;
-            
-                // Set the number of frozen rows
-                if (Sheet.NumberFrozenRows == -1)
-                {
-                    if (hasUnits)
-                        Sheet.NumberFrozenRows = 2;
-                    else
-                        Sheet.NumberFrozenRows = 1;
-                }
-
-                if (!dataProvider.IsReadOnly && Sheet.CellEditor == null)
+                if (Sheet.CellEditor == null)
                     Sheet.CellEditor = new CellEditor(Sheet, this);
             }
         }
@@ -157,7 +133,7 @@ namespace Gtk.Sheet
         public System.Drawing.Rectangle CalculateBounds(int columnIndex, int rowIndex)
         {
             return Sheet.CalculateBounds(columnIndex, rowIndex);
-        }        
+        }
 
         /// <summary>Return true if col/row coordinate denotes a readonly cell.</summary>
         /// <param name="columnIndex">Column index.</param>
@@ -172,7 +148,8 @@ namespace Gtk.Sheet
         /// </summary>
         public void Cut()
         {
-            Sheet.CellSelector.Cut();
+            Copy();
+            Sheet.CellSelector.Delete();
         }
 
         /// <summary>
@@ -180,7 +157,7 @@ namespace Gtk.Sheet
         /// </summary>
         public void Copy()
         {
-            Sheet.CellSelector.Copy();
+            SetClipboard(Sheet.CellSelector.GetSelectedContents());
         }
 
         /// <summary>
@@ -190,7 +167,7 @@ namespace Gtk.Sheet
         /// <param name="e"></param>
         public void Paste()
         {
-            Sheet.CellSelector.Paste();
+            Sheet.CellSelector.SetSelectedContents(GetClipboard());
         }
 
         /// <summary>
@@ -207,7 +184,7 @@ namespace Gtk.Sheet
         public void SelectAll()
         {
             Sheet.CellSelector.SelectAll();
-        }   
+        }
 
         /// <summary>Clean up the sheet components.</summary>
         public void Cleanup()
@@ -220,7 +197,7 @@ namespace Gtk.Sheet
         public void ScrollRight()
         {
             Sheet.ScrollRight();
-        }        
+        }
 
         /// <summary>Scroll the sheet to the left one column.</summary>
         public void ScrollLeft()
@@ -268,7 +245,7 @@ namespace Gtk.Sheet
             }
             else
                 Sheet.ScrollBars.SetVerticalScrollbarVisibility(false);
-        }        
+        }
 
         private void OnRedrawNeeded(object sender, EventArgs e)
         {
@@ -347,7 +324,17 @@ namespace Gtk.Sheet
             try
             {
                 SheetEventKey keyParams = evnt.ToSheetEventKey();
-                Sheet.InvokeKeyPress(keyParams);
+                if (evnt.KeyValue > 0 && evnt.KeyValue < 255)
+                {
+                    if (evnt.KeyValue == 'c' && keyParams.Control)
+                        Copy();
+                    else if (evnt.KeyValue == 'v' && keyParams.Control)
+                        Paste();
+                    else if (Sheet.CellEditor != null)
+                        Sheet.CellEditor.Edit((char)evnt.KeyValue);
+                }
+                else
+                    Sheet.InvokeKeyPress(keyParams);
             }
             catch (Exception ex)
             {
@@ -361,6 +348,8 @@ namespace Gtk.Sheet
         /// <returns></returns>
         protected override bool OnButtonPressEvent(EventButton evnt)
         {
+            GrabFocus();
+
             try
             {
                 if (evnt.Type == EventType.ButtonPress)

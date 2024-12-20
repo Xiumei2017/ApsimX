@@ -349,7 +349,7 @@ Source: {#ApsimX}\bin\Release\net6.0\win-x64\publish\*; DestDir: {app}\bin; Flag
 Source: {#ApsimX}\DeploymentSupport\global\*; DestDir: {app}\bin; Flags: ignoreversion;
 Source: {#ApsimX}\DeploymentSupport\Windows\Bin64\sqlite3.dll; DestDir: {app}\bin; Flags: ignoreversion;
 Source: {#ApsimX}\bin\Release\net6.0\win-x64\publish\Models.xml; DestDir: {app}\bin; Flags: ignoreversion; 
-Source: {#ApsimX}\APSIM.bib; DestDir: {app}; Flags: ignoreversion;
+Source: {#ApsimX}\APSIM.Documentation\Resources\APSIM.bib; DestDir: {app}; Flags: ignoreversion;
 Source: {#ApsimX}\ApsimNG\Resources\world\*; DestDir: {app}\ApsimNG\Resources\world; Flags: recursesubdirs
 Source: {#ApsimX}\ApsimNG\Resources\CommonReportVariables\*; DestDir: {app}\ApsimNG\Resources\CommonReportVariables; Flags: recursesubdirs
 
@@ -367,7 +367,7 @@ Name: associate; Description: &Associate .apsimx with Apsim Next Generation; Gro
 Type: files; Name: "{app}\apsim.url"
 
 [INI]
-Filename: "{app}\apsim.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://apsimnextgeneration.netlify.com/" 
+Filename: "{app}\apsim.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://apsimnextgeneration.netlify.app/" 
 
 [Icons]
 ;Name: {autoprograms}\APSIM{#AppVerNo}; Filename: {app}\bin\ApsimNG.exe

@@ -1,0 +1,233 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+options(scipen = 999)
+library(tidyverse)
+library(ggplot2)
+```
+
+
+```{r}
+# Read the CSV file into a data frame
+data <- read.csv("CropParameters.csv", stringsAsFactors = FALSE)
+head(data)
+```
+
+```{r}
+str(data)
+summary(data)
+```
+# Prepare a working dataframe
+
+```{r}
+# Exclude unwanted crops
+out_crop <- c("Apple","RyeGrass", "Clover")
+
+# Define the vector with column names to gather (columns to turn into levels)
+crop_select <- c("Maize","Wheat",	"Hemp",	"OSR",	"Grapevine",	"Macadamia",	"Lemon",	"Avocado")
+crop_type <- data.frame(
+  CropName=c("Maize","Wheat",	"Hemp",	"OSR","Grapevine",	"Macadamia",	"Lemon",	"Avocado"),
+  CropType=c("Arable","Arable",	"Arable",	"Arable", "Perennial", "Perennial", "Perennial", "Perennial"))
+
+# Fix bad var naming
+fix_names <- data.frame(ParamName = c("AC_Dormant_05", "Tt_Dormant_05","RUETempThresholds","RUE_Fact_Y"),
+                        NewParamName = c("Dorm_Temp_X", "Dorm_TtChill_Y",
+                                         "RUE_Temp_X","RUE_Fact_Y"))
+
+work_data <- data %>%
+  dplyr::select(-one_of(out_crop)) %>%
+  filter(ParamName!="CropType") %>%
+  filter(Category != "PlantNitrogen") %>%
+  tidyr::gather(key = "CropName", value = "ParamValue", all_of(crop_select)) %>%
+  mutate(ParamNameFull=paste0(ParamName," (",ParamUnit,")")) %>%
+  mutate(ParamType = case_when(
+    !is.na(suppressWarnings(as.numeric(ParamValue))) ~ "numeric",
+    grepl("\\(", ParamValue) ~ "array",                    # Check if value contains "(" (array)
+    is.character(ParamValue) ~ "factor",                   # Check if value is a character (factor)
+    TRUE ~ NA_character_                          # Default case (optional)
+  )) %>% 
+  mutate(CropName=fct_relevel(CropName, crop_select)) %>%
+  arrange(CropName) %>%
+  inner_join(crop_type, by="CropName") %>%
+  left_join(fix_names, by = "ParamName") %>%
+  mutate(ParamName = coalesce(NewParamName, ParamName)) %>%
+  select(-NewParamName) # Drop NewParamName column
+
+
+#str(work_data)
+summary(work_data)
+#head(work_data)
+```
+
+```{r, fig.height= 30}
+
+save_path <- "C:\\github\\ApsimX\\Prototypes\\DEROPAPY\\figures"
+
+select_cat <- "Phenology"
+select_cat <- "Structure"
+select_cat <- "Carbon"
+select_cat <- "Transpiration"
+select_cat <- "Canopy"
+
+df_temp <- work_data %>%
+  mutate(Category = if_else(str_detect(Category, "Carbon"), "Carbon", Category))
+
+cats <- unique(df_temp$Category)
+
+for(i in 1:length(cats)) {
+  
+  # filter  
+  thisCat_data <- df_temp %>%
+ # filter(ParamName == select_param) %>%
+  #filter(Category == select_cat) %>%
+  filter(grepl(cats[i], Category)) %>%
+  filter(ParamType == "numeric") %>%
+  mutate(ParamValue=as.numeric(as.character(ParamValue))) 
+  
+  if(nrow(thisCat_data)>0) {
+  
+  # plot
+    
+  p <- thisCat_data %>%
+
+  mutate(CropName=factor(CropName, levels=crop_select)) %>%
+  ggplot() +
+  geom_bar(stat="identity", aes(x=CropName,y=ParamValue, fill = CropType)) +
+  facet_wrap(.~ParamNameFull, scales="free", ncol=2) +
+  coord_flip() +
+  ylab("Parameter value")+
+  xlab("Crop name")+
+  labs(title = cats[i] ) +
+    theme(text=element_text(size=38))
+  
+  print(p)
+  
+  ggsave(filename = file.path(save_path,paste0(cats[i],".jpg")), dpi=100 )
+
+    
+  }
+    
+  }
+  
+
+
+```
+
+```{r}
+# (ii) Create new column VarName using the first string element from ParName (split by '_')
+df2 <- work_data %>%
+  #filter(ParamName %in% c("TT_Temp_X", "TT_Acc_Y")) %>%
+  dplyr::filter(ParamType == "array") %>%
+  mutate(VarName = factor(sapply(strsplit(ParamName, "_"), `[`, 1))) 
+
+# (iii) Create new column GraphAxes using the last string element from ParName (split by '_')
+df3 <- df2 %>%
+  filter(grepl("_X$", ParamName) | grepl("_Y$", ParamName)) %>%
+  mutate(GraphAxes = factor(sapply(strsplit(ParamName, "_"), tail, n = 1)))
+
+# (iv) Read ParValues as arrays (remove parentheses, split by space, and convert to numeric)
+#df4 <- df3 %>%
+#  mutate(ParamValue = str_replace_all(ParamValue, "[()]", ""),  # Remove parentheses
+#         ParamValue = str_split(ParamValue, " "))  # Split by space into a list of arrays
+
+df4 <- df3 %>%
+mutate(
+    ParamValue = str_replace_all(ParamValue, "[()]", ""),     # Remove parentheses
+    ParamValue = str_replace_all(ParamValue, "\\s+", " "),    # Replace multiple spaces/tabs with a single space
+    ParamValue = str_trim(ParamValue),                        # Trim any leading or trailing spaces
+    ParamValue = str_split(ParamValue, " ")                   # Split by single space
+  )
+
+# fix rue missing x
+rue_y <- data.frame(ArrayPosition=c(1,2,3,4), Axis_Y = c(0, 1, 1, 0))
+
+# (v) Create new columns for X-axes, Y-axes, and ArrayPosition
+df5 <- df4 %>%
+  unnest(ParamValue) %>%  # Unnest the list of arrays into rows
+  group_by(ParamName, CropName) %>%
+  mutate(ArrayPosition = row_number(),
+         ParamValue = as.numeric(ParamValue)) %>%
+  ungroup() %>%
+  dplyr::select(-ParamNameFull, -ParamName, -Description, -ParamUnit) %>%
+  pivot_wider(names_from = GraphAxes, values_from = ParamValue, names_prefix = "Axis_") %>%
+  mutate(Axis_Y = case_when(
+    VarName == "RUE" & ArrayPosition == 1 & is.na(Axis_Y) ~ 0,
+    VarName == "RUE" & ArrayPosition == 2 & is.na(Axis_Y) ~ 1,
+    VarName == "RUE" & ArrayPosition == 3 & is.na(Axis_Y) ~ 1,
+    VarName == "RUE" & ArrayPosition == 4 & is.na(Axis_Y) ~ 0,
+    TRUE ~ Axis_Y  # Keep original values if conditions aren't met
+  )) 
+
+# Create columns for X-axes and Y-axes based on 'GraphAxes'
+# df6 <- df5 %>%
+#   mutate(`X-axes` = ifelse(!is.na(Axis_X), Axis_X, NA),
+#          `Y-axes` = ifelse(!is.na(Axis_Y), Axis_Y, NA))
+
+# (vi) Check for VarName if X and Y have the same array size
+df_check <- df5 %>%
+  group_by(VarName) %>%
+  summarise(X_size = sum(!is.na(Axis_X)), Y_size = sum(!is.na(Axis_Y))) %>%
+  filter(X_size != Y_size)
+
+# If there are mismatches in sizes, print the result
+if (nrow(df_check) > 0) {
+  print("Mismatches found in array sizes for the following VarNames:")
+  print(df_check)
+} else {
+  print("All VarNames have consistent array sizes.")
+}
+
+xvar_names_full <- df4 %>% filter(GraphAxes == "X") %>%
+              dplyr::select(VarName, ParamUnit) %>%
+              mutate(ParamNameFull = paste0(VarName, " (",ParamUnit,")"))
+
+
+# (vii) Create geom_point graph for each ParName
+df6 <- df5 %>%
+  inner_join(xvar_names_full, by="VarName")%>%
+  dplyr::select(-ArrayPosition)
+
+head(df6)
+
+```
+
+
+```{r, fig.height=30}
+
+cats <- unique(df6$Category) 
+
+cats <- c("Phenology", "Stress")
+
+
+
+for(i in 1:length(cats)) {
+      
+p <- df6 %>%
+mutate(Category = if_else(Category == "CarbonSupply", "Stress", Category)) %>%
+filter(Category== cats[i]) %>%
+ggplot(aes(x = `Axis_X`, y = `Axis_Y`)) +
+  geom_point(aes(colour = CropName), shape=21, size=5,
+             position=position_jitter(w=0.05, h=0)
+             ) +
+  geom_line(aes(colour=CropName, linetype= CropType ), 
+            position=position_jitter(w=0.05, h=0)) +
+  facet_wrap(Category ~ ParamNameFull, scales = "free", ncol=2) +
+  labs(title = "Parameters for different crops",
+       x = "X-axes",
+       y = "Y-axes") +
+  theme_minimal() +
+  theme(text=element_text(size=35)) +
+  ylab("Multiplier of potential rates") +
+  xlab("Driving variable unit see panel title")
+
+    
+  print(p)
+  
+  ggsave(filename = file.path(save_path,paste0(paste0("Array_",cats[i]),".jpg")), dpi=100 )
+
+}
+```
+
