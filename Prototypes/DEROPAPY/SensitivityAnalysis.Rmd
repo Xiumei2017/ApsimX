@@ -87,6 +87,7 @@ columns_as_factors <- c("Experiment","Crop","Location",
 
 
 info_out_work <- list_of_dts[[1]] %>% 
+  # align Edith's and Xiumei's sensitivity nomenclature
   mutate(MGMT = factor(ifelse(is.na(MGMT),"Basic",MGMT))) %>%
   mutate(
     Irrigation = case_when(
@@ -114,7 +115,6 @@ seleted_yield_columns <- c("Product_kgPerHa")
 # Create subset of results
 
 ```{r, fig.height=14}
-
 info_out_work_subset <- info_out_work %>%
   dplyr::filter(Crop %in% c(thisCropAnnuals,thisCropPerennials))  %>%
   dplyr::select(columns_as_factors, seleted_yield_columns, "Year")  %>%
