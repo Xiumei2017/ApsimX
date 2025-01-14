@@ -99,6 +99,9 @@ info_out_work <- list_of_dts[[1]] %>%
     )) %>%
   mutate(across(all_of(columns_as_factors), factor))%>%
   mutate(ReportDate=as.Date(ymd_hms(ReportDate)))%>%
+  mutate(SoilType=factor(SoilType,
+                         levels=c("DeepStonySandGeneric","VeryDeepHeavySiltLoamGeneric"), 
+                         labels=c("Stony","Silty")))%>%
   filter(str_detect(Experiment, "Testing|Sensitivity")) # select sensitivity runs only
   
 
@@ -107,7 +110,7 @@ summary(info_out_work)
 
 # set crops
 ```{r}
-thisCropPerennials <- c("GrapeVine","Avocado","Macadamia","Lemon")
+thisCropPerennials <- c("Grapevine","Avocado","Macadamia","Lemon")
 thisCropAnnuals <- c("Maize","Wheat","Hemp","OSR")
 seleted_yield_columns <- c("Product_kgPerHa")
 ```
@@ -118,32 +121,48 @@ seleted_yield_columns <- c("Product_kgPerHa")
 info_out_work_subset <- info_out_work %>%
   dplyr::filter(Crop %in% c(thisCropAnnuals,thisCropPerennials))  %>%
   dplyr::select(columns_as_factors, seleted_yield_columns, "Year")  %>%
-  dplyr::mutate(RCP = "RCPpast", RCP=factor(RCP)) # climate files from CMIP5 were used 
+  dplyr::mutate(RCP = "Baseline", RCP=factor(RCP)) # climate files from ERA were used 
 
 summary(info_out_work_subset)
 ```
 
-```{r, fig.height=16}
+```{r, fig.height=14}
 info_out_work_subset %>%
   tidyr::gather(VarName,VarValue, seleted_yield_columns) %>%
-  ggplot(aes(x=Irrigation,y=VarValue, colour=Irrigation)) +
+  ggplot(aes(x=Irrigation,y=VarValue, colour=SoilType)) +
   geom_boxplot() +
   geom_point(position = position_dodge(width = 0.75)) +
-  facet_wrap(Crop~VarName+SoilType, scales="free")
+  facet_wrap(Crop~VarName, scales="free")
 ```
 
-```{r, fig.height=16}
-info_out_work_subset %>%
-  filter(MGMT=="Basic") %>%
-  tidyr::gather(VarName,VarValue, seleted_yield_columns) %>%
-  ggplot(aes(x=Location,y=VarValue, colour=interaction(Irrigation))) +
-  geom_boxplot()+
-  geom_point(position = position_jitter(width = 0.1, height = 1)) +
-  facet_wrap(Crop~VarName, scales="free")+
+```{r, fig.height=6}
+
+all_crops <- c(thisCropPerennials,thisCropAnnuals)
+
+for (i in 1:length(all_crops)) {
+  
+thisCrop <- all_crops[i]
+
+g <- info_out_work_subset %>%
+  filter(Crop == thisCrop) %>%
+  filter(MGMT %in% c("Basic","Irrig")) %>%
+  tidyr::gather(VarName, VarValue, seleted_yield_columns) %>%
+  ggplot(aes(x = Location, y = VarValue, colour = SoilType)) +
+  geom_boxplot(alpha=0.2) +
+  geom_point(position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.75),
+             size=2, alpha=0.5) +
+  facet_grid(Crop ~ Irrigation, scales = "free") +
   scale_y_continuous(limits = c(0, NA)) +
-  coord_flip()
-```
+  coord_flip()+
+  ylab("Productivity (kg/ha)")
 
+print(g)
+
+}
+
+
+
+```
 
 
 
