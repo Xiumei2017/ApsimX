@@ -136,7 +136,6 @@ info_out_work_subset %>%
 ```
 
 ```{r, fig.height=6}
-
 all_crops <- c(thisCropPerennials,thisCropAnnuals)
 
 for (i in 1:length(all_crops)) {
@@ -159,9 +158,6 @@ g <- info_out_work_subset %>%
 print(g)
 
 }
-
-
-
 ```
 
 
