@@ -18,6 +18,9 @@ library("GGally")
 # working wit develop base sim for now
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
+
+thisOutPath <- file.path(getwd(),"outputs")
+thisOutPath
 ```
 
 ```{r}
@@ -142,6 +145,8 @@ for (i in 1:length(all_crops)) {
   
 thisCrop <- all_crops[i]
 
+print(thisCrop)
+
 g <- info_out_work_subset %>%
   filter(Crop == thisCrop) %>%
   filter(MGMT %in% c("Basic","Irrig")) %>%
@@ -153,9 +158,15 @@ g <- info_out_work_subset %>%
   facet_grid(Crop ~ Irrigation, scales = "free") +
   scale_y_continuous(limits = c(0, NA)) +
   coord_flip()+
-  ylab("Productivity (kg/ha)")
+  ylab("Productivity (kg/ha)") +
+  theme(text = element_text(size = 14))
 
 print(g)
+
+ggsave(filename = 
+       file.path(thisOutPath, "Graphs",paste0("Sensitivity_",thisCrop,".jpg")),
+       plot = g,
+       dpi = 300)
 
 }
 ```
@@ -174,120 +185,3 @@ print(g)
 
 
 
-
-
-
-
-# Check yield PERENNIALS
-```{r, fig.width=8}
-thisDF <- info_out_work %>%
-  dplyr::filter(Crop==thisCropPerennials) %>%
-  dplyr::select(columns_as_factors, seleted_yield_columns) #%>%
- # dplyr::filter(RCP != "ERA") 
-
-thisDF %>%
-  tidyr::gather(VarName,VarValue, seleted_yield_columns) %>%
-  ggplot(aes(x=RCP,y=VarValue, colour=Irrigation)) +
-  geom_boxplot() +
-  geom_point(position = position_dodge(width = 0.75)) +
-  facet_grid(Crop~VarName)
-```
-
-
-
-# Create formated version of data
-```{r}
-
-# columns as factor 
-# columns_as_factors <- c("Experiment","Crop","GCM","RCP","TimeSlice","SoilStamp", "Lat", "Lon", "Zone", "ClimateSensCO2",     "ClimateSensTemp",    "ClimateSensRain", "AGENT_NO")
-
-columns_as_factors <- c("Experiment","Crop","Location",
-                        "Irrigation","GCM","RCP","TimeSlice","SoilStamp", 
-                        "Lat", "Lon", "Zone", "AGENT_NO")
-
-info_out_work <- list_of_dts[[1]]  %>% 
-  mutate(across(all_of(columns_as_factors), factor))%>%
-  mutate(ReportDate=as.Date(ymd_hms(ReportDate)))%>%
-  mutate(Year=as.numeric(Year))
-
-summary(info_out_work)
-```
-
-
-```{r}
-thisCropPerennials <- c("Grapevine","Avocado","Macadamia","Lemons")
-thisCropAnnuals <- c("Maize","Wheat","Hemp","OSR")
-seleted_yield_columns <- c("AboveGround_kgPerHa", "Product_kgPerHa")
-#selected_sens_vars <- c()
-```
-
-#Check sensitivity
-
-```{r, fig.height=14}
-thisDf <- info_out_work %>%
-  tidyr::gather(VarName,VarValue, seleted_yield_columns)
-
-thisDf %>%
-  ggplot(aes(x=Year, y=VarValue))+
-  geom_point(aes(colour=Irrigation))+
- # geom_line(aes(colour=Crop)) +
-  facet_wrap(Crop~VarName, scales="free", ncol=2)
-
-
-```
-#Check sensitivity
-
-```{r, fig.width=11}
-thisDf <- info_out_work %>%
-  dplyr::filter(Experiment=="SensitivityTemp")  %>%
-  tidyr::gather(VarName,VarValue, seleted_yield_columns)
-
-thisDf %>%
-  ggplot(aes(x=Weather.MeanT, y=VarValue))+
-  geom_point(aes(colour=Crop))+
-  geom_line(aes(colour=Crop)) +
-  facet_wrap(VarName~., scales="free", ncol=2)
-
-
-```
-
-#Check sensitivity
-
-```{r, fig.width=11}
-thisDf <- info_out_work %>%
-  dplyr::filter(Experiment=="SensitivityRain")  %>%
-  tidyr::gather(VarName,VarValue, seleted_yield_columns)
-
-thisDf %>%
-  ggplot(aes(x=Rainfall_Cum, y=VarValue))+
-  geom_point(aes(colour=Crop))+
-  geom_line(aes(colour=Crop)) +
-  facet_wrap(VarName~., scales="free", ncol=2)
-
-
-```
-
-# Create formated version of data
-```{r}
-
-# columns as factor 
-  columns_as_factors <- c("Experiment","Crop","Location", "ClimateSensTemp")
-
-
-info_out_work <- list_of_dts[[2]]  %>% 
-  mutate(across(all_of(columns_as_factors), factor))%>%
-  mutate(ReportDate=as.Date(ymd_hms(Clock.Today)))
-
-summary(info_out_work)
-```
-
-```{r, fig.width=11}
-thisDf <- info_out_work
-
-thisDf %>%
-  ggplot(aes(x=Weather.MinT, y=DEROPAPY.Leaf.FrostFraction))+
-  geom_point(aes(colour=Crop))+
-  geom_line(aes(colour=Crop)) 
-
-
-```
