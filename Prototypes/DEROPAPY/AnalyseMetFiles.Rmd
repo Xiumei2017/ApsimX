@@ -1,0 +1,138 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+# Load necessary library
+
+library(dplyr)
+library(lubridate)
+```
+
+```{r}
+# Define the main folder path
+main_folder <- "C:\\github\\ApsimX\\Prototypes\\DEROPAPY\\MetFiles"
+```
+
+
+```{r}
+# Get a list of subfolders
+subfolders <- list.dirs(file.path(main_folder,"SensitivityStage"), recursive = FALSE)
+
+# Initialize an empty list to store data frames
+all_data <- list()
+```
+
+```{r}
+# Loop through each subfolder
+for (subfolder in subfolders) {
+  # Get list of .met files in the current subfolder
+  met_files <- list.files(subfolder, pattern = "\\.met$", full.names = TRUE)
+  
+  for (file in met_files) {
+    # Read the file line by line
+    lines <- readLines(file)
+    
+    # Find the header row index (row containing 'xDate')
+    header_row_index <- grep("^xDate", lines)
+    
+    if (length(header_row_index) == 0) next  # Skip if no header found
+    
+    # Read the data starting from the header row
+    data <- read.table(file, header = TRUE, sep = "", skip = header_row_index - 1, comment.char = "(", stringsAsFactors = FALSE)
+    
+    # Add extra columns
+    data$GCM <- basename(subfolder)  # Subfolder name
+    data$AGENT_NO <- tools::file_path_sans_ext(basename(file))  # File name without extension
+    
+    # Store in the list
+    all_data[[length(all_data) + 1]] <- data
+  }
+}
+
+# Combine all data frames into one
+final_data <- bind_rows(all_data)
+head(final_data)
+```
+
+
+```{r}
+# Convert xDate to Date format (assuming format YYYYMMDD)
+    final_data$xDate <- dmy(final_data$xDate)
+
+    # Convert GCM and FileName to factors
+    final_data$GCM <- as.factor(final_data$GCM)
+    final_data$AGENT_NO <- as.factor(final_data$AGENT_NO)
+
+    # Convert all other columns to numeric
+    numeric_columns <- setdiff(names(final_data), c("xDate", "GCM", "AGENT_NO"))
+    final_data[numeric_columns] <- lapply(final_data[numeric_columns], as.numeric)
+
+# Print first few rows of the final dataset
+head(final_data)
+```
+```{r}
+# Read regions by pixel
+region_df <- read.csv2(file.path(main_folder,"vcsn_nz_region.csv"), sep=",") 
+
+region_df$AGENT_NO <- as.factor(region_df$AGENT_NO)
+
+region_df$Region <- as.factor(region_df$REGC2015_N)
+
+
+region_df
+```
+
+```{r}
+# Save the appended file (optional)
+write.csv(final_data, file = file.path(main_folder,"Appended_MetFiles.csv"), row.names = FALSE)
+```
+
+
+```{r}
+
+# Give AGENT_NO location names by hand as APSIM sims were done
+location_names_from_apsimx <- data.frame(
+  AGENT_NO = c(13106, 20993, 21466, 
+               25878, 27018, 27509,
+               27539, 29452, 26983, 
+               27188, 27691, 9339),
+  Location =  c("CentralOtago", "Canterbury", "Wharerangi", 
+                    "Auckland", "KeriKeri", "Gisborne",
+                    "Marlbrough", "Te Puke", "Northland",
+                    "HawkesBay", "Waikato", "Southland")
+  
+) %>%
+  mutate(AGENT_NO=factor(AGENT_NO),Location=factor(Location))
+
+
+```
+```{r}
+# create data summary stats
+summarised_met_data <- final_data %>%
+  group_by(AGENT_NO) %>%
+  summarise(years = max(year)-min(year),
+            mint=mean(mint),
+            maxt=mean(maxt),
+            radn=mean(radn),
+            rain=mean(rain)*365, # annual mean
+            meant = (maxt+mint)*0.5) %>%
+  ungroup() %>%
+  group_by(AGENT_NO) %>%
+  summarise(across(where(is.numeric), ~ round(., 0))) %>%
+  inner_join(location_names_from_apsimx,
+             by="AGENT_NO")
+
+
+
+
+head(summarised_met_data)
+```
+
+
+
+```{r}
+# Save the appended file (optional)
+write.csv(summarised_met_data, file = file.path(main_folder,"summarised_met_data.csv"), row.names = FALSE)
+```
+
