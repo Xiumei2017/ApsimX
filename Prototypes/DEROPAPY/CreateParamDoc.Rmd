@@ -28,6 +28,7 @@ out_crop <- c("Apple","RyeGrass", "Clover")
 
 # Define the vector with column names to gather (columns to turn into levels)
 crop_select <- c("Maize","Wheat",	"Hemp",	"OSR",	"Grapevine",	"Macadamia",	"Lemon",	"Avocado")
+
 crop_type <- data.frame(
   CropName=c("Maize","Wheat",	"Hemp",	"OSR","Grapevine",	"Macadamia",	"Lemon",	"Avocado"),
   CropType=c("Arable","Arable",	"Arable",	"Arable", "Perennial", "Perennial", "Perennial", "Perennial"))
@@ -61,10 +62,10 @@ work_data <- data %>%
 summary(work_data)
 #head(work_data)
 ```
-
+# create graphs with static parameters values
 ```{r, fig.height= 30}
 
-save_path <- "C:\\github\\ApsimX\\Prototypes\\DEROPAPY\\figures"
+save_path <- "C:\\github\\ApsimX\\Prototypes\\DEROPAPY\\outputs\\ParamGraphs"
 
 select_cat <- "Phenology"
 select_cat <- "Structure"
@@ -115,7 +116,7 @@ for(i in 1:length(cats)) {
 
 
 ```
-
+# Create graphs of dynamic parameters
 ```{r}
 # (ii) Create new column VarName using the first string element from ParName (split by '_')
 df2 <- work_data %>%
@@ -195,13 +196,11 @@ head(df6)
 ```
 
 
-```{r, fig.height=30}
+```{r, fig.height=25}
 
 cats <- unique(df6$Category) 
 
 cats <- c("Phenology", "Stress")
-
-
 
 for(i in 1:length(cats)) {
       
@@ -210,16 +209,16 @@ mutate(Category = if_else(Category == "CarbonSupply", "Stress", Category)) %>%
 filter(Category== cats[i]) %>%
 ggplot(aes(x = `Axis_X`, y = `Axis_Y`)) +
   geom_point(aes(colour = CropName), shape=21, size=5,
-             position=position_jitter(w=0.05, h=0)
+             position=position_jitter(w=0.1, h=0)
              ) +
   geom_line(aes(colour=CropName, linetype= CropType ), 
-            position=position_jitter(w=0.05, h=0)) +
+            position=position_jitter(w=0.1, h=0), size=2) +
   facet_wrap(Category ~ ParamNameFull, scales = "free", ncol=2) +
   labs(title = "Parameters for different crops",
        x = "X-axes",
        y = "Y-axes") +
   theme_minimal() +
-  theme(text=element_text(size=35)) +
+  theme(text=element_text(size=38)) +
   ylab("Multiplier of potential rates") +
   xlab("Driving variable unit see panel title")
 

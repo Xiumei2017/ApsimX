@@ -144,8 +144,8 @@ info_out_work_subset <- info_out_work %>%
   mutate(Location=factor(Location), 
          Location2= factor(paste0(Location,"\n (",
                                   meant,"oC | ",
-                                  rain,"mm/year | ",
-                                  radn,"MJ/m2)")))
+                                  rain," mm/year | ",
+                                  radn," MJ/m2)")))
 
 summary(info_out_work_subset)
 ```
@@ -181,6 +181,7 @@ g <- info_out_work_subset %>%
   scale_y_continuous(limits = c(0, NA)) +
   coord_flip()+
   ylab("Productivity (kg/ha)") +
+  xlab("Location") +
   theme(text = element_text(size = 14))
 
 print(g)
@@ -192,8 +193,31 @@ ggsave(filename =
 
 }
 ```
-
-
+Summary stats
+```{r}
+info_out_work %>%
+  filter(Crop=="Macadamia") %>%
+  group_by(Crop, Location) %>%
+  summarise(Min=min(ProductFresh_kgPerHa), 
+            Med=median(ProductFresh_kgPerHa), 
+            Max=max(ProductFresh_kgPerHa))
+```
+Summary stats
+```{r, fig.height=12}
+info_out_work %>%
+  tidyr::gather(VarName,VarValue,Es_Cum:FrostSeverity) %>%
+  filter(Crop=="Avocado") %>%
+  #filter(Location=="Auckland") %>%
+  #filter(SoilType=="Sandy") %>%
+  #filter(SoilType=="Silty") %>%
+  ggplot(aes(x=VarValue, y=ProductFresh_kgPerHa,
+             linetype=interaction(Irrigation, SoilType))) +
+  geom_point(aes(colour=Location)) +
+ # stat_summary(fun.data= info_out_work) + 
+  geom_smooth(method='lm')+
+  facet_wrap(VarName~., scales="free")+
+  ylim(0, NA)
+```
 
 
 
