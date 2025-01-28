@@ -260,7 +260,7 @@ for (i in 1:length(thisCrop)) {
   scale_color_gradientn(
     name = "kg/ha",
     colors = rev(terrain.colors(10)) # Use terrain palette with 10 color steps
-  )+
+  ) +
   theme_minimal() +
   labs(
     title = paste0(thisCrop[i], " - Median yield across New Zealand") ,
@@ -299,8 +299,6 @@ ggsave(filename = file.path(thisOutFolder,paste0("Map_",thisCrop[i],".jpg")),
 # Plot using yield classes
 ```{r}
 
-
-
 for (i in 1:length(thisCrop)) {
   
   print(thisCrop[i])
@@ -334,8 +332,7 @@ for (i in 1:length(thisCrop)) {
   labs(
     title = paste0(thisCrop[i], " - Yield category ranges across New Zealand\n\n",
                    legend_label[2],", ",legend_label[1],", ",
-                   legend_label[3],", ",legend_label[4],
-                   "\n\n ------------DRAFT IN CONFIDENCE------------") ,
+                   legend_label[3],", ",legend_label[4]) ,
     x = "Longitude",
     y = "Latitude"
   ) +
@@ -389,7 +386,7 @@ baseline_yields %>%
 # explore(baseline_yields)
 ```
 
-# Calculate differences
+# Calculate yield differences in relation to baseline
 ```{r}
 diff_df <- df_yield_cat_by_base %>%
   tidyr::spread(TimeSlice, Yield) %>%
@@ -424,7 +421,9 @@ head(diff_abs_plot)
 # Plot absolute diferences as GRAPHS
 ```{r, fig.height=15}
 
-fontSize2 <- 15
+fontSize2 <- 18
+
+thisGraphFolder <- file.path(thisPath, "Graphs")
 
 for(i in 1:length(thisCrop)) {
   
@@ -436,7 +435,7 @@ p <- diff_abs_plot %>%
     filter(Crop == thisCrop[i]) %>%
   ggplot(aes(x=RCP, y=VarValue, colour=Irrigation)) + 
   
-  geom_jitter(alpha=0.1,
+  geom_jitter(alpha=0.5,
               position = position_jitterdodge(jitter.width = 0.3, 
                                               dodge.width = 0.8))+
   geom_boxplot(alpha=0.5) +
@@ -453,7 +452,8 @@ p <- diff_abs_plot %>%
 print(p)
 
 # Save the plot as a JPEG file with 300 DPI
-ggsave(filename = file.path(thisOutFolder,paste0("GraphReg_",thisCrop[i],".jpg")),
+ggsave(filename = file.path(thisGraphFolder,
+                            paste0("GraphReg_",thisCrop[i],".jpg")),
        plot = p,
      #  width = 8,    # Width in inches
      #  height = 4,   # Height in inches
@@ -502,13 +502,21 @@ diff_rel_plot %>%
   ylab("Yield change (% of baseline)")
 ```
 
-# Plot maps of RELATIVE difference in yield category 
+# Plot MAPS of RELATIVE difference by yield category 
 ```{r}
 
-# Note that all values > 50% increase are packed into a single category (i.e., there are up to 2 k % values!)
+# Note that all values > 100% increase are packed into a single upper category (i.e., there are up to 2 k % figures!)
+
+  
+thisOutFolder <- file.path(thisPath,"MapResults") 
+
+# Create folder if it doesn't exist
+if (!dir.exists(thisOutFolder)) {
+  dir.create(thisOutFolder, recursive = TRUE)
+}
+
 
 for (i in 1:length(thisCrop)) {
-  
   
   print(thisCrop[i])
   
@@ -521,7 +529,7 @@ for (i in 1:length(thisCrop)) {
                                     "5 to 50% increase","50 to 100% increase", 
                                     "> 100% increase")))
   
-  # create plot
+    
   # create plot
   p <- ggplot() +
   # Add New Zealand map contours
@@ -544,15 +552,12 @@ for (i in 1:length(thisCrop)) {
                "50 to 100% increase" = "green",
                "> 100% increase" = "darkgreen"),
      drop = FALSE,
-    guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
-  )+
+    guide = guide_legend(override.aes = list(size = 5))) + # Make legend boxes larger
   theme_minimal() +
   labs(
     title = paste0(thisCrop[i], " - Yield category ranges across New Zealand\n\n",
-                   "\n\n ------------DRAFT IN CONFIDENCE------------") ,
     x = "Longitude",
-    y = "Latitude"
-  )+
+    y = "Latitude")) +
   coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
            ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
     theme(text = element_text(size = fontSize),
@@ -560,25 +565,15 @@ for (i in 1:length(thisCrop)) {
   
   print(p)
   
-  
-  thisOutFolder <- file.path(thisPath,"MapResults") 
-  
-  
-  # Create folder if it doesn't exist
-if (!dir.exists(thisOutFolder)) {
-  dir.create(thisOutFolder, recursive = TRUE)
-}
-
- 
-  
-# Save the plot as a JPEG file with 300 DPI
+  # Save the plot as a JPEG file with 300 DPI
 ggsave(filename = file.path(thisOutFolder,paste0("DiffRelCatMap_",thisCrop[i],".jpg")),
        plot = p,
        width = 6,    # Width in inches
        height = 4,   # Height in inches
        dpi = 300)
-  
+
 }
+
 ```
 
 
