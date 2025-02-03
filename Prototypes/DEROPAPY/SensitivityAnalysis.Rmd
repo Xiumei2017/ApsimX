@@ -141,11 +141,12 @@ info_out_work_subset <- info_out_work %>%
   dplyr::select(columns_as_factors, seleted_yield_columns, "Year")  %>%
   dplyr::mutate(RCP = "Baseline", RCP=factor(RCP)) %>% # climate files from ERA were used 
   inner_join(met_summary_by_AGNO, by="Location") %>%
-  mutate(Location=factor(Location), 
+  mutate(Location=factor(Location),
          Location2= factor(paste0(Location,"\n (",
                                   meant,"oC | ",
                                   rain," mm/year | ",
                                   radn," MJ/m2)")))
+
 
 summary(info_out_work_subset)
 ```
@@ -195,8 +196,15 @@ ggsave(filename =
 ```
 Summary stats
 ```{r}
+
+# Check values by changing crop name
+
+theCrop <- "Macadamia" 
+# "Grapevine" "Avocado" "Macadamia" "Lemon" 
+# "Maize" "Wheat" "Hemp" "OSR"
+
 info_out_work %>%
-  filter(Crop=="Macadamia") %>%
+  filter(Crop==theCrop) %>%
   group_by(Crop, Location) %>%
   summarise(Min=min(ProductFresh_kgPerHa), 
             Med=median(ProductFresh_kgPerHa), 
@@ -204,18 +212,25 @@ info_out_work %>%
 ```
 Summary stats
 ```{r, fig.height=12}
+
+# Choose crop to analyse below
+
+theCrop <- "Macadamia" 
+# "Grapevine" "Avocado" "Macadamia" "Lemon" 
+# "Maize" "Wheat" "Hemp" "OSR"
+
 info_out_work %>%
   tidyr::gather(VarName,VarValue,Es_Cum:FrostSeverity) %>%
-  filter(Crop=="Avocado") %>%
+  filter(Crop==theCrop) %>%
   #filter(Location=="Auckland") %>%
   #filter(SoilType=="Sandy") %>%
   #filter(SoilType=="Silty") %>%
   ggplot(aes(x=VarValue, y=ProductFresh_kgPerHa,
              linetype=interaction(Irrigation, SoilType))) +
-  geom_point(aes(colour=Location)) +
+  geom_point(aes(colour=Location, shape=Irrigation)) +
  # stat_summary(fun.data= info_out_work) + 
-  geom_smooth(method='lm')+
-  facet_wrap(VarName~., scales="free")+
+  geom_smooth(method='lm') +
+  facet_wrap(VarName~., scales="free") +
   ylim(0, NA)
 ```
 

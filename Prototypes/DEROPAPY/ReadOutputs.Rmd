@@ -96,6 +96,7 @@ table_name <- "Simulation_export"
 data_output <- dbReadTable(conn, table_name)
 
 print(head(data_output))
+summary(data_output)
 ```
 
 # Merge metadata and data
@@ -117,7 +118,7 @@ tail(data_work)
 
 
 # Evaluate results
-```{r}
+```{r, fig.height=15}
 data_ranges <- data_work %>%
   group_by(Crop, GCM,RCP,TimeSlice, Irrigation) %>%
   summarise(Min=min(ProductFresh_kgPerHa),
@@ -575,8 +576,6 @@ ggsave(filename = file.path(thisOutFolder,paste0("DiffRelCatMap_",thisCrop[i],".
 }
 
 ```
-
-
 # Plot continuous difference percentage
 ```{r}
 
@@ -639,8 +638,20 @@ ggsave(filename = file.path(thisOutFolder,paste0("DiffContMap_",thisCrop[i],".jp
 }
 
 ```
+
 # Map "Baseline yield + Yield change" as classes combined 
 ```{r, fig.width=12}
+
+fontSize3 <- 12
+
+  thisOutFolder <- file.path(thisPath,"MapResults") 
+  
+  # Create folder if it doesn't exist
+if (!dir.exists(thisOutFolder)) {
+dir.create(thisOutFolder, recursive = TRUE)
+}
+
+
 
 # Function to add a black border around a plot
 add_black_border <- function(plot) {
@@ -676,7 +687,8 @@ for (i in 1:length(thisCrop)) {
   l3 <- legend_label[match(TRUE, grepl("Low", legend_label))] 
   l4 <- legend_label[match(TRUE, grepl("Very Low", legend_label))]
   
-  # create plot
+  # create plot baseline
+  
   p1 <- ggplot() +
   # Add New Zealand map contours
   geom_sf(data=nz_map, fill = NA, color = "black", inherit.aes = FALSE) +
@@ -702,13 +714,13 @@ for (i in 1:length(thisCrop)) {
     title = paste0(thisCrop[i],"\n\n",
                    l1," | ",l2,"\n",
                    l3," | ",l4,
-                   "\n\n ------------BASELINE YIELD ------------") ,
+                   "\n\n -----BASELINE YIELD -----") ,
     x = "Longitude",
     y = "Latitude"
   ) +
   coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
            ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
-    theme(text = element_text(size = fontSize),
+    theme(text = element_text(size = fontSize3),
           axis.text.x = element_text(angle = 45, hjust = 1) ) +
   theme(legend.position = "left") +
   theme(
@@ -720,7 +732,9 @@ for (i in 1:length(thisCrop)) {
   
   # --------------Graph Categorical yield changes ------------
   #----------------------------------------------------------
+   
   # prepare this df
+   
   df_crop <- diff_rel_plot %>% filter(Crop == thisCrop[i]) %>% 
   mutate(RCP=factor(RCP, levels= c("RCP4.5", "RCP6.0","RCP8.5"))) %>% 
   mutate(YieldChangeCategory=factor(YieldChangeCategory, 
@@ -733,6 +747,7 @@ for (i in 1:length(thisCrop)) {
          RCP == "RCP4.5" & VarName == "Mid-century"  
            )
    
+  # create plot differences
    
   p2 <- ggplot() +
   # Add New Zealand map contours
@@ -760,10 +775,10 @@ for (i in 1:length(thisCrop)) {
   )+
   theme_minimal() +
   labs(x = "Longitude",y = "Latitude", 
-       title = "\n\n -----------YIELD CHANGE IN THE FUTURE (% BASELINE) ------------")+
+       title = "\n\n\n ---YIELD CHANGE IN THE FUTURE (% BASELINE) ---")+
   coord_sf(xlim = c(nz_bbox["xmin"], nz_bbox["xmax"]), 
            ylim = c(nz_bbox["ymin"], nz_bbox["ymax"])) +
-    theme(text = element_text(size = fontSize),
+    theme(text = element_text(size = fontSize3),
           axis.text.x = element_text(angle = 45, hjust = 1) ) +
   theme(
     plot.title = element_text(hjust = 0.5) # Center the title
@@ -777,13 +792,6 @@ for (i in 1:length(thisCrop)) {
   
   print(combined_plot)
   
-  thisOutFolder <- file.path(thisPath,"MapResults") 
-  
-  # Create folder if it doesn't exist
-if (!dir.exists(thisOutFolder)) {
-dir.create(thisOutFolder, recursive = TRUE)
-}
-
 # Save the plot as a JPEG file with 300 DPI
 ggsave(filename = 
        file.path(thisOutFolder,paste0("FinalComboMap_",thisCrop[i],".jpg")),
