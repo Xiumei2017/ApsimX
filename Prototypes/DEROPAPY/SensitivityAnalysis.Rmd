@@ -215,7 +215,7 @@ Summary stats
 
 # Choose crop to analyse below
 
-theCrop <- "Macadamia" 
+theCrop <- "Avocado" 
 # "Grapevine" "Avocado" "Macadamia" "Lemon" 
 # "Maize" "Wheat" "Hemp" "OSR"
 

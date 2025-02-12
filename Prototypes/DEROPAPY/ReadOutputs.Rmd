@@ -682,10 +682,10 @@ for (i in 1:length(thisCrop)) {
   
   # Sort labeling order
   legend_label <- unique(df_crop$LegendLabel)
-  l1 <- legend_label[match(TRUE, grepl("Very High", legend_label))]
-  l2 <- legend_label[match(TRUE, grepl("High", legend_label))]
-  l3 <- legend_label[match(TRUE, grepl("Low", legend_label))] 
-  l4 <- legend_label[match(TRUE, grepl("Very Low", legend_label))]
+  l1 <- legend_label[match(TRUE, grepl("^Very High", legend_label))]
+  l2 <- legend_label[match(TRUE, grepl("^High", legend_label))]
+  l3 <- legend_label[match(TRUE, grepl("^Low", legend_label))] 
+  l4 <- legend_label[match(TRUE, grepl("^Very Low", legend_label))]
   
   # create plot baseline
   
