@@ -763,13 +763,20 @@ for (i in 1:length(thisCrop)) {
   facet_grid(Irrigation ~ RCP + VarName) + # Facet by RCP and Rainfed/Irrigated
   scale_color_manual(
     name = "Yield change (%)",
-    values = c("> 50% decline" = "darkred", 
-               "25 to 50% decline" = "red",
-               "5 to 25% decline" = "orange",
-               "-5 to 5% change" = 'grey',
-               "5 to 50% increase" = "yellow",
-               "50 to 100% increase" = "green",
-               "> 100% increase" = "darkgreen"),
+    # values = c("> 50% decline" = "darkred", 
+    #            "25 to 50% decline" = "red",
+    #            "5 to 25% decline" = "orange",
+    #            "-5 to 5% change" = 'grey',
+    #            "5 to 50% increase" = "yellow",
+    #            "50 to 100% increase" = "green",
+    #            "> 100% increase" = "darkgreen"),
+    values = c("> 50% decline" = "#7E1E9C",    # Dark Purple (Strong Decline)
+           "25 to 50% decline" = "#D35F5F",    # Reddish-Pink (Moderate Decline)
+           "5 to 25% decline" = "#E69F00",     # Orange (Slight Decline)
+           "-5 to 5% change" = "#999999",      # Grey (Stable)
+           "5 to 50% increase" = "#56B4E9",    # Sky Blue (Moderate Increase)
+           "50 to 100% increase" = "#009E73", # Teal Green (Strong Increase)
+           "> 100% increase" = "#00441B"), 
      drop = FALSE,
     guide = guide_legend(override.aes = list(size = 5)) # Make legend boxes larger
   )+
