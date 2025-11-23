@@ -1,12 +1,11 @@
-﻿namespace Models.Storage
+﻿using System.Data;
+using System.Linq;
+using System.Threading;
+using APSIM.Shared.JobRunning;
+using APSIM.Shared.Utilities;
+
+namespace Models.Storage
 {
-    using APSIM.Shared.JobRunning;
-    using APSIM.Shared.Utilities;
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-    using System.Threading;
 
     /// <summary>Encapsulates a row to write to an SQL database.</summary>
     class WriteTableCommand : IRunnable
@@ -57,34 +56,45 @@
         {
             if (dataToWrite.Rows.Count > 0)
             {
-                var query = new InsertQuery(dataToWrite);
-
                 // Make sure the table has the correct columns.
-                tableDetails.EnsureTableExistsAndHasRequiredColumns(dataToWrite);
+                tableDetails.EnsureTableExistsAndHasRequiredColumns(ref dataToWrite);
 
-                // Get a list of column names.
-                var columnNames = dataToWrite.Columns.Cast<DataColumn>().Select(col => col.ColumnName);
-
+                connection.BeginTransaction();
+                var query = new InsertQuery(dataToWrite);
                 try
                 {
-                    connection.BeginTransaction();
-
-                    if (deleteExistingRows)
+                    if (deleteExistingRows && connection.TableExists(dataToWrite.TableName))
                     {
                         // fixme - this assumes that "Current" checkpoint ID is always 1.
                         // This should always be correct afaik, but it would be better to
                         // verify this at runtime.
                         bool tableHasCheckpointID = connection.GetColumns(dataToWrite.TableName).Any(c => c.Item1 == "CheckpointID");
-                        connection.ExecuteNonQuery($"DELETE FROM [{dataToWrite.TableName}] {(tableHasCheckpointID ? "WHERE CheckpointID = 1" : "")}");
+                        connection.ExecuteNonQuery($"DELETE FROM [{dataToWrite.TableName}] {(tableHasCheckpointID ? "WHERE \"CheckpointID\" = 1" : "")}");
                     }
+
+                    if (connection is Firebird)
+                    {
+                        // Treat messages as a special case
+                        // They come in as single-row tables, so writing each
+                        // separately is not very efficient.
+                        if (dataToWrite.TableName == "_Messages")
+                        {
+                            (connection as Firebird).InsertMessageRecord(dataToWrite);
+                            return;
+                        }
+                    }
+
+                    // Get a list of column names.
+                    var columnNames = dataToWrite.Columns.Cast<DataColumn>().Select(col => col.ColumnName);
+
                     // Write all rows.
                     foreach (DataRow row in dataToWrite.Rows)
                         query.ExecuteQuery(connection, columnNames, row.ItemArray);
                 }
                 finally
                 {
-                    connection.EndTransaction();
                     query.Close(connection);
+                    connection.EndTransaction();
                 }
             }
         }
@@ -92,7 +102,7 @@
         /// <summary>
         /// Cleanup the job after running it.
         /// </summary>
-        public void Cleanup()
+        public void Cleanup(System.Threading.CancellationTokenSource cancelToken)
         {
             // Do nothing.
         }

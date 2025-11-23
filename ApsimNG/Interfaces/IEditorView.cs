@@ -1,10 +1,7 @@
-﻿using Gtk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Gtk;
 using UserInterface.EventArguments;
+using Shared.Utilities;
 
 namespace UserInterface.Interfaces
 {
@@ -58,6 +55,11 @@ namespace UserInterface.Interfaces
         event EventHandler StyleChanged;
 
         /// <summary>
+        /// Invoked when the user drops a variable on the EditorView.
+        /// </summary>
+        public event EventHandler VariableDragDataReceived;
+
+        /// <summary>
         /// Gets or sets the text property to get and set the content of the editor.
         /// </summary>
         string Text { get; set; }
@@ -66,6 +68,11 @@ namespace UserInterface.Interfaces
         /// Gets or sets the lines property to get and set the lines in the editor.
         /// </summary>
         string[] Lines { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the script as read only (editable)
+        /// </summary>
+        public bool ReadOnly { get; set; }
 
         /// <summary>
         /// Controls syntax highlighting mode.
@@ -85,7 +92,7 @@ namespace UserInterface.Interfaces
         /// <summary>
         /// Gets or sets the current location of the caret (column and line)
         /// </summary>
-        System.Drawing.Rectangle Location { get; set; }
+        ManagerCursorLocation Location { get; set; }
 
         /// <summary>
         /// Add a separator line to the context menu

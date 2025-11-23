@@ -1,15 +1,16 @@
-﻿namespace Models.PMF
+﻿using System;
+using System.Collections.Generic;
+using Models.Core;
+
+namespace Models.PMF
 {
-    using Models.Core;
-    using System;
-    using System.Collections.Generic;
-    
+
     /// <summary>
     /// Daily state of flows into and out of each organ
     /// </summary>
     [Serializable]
     public class NutrientsStates : Model
-    { 
+    {
         /// <summary>Carbon</summary>
         public double C { get; private set; }
         /// <summary>Nitrogen</summary>
@@ -36,34 +37,34 @@
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [ValidParent(ParentType = typeof(Organ))]
-    public class OrganNutrientsState : Model, IParentOfNutrientsPoolState
+    public class OrganNutrientsState : Model
     {
         /// <summary> The weight of the organ</summary>
-        public NutrientPoolsState Weight { get; private set; }
+        public NutrientPoolsState Weight => Cconc > 0 ? Carbon / Cconc : new NutrientPoolsState(0, 0, 0);
 
         /// <summary> The weight of the organ</summary>
-        public double Wt { get; private set; }
-
+        public double Wt => Weight.Total;
+            
         /// <summary> The Carbon of the organ</summary>
-        public double C { get; private set; }
-
+        public double C => Carbon.Total;
+            
         /// <summary> The Nitrogen of the organ</summary>
-        public double N { get; private set; }
+        public double N => Nitrogen.Total;
 
         /// <summary> The Phosphorus of the organ</summary>
-        public double P { get; private set; }
+        public double P => Phosphorus.Total;
 
         /// <summary> The Potassium of the organ</summary>
-        public double K { get; private set; }
-
+        public double K => Potassium.Total;
+            
         /// <summary> The N concentration of the organ</summary>
-        public double NConc { get; private set; }
+        public double NConc => Wt > 0 ? N / Wt : 0;
 
         /// <summary> The P concentration of the organ</summary>
-        public double PConc { get; private set; }
+        public double PConc => Wt > 0 ? P / Wt : 0;
 
         /// <summary> The K concentration of the organ</summary>
-        public double KConc { get; private set; }
+        public double KConc => Wt > 0 ? K / Wt : 0;
 
 
         /// <summary> The concentraion of carbon in total dry weight</summary>
@@ -81,20 +82,6 @@
         /// <summary> The organs Potasium components </summary>
         public NutrientPoolsState Potassium { get; private set; }
 
-        /// <summary> update variables derived from NutrientPoolsStates </summary>
-        public void UpdateProperties()
-        {
-            Weight = Cconc > 0 ? Carbon / Cconc : new NutrientPoolsState(0,0,0);
-            Wt = Weight.Total;
-            C = Carbon.Total;
-            N = Nitrogen.Total;
-            P = Phosphorus.Total;
-            K = Potassium.Total;
-            NConc = Wt > 0 ? N / Wt : 0;
-            PConc = Wt > 0 ? P / Wt : 0;
-            KConc = Wt > 0 ? K / Wt : 0;
-        }
-
         /// <summary>Constructor </summary>
         public OrganNutrientsState(NutrientPoolsState carbon, NutrientPoolsState nitrogen, NutrientPoolsState phosphorus, NutrientPoolsState potassium, double cconc)
         {
@@ -103,7 +90,6 @@
             Phosphorus = phosphorus;
             Potassium = potassium;
             Cconc = cconc;
-            UpdateProperties();
         }
 
         /// <summary>Constructor </summary>
@@ -120,7 +106,6 @@
             Phosphorus = new NutrientPoolsState();
             Potassium = new NutrientPoolsState();
             Cconc = 0;
-            UpdateProperties();
         }
 
         /// <summary>Set the current state </summary>
@@ -131,7 +116,6 @@
             Phosphorus = values.Phosphorus;
             Potassium = values.Potassium;
             Cconc = cconc;
-            UpdateProperties();
         }
 
         /// <summary>Constructor </summary>
@@ -142,81 +126,98 @@
             Phosphorus = new NutrientPoolsState();
             Potassium = new NutrientPoolsState();
             Cconc = 1.0;
-            UpdateProperties();
         }
 
         /// <summary>return pools divied by value</summary>
-        public static OrganNutrientsState operator /(OrganNutrientsState a, double b)
+        public static OrganNutrientsState Divide(OrganNutrientsState a, double b, double cconc)
         {
-            
-            return new OrganNutrientsState()
-            {
-                Carbon = a.Carbon / b,
-                Nitrogen = a.Nitrogen / b,
-                Phosphorus = a.Phosphorus / b,
-                Potassium = a.Potassium / b,
-            };
+            OrganNutrientsState ret = new OrganNutrientsState();
+            ret.Carbon = a.Carbon / b;
+            ret.Nitrogen = a.Nitrogen / b;
+            ret.Phosphorus = a.Phosphorus / b;
+            ret.Potassium = a.Potassium / b;
+            ret.Cconc = cconc;
+            return ret;
+
         }
 
         /// <summary>return pools divied by value</summary>
-        public static OrganNutrientsState operator /(OrganNutrientsState a, OrganNutrientsState b)
+        public static OrganNutrientsState Divide(OrganNutrientsState a, OrganNutrientsState b, double cconc)
         {
-            return new OrganNutrientsState()
-            {
-                Carbon = a.Carbon / b.Carbon,
-                Nitrogen = a.Nitrogen / b.Nitrogen,
-                Phosphorus = a.Phosphorus / b.Phosphorus,
-                Potassium = a.Potassium / b.Potassium,
-            };
+            OrganNutrientsState ret = new OrganNutrientsState();
+            ret.Carbon = a.Carbon / b.Carbon;
+            ret.Nitrogen = a.Nitrogen / b.Nitrogen;
+            ret.Phosphorus = a.Phosphorus / b.Phosphorus;
+            ret.Potassium = a.Potassium / b.Potassium;
+            ret.Cconc = cconc;
+            return ret;
         }
+
         /// <summary>return pools multiplied by value</summary>
-        public static OrganNutrientsState operator *(OrganNutrientsState a, double b)
+        public static OrganNutrientsState Multiply(OrganNutrientsState a, double b, double cconc)
         {
-            return new OrganNutrientsState()
-            {
-                Carbon = a.Carbon * b,
-                Nitrogen = a.Nitrogen * b,
-                Phosphorus = a.Phosphorus * b,
-                Potassium = a.Potassium * b
-            };
+            OrganNutrientsState ret = new OrganNutrientsState();
+            ret.Carbon = a.Carbon * b;
+            ret.Nitrogen = a.Nitrogen * b;
+            ret.Phosphorus = a.Phosphorus * b;
+            ret.Potassium = a.Potassium * b;
+            ret.Cconc = cconc;
+            return ret;
         }
 
         /// <summary>return pools divied by value</summary>
-        public static OrganNutrientsState operator *(OrganNutrientsState a, OrganNutrientsState b)
+        public static OrganNutrientsState Multiply(OrganNutrientsState a, OrganNutrientsState b, double cconc)
         {
-            return new OrganNutrientsState()
-            {
-                Carbon = a.Carbon * b.Carbon,
-                Nitrogen = a.Nitrogen * b.Nitrogen,
-                Phosphorus = a.Phosphorus * b.Phosphorus,
-                Potassium = a.Potassium * b.Potassium,
-            };
+            OrganNutrientsState ret = new OrganNutrientsState();
+            ret.Carbon = a.Carbon * b.Carbon;
+            ret.Nitrogen = a.Nitrogen * b.Nitrogen;
+            ret.Phosphorus = a.Phosphorus * b.Phosphorus;
+            ret.Potassium = a.Potassium * b.Potassium;
+            ret.Cconc = cconc;
+            return ret;
         }
 
         /// <summary>return sum or two pools</summary>
-        public static OrganNutrientsState operator +(OrganNutrientsState a, OrganNutrientsState b)
+        public static OrganNutrientsState Add(OrganNutrientsState a, OrganNutrientsState b, double cconc)
         {
-            return new OrganNutrientsState()
-            {
-                Carbon = a.Carbon + b.Carbon,
-                Nitrogen = a.Nitrogen + b.Nitrogen,
-                Phosphorus = a.Phosphorus + b.Phosphorus,
-                Potassium = a.Potassium + b.Potassium
-            };
+            OrganNutrientsState ret = new OrganNutrientsState();
+            ret.Carbon = a.Carbon + b.Carbon;
+            ret.Nitrogen = a.Nitrogen + b.Nitrogen;
+            ret.Phosphorus = a.Phosphorus + b.Phosphorus;
+            ret.Potassium = a.Potassium + b.Potassium;
+            ret.Cconc = cconc;
+            return ret;
         }
 
         /// <summary>return sum or two pools</summary>
-        public static OrganNutrientsState operator -(OrganNutrientsState a, OrganNutrientsState b)
+        public static OrganNutrientsState Subtract(OrganNutrientsState a, OrganNutrientsState b, double cconc)
         {
-            return new OrganNutrientsState()
+            OrganNutrientsState ret = new OrganNutrientsState();
+            ret.Carbon = a.Carbon - b.Carbon;
+            ret.Nitrogen = a.Nitrogen - b.Nitrogen;
+            ret.Phosphorus = a.Phosphorus - b.Phosphorus;
+            ret.Potassium = a.Potassium - b.Potassium;
+            ret.Cconc = cconc;
+            return ret;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Biomass"/> class from the OrganNutrientState passed in</summary>
+        public Biomass ToBiomass
+        {
+            get
             {
-                Carbon = a.Carbon - b.Carbon,
-                Nitrogen = a.Nitrogen - b.Nitrogen,
-                Phosphorus = a.Phosphorus - b.Phosphorus,
-                Potassium = a.Potassium - b.Potassium
-            };
+                Biomass retBiomass = new Biomass();
+                retBiomass.StructuralWt = this.Weight.Structural;
+                retBiomass.MetabolicWt = this.Weight.Metabolic;
+                retBiomass.StorageWt = this.Weight.Storage;
+                retBiomass.StructuralN = this.Nitrogen.Structural;
+                retBiomass.MetabolicN = this.Nitrogen.Metabolic;
+                retBiomass.StorageN = this.Nitrogen.Storage;
+                return retBiomass;
+            }
         }
     }
+    
 
     /// <summary>
     /// This is a composite biomass class, representing the sum of 1 or more biomass objects.
@@ -263,7 +264,7 @@
         private void AddDelta(OrganNutrientsState delta)
         {
             double agrigatedCconc = (this.Carbon.Total + delta.Carbon.Total) / (this.Wt + delta.Wt);
-            Set(this + delta, agrigatedCconc);
+            Set(OrganNutrientsState.Add(this, delta,agrigatedCconc), agrigatedCconc);
         }
 
         /// <summary>/// The constructor </summary>
@@ -276,17 +277,17 @@
         public void Document(List<AutoDocumentation.ITag> tags, int headingLevel, int indent)
         {
 
-                // add a heading.
-                tags.Add(new AutoDocumentation.Heading(Name + " Biomass", headingLevel));
+            // add a heading.
+            tags.Add(new AutoDocumentation.Heading(Name + " Biomass", headingLevel));
 
-                // write description of this class.
-                AutoDocumentation.DocumentModelSummary(this, tags, headingLevel, indent, false);
+            // write description of this class.
+            AutoDocumentation.DocumentModelSummary(this, tags, headingLevel, indent, false);
 
-                // write children.
-                foreach (IModel child in this.FindAllChildren<IModel>())
-                    AutoDocumentation.DocumentModel(child, tags, headingLevel + 1, indent);
+            // write children.
+            foreach (IModel child in this.FindAllChildren<IModel>())
+                AutoDocumentation.DocumentModel(child, tags, headingLevel + 1, indent);
 
-                tags.Add(new AutoDocumentation.Paragraph(this.Name + " summarises the following biomass objects:", indent));
+            tags.Add(new AutoDocumentation.Paragraph(this.Name + " summarises the following biomass objects:", indent));
         }
     }
 }

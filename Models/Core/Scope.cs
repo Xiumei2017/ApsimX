@@ -1,28 +1,35 @@
-﻿namespace Models.Core
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Models.Factorial;
+
+namespace Models.Core
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Linq;
 
     /// <summary>
     /// Implements APSIMs scoping rules.
     /// </summary>
     public class ScopingRules
     {
-        private Dictionary<string, List<IModel>> cache = new Dictionary<string, List<IModel>>();
+        private Dictionary<IModel, List<IModel>> cache = new Dictionary<IModel, List<IModel>>();
+        private Dictionary<string, bool> scopedModels = new();
+
 
         /// <summary>
         /// Return a list of models in scope to the one specified.
         /// </summary>
         /// <param name="relativeTo">The model to base scoping rules on</param>
-        public IModel[] FindAll(IModel relativeTo)
+        public IEnumerable<IModel> FindAll(IModel relativeTo)
         {
-            string relativeToFullPath = relativeTo.FullPath;
+            IModel scopedParent = FindScopedParentModel(relativeTo);
+            if (scopedParent == null)
+                throw new Exception("No scoping model found relative to: " + relativeTo.FullPath);
+
             // Try the cache first.
             List<IModel> modelsInScope;
-            if (cache.TryGetValue(relativeToFullPath, out modelsInScope))
-                return modelsInScope.ToArray();
+            if (cache.TryGetValue(scopedParent, out modelsInScope))
+                return modelsInScope;
 
             // The algorithm is to find the parent scoped model of the specified model.
             // Then return all descendants of the scoped model and then recursively
@@ -30,21 +37,18 @@
             // child of the parents of the scoped model, we also return its descendants
             // if it is not a scoped model.
 
-            IModel scopedParent = FindScopedParentModel(relativeTo);
-            if (scopedParent == null)
-                throw new Exception("No scoping model found relative to: " + relativeTo.FullPath);
-
             // Return all models in zone and all direct children of zones parent.
             modelsInScope = new List<IModel>();
             modelsInScope.Add(scopedParent);
             modelsInScope.AddRange(scopedParent.FindAllDescendants());
-            while (scopedParent.Parent != null)
+            IModel m = scopedParent;
+            while (m.Parent != null)
             {
-                scopedParent = scopedParent.Parent;
-                modelsInScope.Add(scopedParent);
-                foreach (IModel child in scopedParent.Children)
+                //m = m.Parent;
+                modelsInScope.Add(m.Parent);
+                foreach (IModel child in m.Parent.Children)
                 {
-                    if (!modelsInScope.Contains(child))
+                    if (child != m)
                     {
                         modelsInScope.Add(child);
 
@@ -55,93 +59,37 @@
                             modelsInScope.AddRange(child.FindAllDescendants());
                     }
                 }
+                m = m.Parent;
             }
 
-            if (!modelsInScope.Contains(scopedParent))
-                modelsInScope.Add(scopedParent); // top level simulation
+            if (!modelsInScope.Contains(m))
+                modelsInScope.Add(m); // top level simulation
 
-            // add to cache for next time.
-            cache.Add(relativeToFullPath, modelsInScope);
-            return modelsInScope.ToArray();
-        }
-
-        /*
-        /// <summary>
-        /// Return a list of models in scope to the one specified.
-        /// </summary>
-        /// <param name="relativeTo">The model to base scoping rules on</param>
-        public IEnumerable<IModel> FindAll(IModel relativeTo)
-        {
-            string relativeToFullPath = relativeTo.FullPath;
-            // Try the cache first.
-            List<IModel> modelsInScope;
-            if (cache.TryGetValue(relativeToFullPath, out modelsInScope))
-                foreach (IModel result in modelsInScope)
-                    yield return result;
-
-            // The algorithm is to find the parent scoped model of the specified model.
-            // Then return all descendants of the scoped model and then recursively
-            // the direct children of the parents of the scoped model. For any direct
-            // child of the parents of the scoped model, we also return its descendants
-            // if it is not a scoped model.
-
-            IModel scopedParent = relativeTo.Ancestors().FirstOrDefault(a => IsScopedModel(a));
-            if (scopedParent == null)
-                throw new Exception("No scoping model found relative to: " + relativeTo.FullPath);
-
-            // Return all models in zone and all direct children of zones parent.
-            modelsInScope = new List<IModel>();
-
-            modelsInScope.Add(scopedParent);
-            yield return scopedParent;
-
-            foreach (IModel descendant in scopedParent.Descendants())
+            //scope may not work for models under experiment (that need to link back to the actual sim)
+            //so first we find models that are in scope (aka, also under the factor), then also return
+            //the descendants of the simulation
+            Experiment exp = relativeTo.FindAncestor<Experiment>();
+            if (exp != null)
             {
-                modelsInScope.Add(descendant);
-                yield return descendant;
-            }
+                Simulation sim = exp.FindChild<Simulation>();
 
-            foreach (IModel ancestor in scopedParent.Ancestors())
-            {
-                modelsInScope.Add(ancestor);
-                yield return ancestor;
-
-                foreach (IModel cousin in ancestor.Children)
-                {
-                    if (!modelsInScope.Contains(cousin))
-                    {
-                        modelsInScope.Add(cousin);
-                        yield return cousin;
-
-                        if (!IsScopedModel(cousin))
-                        {
-                            foreach (IModel descendant in cousin.Descendants())
-                            {
-                                modelsInScope.Add(descendant);
-                                yield return descendant;
-                            }
-                        }
-                    }
-                }
+                IEnumerable<IModel> descendants = sim.FindAllDescendants();
+                foreach (IModel result in descendants)
+                    modelsInScope.Add(result);
             }
 
             // add to cache for next time.
-            cache.Add(relativeToFullPath, modelsInScope);
+            cache.Add(scopedParent, modelsInScope);
+            return modelsInScope;
         }
-        */
 
         /// <summary>
         /// Find a parent of 'relativeTo' that has a [ScopedModel] attribute. 
         /// Returns null if non found.
         /// </summary>
         /// <param name="relativeTo">The model to use as a base.</param>
-        public static IModel FindScopedParentModel(IModel relativeTo)
+        public IModel FindScopedParentModel(IModel relativeTo)
         {
-            //if (IsScopedModel(relativeTo))
-            //    return relativeTo;
-            //
-            //return relativeTo.Ancestors().FirstOrDefault(a => IsScopedModel(a));
-
             do
             {
                 if (IsScopedModel(relativeTo))
@@ -150,7 +98,7 @@
                     return relativeTo;
                 relativeTo = relativeTo.Parent;
             }
-            while (relativeTo != null) ;
+            while (relativeTo != null);
 
             return null;
         }
@@ -170,9 +118,13 @@
         /// </summary>
         /// <param name="relativeTo"></param>
         /// <returns></returns>
-        public static bool IsScopedModel(IModel relativeTo)
+        public bool IsScopedModel(IModel relativeTo)
         {
-            return relativeTo.GetType().GetCustomAttribute(typeof(ScopedModelAttribute), true) as ScopedModelAttribute != null;
+            if (scopedModels.TryGetValue(relativeTo.GetType().Name, out bool isScoped))
+                return isScoped;
+            isScoped = relativeTo.GetType().GetCustomAttribute(typeof(ScopedModelAttribute), true) as ScopedModelAttribute != null;
+            scopedModels.Add(relativeTo.GetType().Name, isScoped);
+            return isScoped;
         }
 
         /// <summary>

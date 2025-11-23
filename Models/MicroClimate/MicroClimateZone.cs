@@ -1,11 +1,12 @@
-﻿namespace Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using APSIM.Shared.Utilities;
+using Models.Core;
+using Models.Interfaces;
+
+namespace Models
 {
-    using APSIM.Shared.Utilities;
-    using Models.Core;
-    using Models.Interfaces;
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
 
     /// <summary>
     /// A micro climate wrapper around a Zone instance.
@@ -48,10 +49,10 @@
         private double Latitude;
 
         /// <summary>The surface organic matter model.</summary>
-        private ISurfaceOrganicMatter surfaceOM;
+        public ISurfaceOrganicMatter SurfaceOM { get; private set; }
 
         /// <summary>The soil water model.</summary>
-        private ISoilWater soilWater;
+        public ISoilWater SoilWater{ get; private set; }
 
         /// <summary>Models in the simulation that implement ICanopy.</summary>
         private IEnumerable<ICanopy> canopyModels;
@@ -113,18 +114,6 @@
         /// <summary>weights vpd towards vpd at maximum temperature</summary>
         private const double svp_fract = 0.66;
 
-        /// <summary>Temperature below which eeq decreases (oC).</summary>
-        private const double min_crit_temp = 5.0;
-
-        /// <summary>Temperature above which eeq increases (oC).</summary>
-        private const double max_crit_temp = 35.0;
-
-        /// <summary>Albedo at 100% green crop cover (0-1).</summary>
-        private const double max_albedo = 0.23;
-
-        /// <summary>Albedo at 100% residue cover (0-1).</summary>
-        private const double residue_albedo = 0.23;
-
         /// <summary>The Albedo of the combined soil-plant system for this zone</summary>
         public double Albedo;
 
@@ -179,8 +168,8 @@
             MinimumHeightDiffForNewLayer = minHeightDiffForNewLayer;
             canopyModels = Zone.FindAllDescendants<ICanopy>().ToList();
             modelsThatHaveCanopies = Zone.FindAllDescendants<IHaveCanopy>().ToList();
-            soilWater = Zone.FindInScope<ISoilWater>();
-            surfaceOM = Zone.FindInScope<ISurfaceOrganicMatter>();
+            SoilWater = Zone.FindInScope<ISoilWater>();
+            SurfaceOM = Zone.FindInScope<ISurfaceOrganicMatter>();
         }
 
         /// <summary>The zone model.</summary>
@@ -233,7 +222,7 @@
         /// <summary>Gets the total canopy cover.</summary>
         [Description("Total canopy cover (0-1)")]
         [Units("0-1")]
-        public double CanopyCover {  get { return RadiationInterception / Radn; } }
+        public double CanopyCover { get { return RadiationInterception / Radn; } }
 
         /// <summary>Gets the radiation term of PET.</summary>
         [Description("Radiation component of PET")]
@@ -442,10 +431,10 @@
                 for (int j = 0; j <= Canopies.Count - 1; j++)
                     Canopies[j].interception[i] = MathUtilities.Divide(Canopies[j].LAI[i], sumLAI, 0.0) * totalInterception;
 
-            if (soilWater != null)
+            if (SoilWater != null)
             {
-                soilWater.PotentialInfiltration = Math.Max(0, Rain - totalInterception);
-                soilWater.PrecipitationInterception = totalInterception;
+                SoilWater.PotentialInfiltration = Math.Max(0, Rain - totalInterception);
+                SoilWater.PrecipitationInterception = totalInterception;
             }
         }
 
@@ -521,24 +510,6 @@
                 }
         }
 
-        /// <summary>Calculate the amtospheric potential evaporation rate for each zone</summary>
-        public void CalculateEo()
-        {
-
-            double CoverGreen = 0;
-            for (int j = 0; j <= Canopies.Count - 1; j++)
-                if (Canopies[j].Canopy != null)
-                    CoverGreen += (1 - CoverGreen) * Canopies[j].Canopy.CoverGreen;
-
-            if (soilWater != null && surfaceOM != null)
-                soilWater.Eo = AtmosphericPotentialEvaporationRate(Radn,
-                                                             MaxT,
-                                                             MinT,
-                                                             soilWater.Salb,
-                                                             surfaceOM.Cover,
-                                                             CoverGreen);
-        }
-
         /// <summary>Break the combined Canopy into layers</summary>
         private void DefineLayers()
         {
@@ -565,7 +536,7 @@
             nodes = nodes.Distinct().ToArray();  //Remove nodes that are the same hight to avoid zero depth layers
             numLayers = nodes.Length - 1;
             if (DeltaZ.Length != numLayers)
-             {
+            {
                 // Number of layers has changed; adjust array lengths
                 Array.Resize<double>(ref DeltaZ, numLayers);
                 Array.Resize<double>(ref layerKtot, numLayers);
@@ -771,7 +742,7 @@
             double RhoA = CalcRhoA(averageT, airPressure);
             double lambda = CalcLambda(averageT);
             double specificVPD = CalcSpecificVPD(vp, mint, maxt, airPressure);
-            double denominator = nondQsdT + MathUtilities.Divide(Ga, Gc, 0.0) + 1.0;    // unitless
+            double denominator = nondQsdT + MathUtilities.Divide(Ga, Gc, 1e6) + 1.0;    // unitless
             double PETr = MathUtilities.Divide(nondQsdT * rn, denominator, 0.0) * 1000.0 / lambda / RhoW;
             double PETa = MathUtilities.Divide(RhoA * specificVPD * Ga, denominator, 0.0) * 1000.0 * (day_length * hr2s) / RhoW;
             return PETr + PETa;
@@ -847,7 +818,7 @@
             double averageT = CalcAverageT(mint, maxt);
             double nondQsdT = CalcNondQsdT(averageT, airPressure);
             double lambda = CalcLambda(averageT);
-            double denominator = nondQsdT + MathUtilities.Divide(Ga, Gc, 0.0) + 1.0;
+            double denominator = nondQsdT + MathUtilities.Divide(Ga, Gc, 1e6) + 1.0;
             return MathUtilities.Divide(nondQsdT * rn, denominator, 0.0) * 1000.0 / lambda / RhoW;
 
         }
@@ -860,7 +831,7 @@
             double averageT = CalcAverageT(mint, maxt);
             double nondQsdT = CalcNondQsdT(averageT, airPressure);
             double lambda = CalcLambda(averageT);
-            double denominator = nondQsdT + MathUtilities.Divide(Ga, Gc, 0.0) + 1.0;
+            double denominator = nondQsdT + MathUtilities.Divide(Ga, Gc, 1e6) + 1.0;
             double RhoA = CalcRhoA(averageT, airPressure);
             double specificVPD = CalcSpecificVPD(vp, mint, maxt, airPressure);
             return MathUtilities.Divide(RhoA * specificVPD * Ga, denominator, 0.0) * 1000.0 * (day_length * hr2s) / RhoW;
@@ -882,53 +853,7 @@
         private double CalcOmega(double mint, double maxt, double airPressure, double aerodynamicCond, double canopyCond)
         {
             double Non_dQs_dT = CalcNondQsdT((mint + maxt) / 2.0, airPressure);
-            return MathUtilities.Divide(Non_dQs_dT + 1.0, Non_dQs_dT + 1.0 + MathUtilities.Divide(aerodynamicCond, canopyCond, 0.0), 0.0);
-        }
-
-        private double AtmosphericPotentialEvaporationRate(double Radn, double MaxT, double MinT, double Salb, double residue_cover, double _cover_green_sum)
-        {
-            // ******* calculate potential evaporation from soil surface (eos) ******
-
-            // find equilibrium evap rate as a
-            // function of radiation, albedo, and temp.
-            double surface_albedo = Salb + (residue_albedo - Salb) * residue_cover;
-            // set surface_albedo to soil albedo for backward compatibility with soilwat
-            surface_albedo = Salb;
-
-            double albedo = max_albedo - (max_albedo - surface_albedo) * (1.0 - _cover_green_sum);
-            // wt_ave_temp is mean temp, weighted towards max.
-            double wt_ave_temp = 0.6 * MaxT + 0.4 * MinT;
-
-            double eeq = Radn * 23.8846 * (0.000204 - 0.000183 * albedo) * (wt_ave_temp + 29.0);
-            // find potential evapotranspiration (pot_eo)
-            // from equilibrium evap rate
-            return eeq * EeqFac(MaxT, MinT);
-        }
-
-        private double EeqFac(double MaxT, double MinT)
-        {
-            //+  Purpose
-            //                 calculate coefficient for equilibrium evaporation rate
-            if (MaxT > max_crit_temp)
-            {
-                // at very high max temps eo/eeq increases
-                // beyond its normal value of 1.1
-                return (MaxT - max_crit_temp) * 0.05 + 1.1;
-            }
-            else if (MaxT < min_crit_temp)
-            {
-                // at very low max temperatures eo/eeq
-                // decreases below its normal value of 1.1
-                // note that there is a discontinuity at tmax = 5
-                // it would be better at tmax = 6.1, or change the
-                // .18 to .188 or change the 20 to 21.1
-                return 0.01 * Math.Exp(0.18 * (MaxT + 20.0));
-            }
-            else
-            {
-                // temperature is in the normal range, eo/eeq = 1.1
-                return 1.1;
-            }
+            return MathUtilities.Divide(Non_dQs_dT + 1.0, Non_dQs_dT + 1.0 + MathUtilities.Divide(aerodynamicCond, canopyCond, 1e6), 0.0);
         }
     }
 }

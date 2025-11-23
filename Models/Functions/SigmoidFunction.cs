@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using Models.Core;
-using Newtonsoft.Json;
 using APSIM.Shared.Documentation;
+using Models.Core;
 
 namespace Models.Functions
 {
@@ -21,7 +18,7 @@ namespace Models.Functions
         [Link(Type = LinkType.Child, ByName = true)]
         IFunction Ymax = null;
         /// <summary>The x value</summary>
-        [Link(Type = LinkType.Child, ByName = true, IsOptional =true)]
+        [Link(Type = LinkType.Child, ByName = true, IsOptional = true)]
         IFunction XValue = null;
         /// <summary>The Xo</summary>
         [Link(Type = LinkType.Child, ByName = true)]
@@ -45,7 +42,7 @@ namespace Models.Functions
         {
             try
             {
-                return Ymax.Value(-1) * 1 / (1 + Math.Exp(-(dX - Xo.Value(-1)) / b.Value(-1)));
+                return Ymax.Value(-1) * Function(dX, Xo.Value(-1), b.Value(-1));
             }
             catch (Exception)
             {
@@ -53,7 +50,20 @@ namespace Models.Functions
             }
         }
 
+
         /// <summary>
+        /// General sigmoid function
+        /// </summary>
+        /// <param name="dX"></param>
+        /// <param name="Xo"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public double Function(double dX, double Xo, double b)
+        {
+            return 1 / (1 + Math.Exp(-(dX - Xo) / b));
+        }
+        
+            /// <summary>
         /// Document the model.
         /// </summary>
         public override IEnumerable<ITag> Document()

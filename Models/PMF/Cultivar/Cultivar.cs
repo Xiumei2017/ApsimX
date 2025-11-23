@@ -1,22 +1,19 @@
-﻿namespace Models.PMF
-{
-    using APSIM.Shared.Documentation;
-    using Models.Core;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using APSIM.Shared.Documentation;
+using Models.Core;
+using Newtonsoft.Json;
 
+namespace Models.PMF
+{
     /// <summary>
-    /// A cultivar model - used to override properties of another model
-    /// (typically a plant) at runtime.
+    /// A cultivar model - used to override properties of another model (typically a plant) at runtime.
     /// </summary>
     /// <remarks>
-    /// A cultivar includes aliases to indicate other common names
-    /// and Commands to specify genotypic parameters.
-    /// The format of Commands is "name=value". The "name" of parameter
-    /// should include the full path under Plant function,
-    /// e.g. [Phenology].Vernalisation.PhotopSens = 3.5.
+    /// This includes aliases to indicate other common crop names and commands to specify genotype parameters.
+    /// The format of commands is "name=value". The "name" of parameter should include the full path under
+    /// Plant function, e.g. [Phenology].Vernalisation.PhotopSens = 3.5.
     /// </remarks>
     [Serializable]
     [ViewName("UserInterface.Views.EditorView")]
@@ -24,24 +21,41 @@
     [ValidParent(ParentType = typeof(Plant))]
     [ValidParent(ParentType = typeof(GrazPlan.Stock))]
     [ValidParent(ParentType = typeof(Folder))]
+    [ValidParent(ParentType = typeof(ModelOverrides))]
     public class Cultivar : Model, ILineEditor
     {
-        /// <summary>The model the cultvar is relative to.</summary>
+        /// <summary>Default constructor.</summary>
+        /// <remarks>This is needed for AddModel to work.</remarks>
+        public Cultivar()
+        {
+        }
+
+        /// <summary>
+        /// Constructor to initialise cultivar instance with specified commands
+        /// </summary>
+        /// <param name="commands">list of parameter overwrite commands</param>
+        /// <param name="name">The name of the cultivar</param>
+        public Cultivar (string name, string[] commands)
+        {
+            this.Name = name;
+            Command = commands;
+        }
+
+        /// <summary>The model the cultivar is relative to.</summary>
         private IModel relativeToModel;
 
         /// <summary>The collection of undo overrides that undo the overrides.</summary>
         private IEnumerable<Overrides.Override> undos;
 
-        /// <summary>The collection of commands that must be executed when applying this cultivar./// </summary>
+        /// <summary>The collection of commands that must be executed when applying this cultivar.</summary>
         public string[] Command { get; set; }
 
-        /// <summary>The lines to return to the editor./// </summary>
+        /// <summary>The lines to return to the editor.</summary>
         [JsonIgnore]
         public IEnumerable<string> Lines { get { return Command; } set { Command = value.ToArray(); } }
 
         /// <summary>
-        /// Return true iff this cultivar has the same name as, or is an
-        /// alias for, the givem name.
+        /// Return true if this cultivar has the same name as, or is an alias for, the given name.
         /// </summary>
         /// <param name="name">The name.</param>
         public bool IsKnownAs(string name)
@@ -59,9 +73,7 @@
                 yield return name;
         }
 
-        /// <summary>
-        /// Apply commands.
-        /// </summary>
+        /// <summary>Apply commands.</summary>
         /// <param name="model">The underlying model to apply the commands to</param>
         public void Apply(IModel model)
         {
@@ -70,9 +82,7 @@
                 undos = Overrides.Apply(model, Overrides.ParseStrings(Command));
         }
 
-        /// <summary>
-        /// Undoes cultivar changes, if any.
-        /// </summary>
+        /// <summary>Undoes cultivar changes, if any.</summary>
         public void Unapply()
         {
             if (undos != null)

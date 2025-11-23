@@ -1,17 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using APSIM.Shared.Utilities;
+using Models.CLEM;
+using Models.Core;
+using Models.Storage;
+using Newtonsoft.Json;
+
 namespace Models
 {
-    using APSIM.Shared.Utilities;
-    using Models.CLEM;
-    using Models.Core;
-    using Models.Functions;
-    using Models.Storage;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.IO;
-    using System.Linq;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// A report class for writing output to the data store.
@@ -45,6 +45,10 @@ namespace Models
         /// <summary>Link to a clock model.</summary>
         [Link]
         private IClock clock = null;
+
+        /// <summary>Link to a clock model.</summary>
+        [Link]
+        private ISummary summary = null;
 
         /// <summary>Link to a storage service.</summary>
         [Link]
@@ -81,7 +85,9 @@ namespace Models
         public DateTime DayAfterLastOutput { get; set; }
 
         /// <summary>Group by variable name.</summary>
-        public string GroupByVariableName{ get; set; }
+        public string GroupByVariableName { get; set; }
+
+
 
         /// <summary>
         /// Connect event handlers.
@@ -100,7 +106,7 @@ namespace Models
         /// <param name="sender">Sender object..</param>
         /// <param name="args">Event data.</param>
         [EventSubscribe("SubscribeToEvents")]
-        private void OnConnectToEvents(object sender, EventArgs args)
+        private void OnSubscribeToEvents(object sender, EventArgs args)
         {
             SubscribeToEvents();
         }
@@ -112,6 +118,9 @@ namespace Models
         {
             // Cleanup event names.
             EventNames = TidyUpEventNames();
+
+            if (EventNames.FirstOrDefault(e => e.Contains("StartOfSimulation")) != null)
+                summary.WriteMessage(this, "Report on StartOfFirstDay instead of StartOfSimulation. At StartOfSimulation, models may not be fully initialised.", MessageType.Warning);
 
             // Tidy up variable/event names.
             VariableNames = TidyUpVariableNames();
@@ -309,7 +318,7 @@ namespace Models
             // columns. Find the first aggregated column so that we can, later, use its from and to
             // variables to create an agregated column that doesn't have them.
             string from = null;
-            string to =  null;
+            string to = null;
             if (!string.IsNullOrEmpty(GroupByVariableName))
                 FindFromTo(out from, out to);
 
@@ -356,50 +365,6 @@ namespace Models
                 foreach (var descriptor in simulation.Descriptors)
                     if (descriptor.Name != "Zone" && descriptor.Name != "SimulationName")
                         this.Columns.Add(new ReportColumnConstantValue(descriptor.Name, descriptor.Value));
-                StoreFactorsInDataStore();
-            }
-        }
-
-        /// <summary>Store descriptors in DataStore.</summary>
-        private void StoreFactorsInDataStore()
-        {
-            if (storage != null && simulation != null && simulation.Descriptors != null)
-            {
-                var table = new DataTable("_Factors");
-                table.Columns.Add("ExperimentName", typeof(string));
-                table.Columns.Add("SimulationName", typeof(string));
-                table.Columns.Add("FolderName", typeof(string));
-                table.Columns.Add("FactorName", typeof(string));
-                table.Columns.Add("FactorValue", typeof(string));
-
-                var experimentDescriptor = simulation.Descriptors.Find(d => d.Name == "Experiment");
-                var simulationDescriptor = simulation.Descriptors.Find(d => d.Name == "SimulationName");
-                var folderDescriptor = simulation.Descriptors.Find(d => d.Name == "FolderName");
-
-                foreach (var descriptor in simulation.Descriptors)
-                {
-                    if (descriptor.Name != "Experiment" &&
-                        descriptor.Name != "SimulationName" &&
-                        descriptor.Name != "FolderName" &&
-                        descriptor.Name != "Zone")
-                    {
-                        var row = table.NewRow();
-                        if (experimentDescriptor != null)
-                            row[0] = experimentDescriptor.Value;
-                        if (simulationDescriptor != null)
-                            row[1] = simulationDescriptor.Value;
-                        if (folderDescriptor != null)
-                            row[2] = folderDescriptor.Value;
-                        row[3] = descriptor.Name;
-                        row[4] = descriptor.Value;
-                        table.Rows.Add(row);
-                    }
-                }
-
-                // Report tables are automatically cleaned before the simulation is run,
-                // as an optimisation specifically designed for this call to WriteTable().
-                // Therefore, we do not need to delete existing data here.
-                storage.Writer.WriteTable(table, false);
             }
         }
     }

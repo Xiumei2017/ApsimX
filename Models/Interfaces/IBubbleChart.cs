@@ -1,9 +1,9 @@
+using System.Collections.Generic;
+using APSIM.Shared.Graphing;
+using Models.Core;
+
 namespace Models.Interfaces
 {
-    using System;
-    using Management;
-    using System.Collections.Generic;
-    using Core;
 
     /// <summary>
     /// An interface for a bubble chart.
@@ -13,12 +13,12 @@ namespace Models.Interfaces
         /// <summary>
         /// The nodes of the graph.
         /// </summary>
-        List<StateNode> Nodes { get; set; }
+        List<Node> Nodes { get; set; }
 
         /// <summary>
         /// The arcs of the graph.
         /// </summary>
-        List<RuleAction> Arcs { get; set; }
+        List<Arc> Arcs { get; set; }
 
         /// <summary>
         /// fixme - can this be refactored out?

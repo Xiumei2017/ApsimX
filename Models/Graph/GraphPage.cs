@@ -1,15 +1,16 @@
-﻿namespace Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using APSIM.Shared.Utilities;
+using Models.CLEM;
+using Models.Core;
+using Models.Core.Run;
+using Models.Factorial;
+using Models.Storage;
+
+namespace Models
 {
-    using APSIM.Shared.Utilities;
-    using Core;
-    using Models.CLEM;
-    using Models.Core.Run;
-    using Models.Factorial;
-    using Models.Storage;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     /// <summary>Descibes a page of graphs for the tags system.</summary>
     public class GraphPage : AutoDocumentation.ITag
@@ -38,10 +39,10 @@
             {
                 graph.SimulationDescriptions = simulationDescriptions;
                 allDefinitions.Add(
-                    new GraphDefinitionMap() 
-                    { 
-                        Graph = graph, 
-                        SeriesDefinitions = graph.GetDefinitionsToGraph(storage, simulationFilter).ToList() 
+                    new GraphDefinitionMap()
+                    {
+                        Graph = graph,
+                        SeriesDefinitions = graph.GetDefinitionsToGraph(storage, simulationFilter).ToList()
                     });
             }
 
@@ -67,15 +68,16 @@
         {
             // Find a parent that heads the scope that we're going to graph
             IModel parent = FindParent(model);
+            if (parent is Simulation && parent.Parent is Experiment)
+                throw new Exception("Graph scope is incorrect if placed under a Simulation in an Experiment. It should be a child of the Experiment instead.");
 
-            List<SimulationDescription> simulationDescriptions = null;
-            do
-            {
+            List<SimulationDescription> simulationDescriptions = new List<SimulationDescription>();
+            while (simulationDescriptions.Count == 0 && parent != null) {
                 // Create a list of all simulation/zone objects that we're going to graph.
                 simulationDescriptions = GetSimulationDescriptionsUnderModel(parent);
                 parent = parent.Parent;
             }
-            while (simulationDescriptions.Count == 0 && parent != null);
+
             return simulationDescriptions;
         }
 

@@ -1089,6 +1089,65 @@
             Assert.AreEqual(definitions[0].SeriesDefinitions[0].Y as double[], new int[] { 10, 10 });
         }
 
+        /// <summary>Create xy series definitions with a filter.</summary>
+        [Test]
+        public void SeriesWithFilterWildcards()
+        {
+            var folder = new Folder()
+            {
+                Name = "Folder",
+                Children = new List<IModel>()
+            {
+                new MockSimulationDescriptionGenerator(new List<Description>()
+                {
+                    new Description("Sim1", "Exp", "Exp1"),
+                    new Description("Sim2", "Exp", "Exp2")
+                }),
+                new Graph()
+                {
+                    Children = new List<IModel>()
+                    {
+                        new Series()
+                        {
+                            Name = "Series",
+                            TableName = "Report",
+                            XFieldName = "Col1",
+                            YFieldName = "Col2",
+                            FactorToVaryColours = "Exp",
+                            Filter = "A LIKE 'a%a'"
+                        }
+                    }
+                }
+            }
+            };
+            folder.ParentAllDescendants();
+
+            string data =
+                "CheckpointName    SimulationID     Exp   A  Col1  Col2\r\n" +
+                "            ()              ()      ()  ()    ()   (g)\r\n" +
+                "       Current               1    Exp1   a1a     1    10\r\n" +
+                "       Current               1    Exp1   a1a     1    10\r\n" +
+                "       Current               2    Exp2   b1b     2    20\r\n" +
+                "       Current               2    Exp2   b1b     2    20\r\n";
+
+            var reader = new TextStorageReader(data);
+
+            var graph = folder.Children[1] as Graph;
+            var series = graph.Children[0] as Series;
+            var descriptors = series.GetDescriptorNames(reader).ToList();
+            Assert.AreEqual(descriptors[0], "Exp");
+
+            var page = new GraphPage();
+            page.Graphs.Add(graph);
+            var definitions = page.GetAllSeriesDefinitions(graph, reader, null);
+            Assert.AreEqual(1, definitions.Count);
+            Assert.AreEqual(1, definitions[0].SeriesDefinitions.Count);
+
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].X as double[], new double[] { 1, 1 });
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].Y as double[], new int[] { 10, 10 });
+        }
+
+
         /// <summary>
         /// Create a single xy series definition with a 'Vary By Simulation'.
         /// Ensure it only pulls in simulations in scope.
@@ -1512,6 +1571,71 @@
             Assert.AreEqual(definitions[0].SeriesDefinitions[0].Title, "Exp1");
             Assert.AreEqual(definitions[0].SeriesDefinitions[0].X as double[], new double[] { 1, 2 });
             Assert.AreEqual(definitions[0].SeriesDefinitions[0].Y as double[], new double[] { 1, 5 });
+        }
+
+        /// <summary>Create xy series definitions from predicted/observed table.</summary>
+        [Test]
+        public void SeriesFromPredictedObservedWithMissingObserved()
+        {
+            var folder = new Folder()
+            {
+                Name = "Folder",
+                Children = new List<IModel>()
+                {
+                    new MockSimulationDescriptionGenerator(new List<Description>()
+                    {
+                        new Description("Sim1", "SimulationName", "Sim1", "Experiment", "Exp1"),
+                        new Description("Sim2", "SimulationName", "Sim2", "Experiment", "Exp1"),
+                        new Description("Sim3", "SimulationName", "Sim3", "Experiment", "Exp2"),
+                        new Description("Sim4", "SimulationName", "Sim4", "Experiment", "Exp2")
+                    }),
+                    new Graph()
+                    {
+                        Children = new List<IModel>()
+                        {
+                            new Series()
+                            {
+                                Name = "Series1",
+                                TableName = "Report",
+                                XFieldName = "Predicted.Grain.Wt",
+                                YFieldName = "Observed.Grain.Wt",
+                                FactorToVaryColours = "Experiment",
+                                FactorToVaryMarkers = "Experiment"
+                            }
+                        }
+                    }
+                }
+            };
+            folder.ParentAllDescendants();
+
+            string data =
+                "CheckpointName SimulationName SimulationID Predicted.Grain.Wt  Observed.Grain.Wt Experiment\r\n" +
+                "            ()             ()           ()                 ()                 ()         ()\r\n" +
+                "       Current           Sim1            1                  1                  1       Exp1\r\n" +
+                "       Current           Sim2            2                  2                  5       null\r\n" +
+                "       Current           Sim3            3                  3                  8       Exp2\r\n" +
+                "       Current           Sim4            4                  4                  6       Exp2\r\n";
+
+            var reader = new TextStorageReader(data);
+
+            var graph = folder.Children[1] as Graph;
+            var page = new GraphPage();
+            page.Graphs.Add(graph);
+            var definitions = page.GetAllSeriesDefinitions(graph, reader, null);
+
+            Assert.AreEqual(definitions.Count, 1);
+            Assert.AreEqual(definitions[0].SeriesDefinitions.Count, 2);
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].Colour, ColourUtilities.Colours[0]);
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].Marker, MarkerType.FilledCircle);
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].Title, "Exp1");
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].X as double[], new double[] { 1, 2 });
+            Assert.AreEqual(definitions[0].SeriesDefinitions[0].Y as double[], new double[] { 1, 5 });
+
+            Assert.AreEqual(definitions[0].SeriesDefinitions[1].Colour, ColourUtilities.Colours[1]);
+            Assert.AreEqual(definitions[0].SeriesDefinitions[1].Marker, MarkerType.FilledCircle);
+            Assert.AreEqual(definitions[0].SeriesDefinitions[1].Title, "Exp2");
+            Assert.AreEqual(definitions[0].SeriesDefinitions[1].X as double[], new double[] { 3, 4 });
+            Assert.AreEqual(definitions[0].SeriesDefinitions[1].Y as double[], new double[] { 8, 6 });
         }
 
         /// <summary>Create xy series definitions from predicted/observed table with error bars.</summary>

@@ -1,16 +1,17 @@
-﻿namespace UnitTests.Core.ApsimFile
-{
-    using APSIM.Shared.Utilities;
-    using Models.Core.ApsimFile;
-    using Newtonsoft.Json.Linq;
-    using NUnit.Framework;
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-	using System.Globalization;
-	using System.IO;
-    using System.Linq;
+﻿using APSIM.Shared.Utilities;
+using Models.Core;
+using Models.Core.ApsimFile;
+using Newtonsoft.Json.Linq;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
+namespace UnitTests.Core.ApsimFile
+{
     /// <summary>This is a test class for the .apsimx file converter.</summary>
     [TestFixture]
     public class ConverterTests
@@ -366,6 +367,44 @@
             }
         }
 
+        [Test]
+        public void Version164() //no this is not a typo, this is test 164
+        {
+            string beforeJSON = ReflectionUtilities.GetResourceAsString("UnitTests.Core.ApsimFile.CoverterTest164FileBefore.apsimx");
+            ConverterReturnType converter = FileFormat.ReadFromString<Simulations>(beforeJSON, null, true, null);
+            Simulations actualModel = converter.NewModel as Simulations;
+            Assert.IsTrue(converter.DidConvert);
+
+            string afterJSON = ReflectionUtilities.GetResourceAsString("UnitTests.Core.ApsimFile.CoverterTest164FileAfter.apsimx");
+            converter = FileFormat.ReadFromString<Simulations>(afterJSON, null, true, null);
+            Simulations expectedModel = converter.NewModel as Simulations;
+
+            string actual = FileFormat.WriteToString(actualModel);
+            string expected = FileFormat.WriteToString(expectedModel);
+
+            Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void Version172()
+        {
+            string beforeJSON = ReflectionUtilities.GetResourceAsString("UnitTests.Core.ApsimFile.CoverterTest172FileBefore.apsimx");
+            ConverterReturnType converter = FileFormat.ReadFromString<Simulations>(beforeJSON, null, true, null);
+            Simulations actualModel = converter.NewModel as Simulations;
+            Assert.IsTrue(converter.DidConvert);
+
+            string afterJSON = ReflectionUtilities.GetResourceAsString("UnitTests.Core.ApsimFile.CoverterTest172FileAfter.apsimx");
+            converter = FileFormat.ReadFromString<Simulations>(afterJSON, null, true, null);
+            Simulations expectedModel = converter.NewModel as Simulations;
+
+            string actual = FileFormat.WriteToString(actualModel);
+            string expected = FileFormat.WriteToString(expectedModel);
+
+            Assert.AreEqual(actual, expected);
+
+            Assert.Pass();
+        }
+
         /// <summary>
         /// Arguably this doesn't even belong in the converter.
         /// Nonetheless, it's not working properly at the moment so
@@ -403,6 +442,15 @@
             Assert.AreEqual(new double[] { 2.0, 1.0 }, oc.Item1);
             Assert.AreEqual("Total", oc.Item2);
             Assert.AreEqual(new double[] { 100.0, 200.0 }, oc.Item3);
+        }
+
+        [Test]
+        public void TestUpgradeSoil()
+        {
+          string xml = ReflectionUtilities.GetResourceAsString("UnitTests.Core.ApsimFile.Soil.apsim");
+          ConverterReturnType result = Converter.DoConvert(xml, Converter.LatestVersion);
+          Assert.IsNotNull(JsonUtilities.ChildWithName(result.Root, "SoilTemperature"));
+          Assert.IsNotNull(JsonUtilities.ChildWithName(result.Root, "Nutrient"));
         }
     }
 }

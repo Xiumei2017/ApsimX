@@ -1,19 +1,19 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using APSIM.Shared.Extensions.Collections;
+using APSIM.Shared.Utilities;
+using Models.Core;
+using Models.LifeCycle;
+using Models.PMF;
+using Models.Storage;
+using Models.Surface;
 namespace UserInterface.Classes
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Reflection;
-    using APSIM.Shared.Extensions.Collections;
-    using APSIM.Shared.Utilities;
-    using Models.Core;
-    using Models.LifeCycle;
-    using Models.PMF;
-    using Models.Storage;
-    using Models.Surface;
-
     public enum PropertyType
     {
         SingleLineText,
@@ -21,12 +21,14 @@ namespace UserInterface.Classes
         DropDown,
         Checkbox,
         Colour,
+        ColourPicker,
         File,
         Files,
         Directory,
         //Directories,
         Font,
-        Numeric
+        Numeric,
+        Code
     }
 
     /// <summary>
@@ -232,7 +234,6 @@ namespace UserInterface.Classes
                                                .Where(m => metadata.PropertyType.IsAssignableFrom(m.GetType()))
                                                .Select(m => m.Name)
                                                .ToArray();
-
                     }
                     else if (metadata.PropertyType == typeof(bool))
                         DisplayMethod = PropertyType.Checkbox;
@@ -240,6 +241,12 @@ namespace UserInterface.Classes
                         DisplayMethod = PropertyType.Colour;
                     else
                         DisplayMethod = PropertyType.SingleLineText;
+                    break;
+                case DisplayType.Code:
+                    DisplayMethod = PropertyType.Code;
+                    break;
+                case DisplayType.ColourPicker:
+                    DisplayMethod = PropertyType.ColourPicker;
                     break;
                 case DisplayType.FileName:
                     DisplayMethod = PropertyType.File;
@@ -278,6 +285,14 @@ namespace UserInterface.Classes
                         plant = model.FindInScope<IPlant>();
                     if (plant != null)
                         DropDownOptions = PropertyPresenterHelpers.GetCultivarNames(plant);
+                    else
+                        DropDownOptions = new string[] { };
+                    break;
+                case DisplayType.SCRUMcropName:
+                    DisplayMethod = PropertyType.DropDown;
+                    Zone zoney = model.FindInScope<Zone>();
+                    if (zoney != null)
+                        DropDownOptions = PropertyPresenterHelpers.GetSCRUMcropNames(zoney);
                     break;
                 case DisplayType.TableName:
                     DisplayMethod = PropertyType.DropDown;
@@ -303,6 +318,26 @@ namespace UserInterface.Classes
                     if (planty != null)
                         DropDownOptions = PropertyPresenterHelpers.GetCropStageNames(planty);
                     break;
+                case DisplayType.CSVCrops:
+                    DisplayMethod = PropertyType.DropDown;
+                    PropertyInfo namesPropInfo = model.GetType().GetProperty("CropNames");
+                    string[] names = namesPropInfo?.GetValue(model) as string[] ;
+                    if (names != null)
+                        DropDownOptions = names;
+                    break;
+                case DisplayType.CropPhaseName:
+                    DisplayMethod = PropertyType.DropDown;
+                    Plant plantyy = model.FindInScope<Plant>();
+                    if (plantyy != null)
+                        DropDownOptions = PropertyPresenterHelpers.GetCropPhaseNames(plantyy);
+                    break;
+                case DisplayType.PlantOrganList:
+                    DisplayMethod = PropertyType.DropDown;
+                    Zone zone1 = model.FindAncestor<Zone>();
+                    List<Plant> plants = zone1.FindAllChildren<Plant>().ToList();
+                    if (plants != null)
+                        DropDownOptions = PropertyPresenterHelpers.GetPlantOrgans(plants);
+                    break;  
                 case DisplayType.LifePhaseName:
                     DisplayMethod = PropertyType.DropDown;
                     LifeCycle lifeCycle = null;
@@ -346,6 +381,14 @@ namespace UserInterface.Classes
                     DisplayMethod = PropertyType.MultiLineText;
                     if (Value is IEnumerable enumerable && metadata.PropertyType != typeof(string))
                         Value = string.Join(Environment.NewLine, ((IEnumerable)metadata.GetValue(obj)).ToGenericEnumerable());
+                    break;
+                case DisplayType.ScrumEstablishStages:
+                    DisplayMethod = PropertyType.DropDown;
+                    DropDownOptions = new string[3] { "Seed", "Emergence", "Seedling" };
+                    break;
+                case DisplayType.ScrumHarvestStages: 
+                    DisplayMethod = PropertyType.DropDown;
+                    DropDownOptions = new string[6] { "Vegetative", "EarlyReproductive", "MidReproductive", "LateReproductive", "Maturity", "Ripe" };
                     break;
 
                 // Should never happen - presenter should handle this(?)

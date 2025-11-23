@@ -1,15 +1,16 @@
-﻿namespace Models.PMF
+﻿using System;
+using System.Collections.Generic;
+using APSIM.Shared.Documentation;
+using APSIM.Shared.Utilities;
+using Models.Core;
+using Models.Functions;
+using Models.Interfaces;
+using Models.PMF.Interfaces;
+using Models.PMF.Organs;
+using Newtonsoft.Json;
+
+namespace Models.PMF
 {
-    using Models.Core;
-    using Models.Functions;
-    using Models.Interfaces;
-    using Models.PMF.Interfaces;
-    using System;
-    using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using APSIM.Shared.Documentation;
-    using APSIM.Shared.Utilities;
-    using Models.PMF.Organs;
 
     /// <summary>
     /// This organ is simulated using a  organ type.  It provides the core functions of intercepting radiation
@@ -44,7 +45,7 @@
         /// <summary>The green area index</summary>
         [Link(Type = LinkType.Child, ByName = true)]
         IFunction GreenAreaIndex = null;
-   
+
         /// <summary>The extinction coefficient of green material</summary>
         [Link(Type = LinkType.Child, ByName = true)]
         IFunction GreenExtinctionCoefficient = null;
@@ -56,7 +57,7 @@
         /// <summary>The height of the top of the canopy</summary>
         [Link(Type = LinkType.Child, ByName = true)]
         IFunction Tallness = null;
-     
+
         /// <summary>TThe depth of canopy which organ resides in</summary>
         [Link(Type = LinkType.Child, ByName = true)]
         IFunction Deepness = null;
@@ -70,7 +71,7 @@
         IFunction DeadAreaIndex = null;
 
         /// <summary>Gets the canopy. Should return null if no canopy present.</summary>
-        public string CanopyType { get { return Plant.PlantType+ "_" + this.Parent.Name; } }
+        public string CanopyType { get { return Plant.PlantType + "_" + this.Parent.Name; } }
 
         /// <summary>Albedo.</summary>
         [Description("Albedo")]
@@ -144,7 +145,8 @@
         private double waterAllocation = 0;
         /// <summary>Gets or sets the water allocation.</summary>
         [JsonIgnore]
-        public double WaterAllocation {
+        public double WaterAllocation
+        {
             get { return waterAllocation; }
             set { waterAllocation = value; AllocationMade(); }
         }
@@ -163,15 +165,15 @@
         /// <summary>Calculates the water demand.</summary>
         public double CalculateWaterDemand()
         {
-          
-                return WaterDemand;
-        
+
+            return WaterDemand;
+
         }
         /// <summary>Gets the transpiration.</summary>
         public double Transpiration { get { return WaterAllocation; } }
 
-     
-        
+
+
 
         /// <summary>Gets or sets the lai dead.</summary>
         public double LAIDead { get; set; }
@@ -187,11 +189,11 @@
         {
             get
             {
-                 double TotalRadn = 0;
-                 if (LightProfile != null)
-                     for (int i = 0; i < LightProfile.Length; i++)
-                     TotalRadn += LightProfile[i].AmountOnGreen;
-                 return TotalRadn;
+                double TotalRadn = 0;
+                if (LightProfile != null)
+                    for (int i = 0; i < LightProfile.Length; i++)
+                        TotalRadn += LightProfile[i].AmountOnGreen;
+                return TotalRadn;
             }
         }
 
@@ -218,7 +220,7 @@
         /// Water stress factor.
         /// </summary>
         public double Fw { get; private set; }
-        
+
 
         /// <summary>Clears this instance.</summary>
         private void Clear()
@@ -233,6 +235,7 @@
             WaterAllocation = 0.0;
             WaterDemand = 0.0;
             _PotentialEP = 0.0;
+            LightProfile = new CanopyEnergyBalanceInterceptionlayerType[0];
         }
 
         /// <summary>Event from sequencer telling us to do our potential growth.</summary>
@@ -243,7 +246,7 @@
         {
             // save current state
             if (parentPlant.IsAlive)
-             {
+            {
                 FRGR = FRGRer.Value();
                 Height = Tallness.Value();
                 Depth = Deepness.Value();
@@ -251,9 +254,9 @@
                 LAI = GreenAreaIndex.Value();
                 LAIDead = DeadAreaIndex.Value();
                 KDead = DeadExtinctionCoefficient.Value();
-             }
+            }
         }
-     
+
         /// <summary>Constructor</summary>
         public EnergyBalance()
         {
@@ -283,7 +286,7 @@
             Width = 0.0;
             LAIDead = 0.0;
         }
- 
+
         /// <summary>Called when crop is sowed</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="data">The <see cref="EventArgs"/> instance containing the event data.</param>
@@ -291,7 +294,7 @@
         protected void OnPlantSowing(object sender, SowingParameters data)
         {
             if (data.Plant == parentPlant)
-                Clear();
+                resetCanopy();
         }
 
         /// <summary>Called when crop is ending</summary>
@@ -300,8 +303,25 @@
         [EventSubscribe("PlantEnding")]
         protected void OnPlantEnding(object sender, EventArgs e)
         {
+            resetCanopy();
+        }
+
+        /// <summary>Called when crop is ending</summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        [EventSubscribe("EndCrop")]
+        protected void OnEndCrop(object sender, EventArgs e)
+        {
+            resetCanopy();
+        }
+
+        /// <summary>
+        /// Called when canopy is reset but crop not ended.  Used for deciduious crops
+        /// </summary>
+        public void resetCanopy()
+        {
             Clear();
         }
 
-     }
+    }
 }

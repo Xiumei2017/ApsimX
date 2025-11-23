@@ -324,7 +324,7 @@
                     new Draft()
                     {
                         StartDate = "1-Jan",
-                        EndDate = " 10-Jan",
+                        EndDate = "10-Jan",
                         TypeOfDraft = Draft.DraftType.Fixed,
                         TagNumbers = new int[] { 1 },
                         PaddockNames = new string[] { "Field2" }
@@ -434,7 +434,7 @@
                     new Draft()
                     {
                         StartDate = "1-Jan",
-                        EndDate = " 10-Jan",
+                        EndDate = "10-Jan",
                         TypeOfDraft = Draft.DraftType.Flexible,
                         CheckEvery = 1,
                         TagNumberPriority1 = new int[] { 2 },
@@ -585,7 +585,8 @@
             Assert.AreEqual(100, groups.Last().NoAnimals);
 
             // Make sure summary file was written to.
-            Assert.AreEqual("Sold 50 animals", MockSummary.messages[0]);
+            var summary = stock.FindDescendant<MockSummary>();
+            Assert.AreEqual("Sold 50 animals", summary.messages[0]);
         }
 
         /// <summary>Ensure a user can sell animals by weight.</summary>
@@ -642,7 +643,8 @@
             Assert.AreEqual(100, groups.Last().NoAnimals);
 
             // Make sure summary file was written to.
-            Assert.AreEqual("Sold 50 animals", MockSummary.messages[0]);
+            var summary = stock.FindDescendant<MockSummary>();
+            Assert.AreEqual("Sold 50 animals", summary.messages[0]);
         }
 
         /// <summary>Ensure a user can shear animals.</summary>
@@ -696,7 +698,8 @@
             Assert.AreEqual(70, cfw);
 
             // Make sure summary file was written to.
-            Assert.AreEqual("Shearing animals", MockSummary.messages[0]);
+            var summary = stock.FindDescendant<MockSummary>();
+            Assert.AreEqual("Shearing animals", summary.messages[0]);
         }
 
         /// <summary>Ensure a user can move animals between paddocks.</summary>

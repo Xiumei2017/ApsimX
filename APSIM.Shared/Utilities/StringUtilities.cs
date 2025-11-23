@@ -1,11 +1,13 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.Text;
+
 namespace APSIM.Shared.Utilities
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Globalization;
-    using System.Text;
+
 
     /// <summary>
     /// Static functions for string manipulation
@@ -88,7 +90,7 @@ namespace APSIM.Shared.Utilities
         {
             foreach (string Value in values)
                 if (Value.Equals(st, StringComparison.CurrentCultureIgnoreCase))
-                    return true; 
+                    return true;
             return false;
         }
         /// <summary>
@@ -116,7 +118,7 @@ namespace APSIM.Shared.Utilities
             }
             return -1;
         }
- 
+
         /// <summary>
         /// This method splits values on a comma but also honours double quotes
         /// ensuring something in double quotes is never split.
@@ -146,7 +148,7 @@ namespace APSIM.Shared.Utilities
                         // Found a word - store it.
                         if (Start != i)
                             ReturnStrings.Add(text.Substring(Start, i - Start).Trim(" ".ToCharArray()));
-                        Start = i+1;
+                        Start = i + 1;
 
                     }
                 }
@@ -258,11 +260,11 @@ namespace APSIM.Shared.Utilities
             int PosOpenBracket = st.LastIndexOf(openBracket);
             if (PosOpenBracket != -1)
             {
-            int PosCloseBracket = st.LastIndexOf(closeBracket);
+                int PosCloseBracket = st.LastIndexOf(closeBracket);
                 if (PosCloseBracket != -1 && PosOpenBracket < PosCloseBracket)
-            {
-                ReturnString = st.Substring(PosOpenBracket + 1, PosCloseBracket - PosOpenBracket - 1).Trim();
-                st = st.Remove(PosOpenBracket, PosCloseBracket - PosOpenBracket + 1).Trim();
+                {
+                    ReturnString = st.Substring(PosOpenBracket + 1, PosCloseBracket - PosOpenBracket - 1).Trim();
+                    st = st.Remove(PosOpenBracket, PosCloseBracket - PosOpenBracket + 1).Trim();
                 }
             }
             return ReturnString;
@@ -358,11 +360,11 @@ namespace APSIM.Shared.Utilities
         /// <returns></returns>
         public static string DQuote(string st)
         {
-            if (st.IndexOfAny(new char[] { ' ', '&', '<', '>', '(', ')', 
-                                           '[', ']', '{', '}', '=', ';', 
-                                           '!', '\'', '+', ',', '^', 
+            if (st.IndexOfAny(new char[] { ' ', '&', '<', '>', '(', ')',
+                                           '[', ']', '{', '}', '=', ';',
+                                           '!', '\'', '+', ',', '^',
                                            '`', '~', '|','@' }) >= 0)
-              return "\"" + st + "\"";
+                return "\"" + st + "\"";
             return st;
         }
 
@@ -490,7 +492,7 @@ namespace APSIM.Shared.Utilities
             {
                 int PosLastPeriod = name.LastIndexOf(delimiter);
                 if (PosLastPeriod >= 0)
-                    ReturnName = name.Substring(PosLastPeriod+1);
+                    ReturnName = name.Substring(PosLastPeriod + 1);
             }
             return ReturnName;
         }
@@ -822,7 +824,7 @@ namespace APSIM.Shared.Utilities
 
             if (token.Length > 0 && token.IndexOf('E') == token.Length - 1)  // Number is in exponential format
             {
-                MatchToken(ref parseSt, "+");       
+                MatchToken(ref parseSt, "+");
                 int exponent = 0;
                 if (TokenInt(ref parseSt, ref exponent))
                     token = token + exponent.ToString();  // Add the exponent to token
@@ -943,6 +945,42 @@ namespace APSIM.Shared.Utilities
             }
             else
                 return null;
+        }
+
+        /// <summary>Removes all symbols from a string</summary>
+        /// <param name="input">The string.</param>
+        /// <returns>The string without symbols</returns>
+        public static string CleanStringOfSymbols(string input)
+        {
+            string symbols = "`~!@#$%^&*()_+-={}|[]\\:\";'<>?,./' \t\n";
+            string output = input;
+            for (int i = 0; i < symbols.Length; i++)
+                output = output.Replace(symbols[i].ToString(), "");
+            return output;
+        }
+        
+        /// <summary>
+        /// Gets a specific line of text from a multiline string, preserving empty lines.
+        /// </summary>
+        /// <param name="text">Text.</param>
+        /// <param name="lineNo">0-indexed line number.</param>
+        /// <returns>String containing a specific line of text.</returns>
+        public static string GetLine(string text, int lineNo)
+        {
+            // string.Split(Environment.NewLine.ToCharArray()) doesn't work well for us on Windows - Mono.TextEditor seems 
+            // to use unix-style line endings, so every second element from the returned array is an empty string.
+            // If we remove all empty strings from the result then we also remove any lines which were deliberately empty.
+
+            string currentLine;
+            using (System.IO.StringReader reader = new System.IO.StringReader(text))
+            {
+                int i = 0;
+                while ((currentLine = reader.ReadLine()) != null && i < lineNo)
+                {
+                    i++;
+                }
+            }
+            return currentLine;
         }
     }
 }

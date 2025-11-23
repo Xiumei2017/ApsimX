@@ -1,18 +1,21 @@
-﻿namespace UserInterface.Presenters
-{
-    using APSIM.Shared.Graphing;
-    using Commands;
-    using Models.Soils;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using Views;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using APSIM.Shared.Graphing;
+using APSIM.Shared.Utilities;
+using Models.Interfaces;
+using Models.Soils;
+using UserInterface.Commands;
+using UserInterface.Views;
 
+namespace UserInterface.Presenters
+{
     /// <summary>A presenter for the water model.</summary>
     public class WaterPresenter : IPresenter
     {
         /// <summary>The grid presenter.</summary>
-        private NewGridPresenter gridPresenter;
+        private GridPresenter gridPresenter;
 
         /// <summary>Parent explorer presenter.</summary>
         private ExplorerPresenter explorerPresenter;
@@ -45,7 +48,7 @@
         public WaterPresenter()
         {
         }
-        
+
         /// <summary>Attach the model and view to this presenter and populate the view.</summary>
         /// <param name="model">The data store model to work with.</param>
         /// <param name="v">Data store view to work with.</param>
@@ -54,9 +57,13 @@
         {
             water = model as Water;
             view = v as ViewBase;
+
+            ContainerView gridContainer = view.GetControl<ContainerView>("grid");
+
             this.explorerPresenter = explorerPresenter;
-            gridPresenter = new NewGridPresenter();
-            gridPresenter.Attach(model, v, explorerPresenter);
+            gridPresenter = new GridPresenter();
+            gridPresenter.Attach((model as IGridModel).Tables[0], gridContainer, explorerPresenter);
+            gridPresenter.AddContextMenuOptions(new string[] { "Cut", "Copy", "Paste", "Delete", "Select All" });
 
             percentFullEdit = view.GetControl<EditView>("percentFullEdit");
             filledFromTopCheckbox = view.GetControl<CheckBoxView>("filledFromTopCheckbox");
@@ -65,9 +72,9 @@
             pawEdit = view.GetControl<EditView>("pawEdit");
             graph = view.GetControl<GraphView>("graph");
             graph.SetPreferredWidth(0.3);
+            graph.AddContextAction("Copy graph to clipboard", CopyGraphToClipboard);
 
             Refresh();
-            ConnectEvents();
         }
 
         /// <summary>Detach the model from the view.</summary>
@@ -92,6 +99,7 @@
                 depthWetSoilEdit.Text = water.DepthWetSoil.ToString("F0", CultureInfo.CurrentCulture);
                 PopulateWaterGraph(graph, water.Physical.Thickness, water.Physical.AirDry, water.Physical.LL15, water.Physical.DUL, water.Physical.SAT,
                                    water.RelativeTo, water.Thickness, water.RelativeToLL, water.InitialValues, null, null);
+                gridPresenter.Refresh();
                 ConnectEvents();
             }
             catch (Exception err)
@@ -103,7 +111,6 @@
         /// <summary>Connect all widget events.</summary>
         private void ConnectEvents()
         {
-            DisconnectEvents();
             gridPresenter.CellChanged += OnCellChanged;
             pawEdit.Changed += OnPawChanged;
             percentFullEdit.Changed += OnPercentFullChanged;
@@ -127,11 +134,20 @@
 
         /// <summary>Invoked when a grid cell has changed.</summary>
         /// <param name="dataProvider">The provider that contains the data.</param>
-        /// <param name="colIndex">The index of the column of the cell that was changed.</param>
-        /// <param name="rowIndex">The index of the row of the cell that was changed.</param>
-        private void OnCellChanged(ISheetDataProvider dataProvider, int colIndex, int rowIndex)
+        /// <param name="colIndices">The indices of the columns of the cells that were changed.</param>
+        /// <param name="rowIndices">The indices of the rows of the cells that were changed.</param>
+        /// <param name="values">The cell values.</param>
+        private void OnCellChanged(ISheetDataProvider dataProvider, int[] colIndices, int[] rowIndices, string[] values)
         {
-            Refresh();
+
+            if (water.AreInitialValuesWithinPhysicalBoundaries(water.InitialValues))
+                Refresh();
+            else
+            {
+                this.explorerPresenter.CommandHistory.Undo();
+                this.explorerPresenter.MainPresenter.ShowMessage("A water initial value exceeded acceptable bounds. Initial value has been reset to it's previous value.", Models.Core.Simulation.MessageType.Information);
+            }
+
         }
 
         /// <summary>Invoked when the PAW edit box is changed.</summary>
@@ -147,8 +163,8 @@
             // pending events.
             if (string.IsNullOrEmpty(pawEdit.Text) && Gtk.Application.EventsPending())
                 return;
-            double paw = Convert.ToDouble(pawEdit.Text, CultureInfo.CurrentCulture);
-            ChangePropertyValue(new ChangeProperty(water, "InitialPAWmm", paw));
+            if (double.TryParse(pawEdit.Text, out double val) && string.Compare(pawEdit.Text,"-") != 0)
+                ChangePropertyValue(new ChangeProperty(water, "InitialPAWmm", val));                
         }
 
         /// <summary>Invoked when the percent full edit box is changed.</summary>
@@ -164,8 +180,8 @@
             // pending events.
             if (string.IsNullOrEmpty(percentFullEdit.Text) && Gtk.Application.EventsPending())
                 return;
-            double fractionFull = Convert.ToDouble(percentFullEdit.Text, CultureInfo.CurrentCulture) / 100;
-            ChangePropertyValue(new ChangeProperty(water, nameof(water.FractionFull), fractionFull));
+            if (double.TryParse(percentFullEdit.Text, out double val))
+                ChangePropertyValue(new ChangeProperty(water, nameof(water.FractionFull), val / 100));
         }
 
         /// <summary>Invoked when the filled from top checkbox is changed.</summary>
@@ -175,14 +191,16 @@
         {
             var changeFilledFromTop = new ChangeProperty.Property(water, nameof(water.FilledFromTop), filledFromTopCheckbox.Checked);
 
-            double fractionFull = Convert.ToDouble(percentFullEdit.Text, CultureInfo.CurrentCulture) / 100;
-            var changeFractionFull = new ChangeProperty.Property(water, nameof(water.FractionFull), fractionFull);
-
-            // Create a single ChangeProperty object with two actual changes.
-            // This will cause both changes to be applied (and be undo-able) in
-            // a single atomic action.
-            ChangeProperty changes = new ChangeProperty(new[] { changeFilledFromTop, changeFractionFull });
-            ChangePropertyValue(changes);
+            if (string.IsNullOrEmpty(percentFullEdit.Text))
+            {
+                ChangeProperty change = new ChangeProperty(new[] { changeFilledFromTop });
+                ChangePropertyValue(change);
+            }
+            else
+            {
+                ChangeProperty changes = new ChangeProperty(new[] { changeFilledFromTop });
+                ChangePropertyValue(changes);
+            }
         }
 
         /// <summary>Invoked when the relative to drop down is changed.</summary>
@@ -191,14 +209,7 @@
         private void OnRelativeToChanged(object sender, EventArgs e)
         {
             var changeRelativeTo = new ChangeProperty.Property(water, nameof(water.RelativeTo), relativeToDropDown.SelectedValue);
-
-            double fractionFull = Convert.ToDouble(percentFullEdit.Text, CultureInfo.CurrentCulture) / 100;
-            var changeFractionFull = new ChangeProperty.Property(water, nameof(water.FractionFull), fractionFull);
-
-            // Create a single ChangeProperty object with two actual changes.
-            // This will cause both changes to be applied (and be undo-able) in
-            // a single atomic action.
-            ChangeProperty changes = new ChangeProperty(new[] { changeRelativeTo, changeFractionFull });
+            ChangeProperty changes = new ChangeProperty(new[] { changeRelativeTo });
             ChangePropertyValue(changes);
         }
 
@@ -207,8 +218,10 @@
         /// <param name="e">The event arguments.</param>
         private void OnDepthWetSoilChanged(object sender, EventArgs e)
         {
-            double depthWetSoil = Convert.ToDouble(depthWetSoilEdit.Text, CultureInfo.CurrentCulture);
-            ChangePropertyValue(nameof(water.DepthWetSoil), depthWetSoil);
+            if (string.IsNullOrEmpty(depthWetSoilEdit.Text) && Gtk.Application.EventsPending())
+                return;
+            if (double.TryParse(depthWetSoilEdit.Text, out double val) && string.Compare(depthWetSoilEdit.Text, "-") != 0)
+                ChangePropertyValue(nameof(water.DepthWetSoil), val);
         }
 
         /// <summary>
@@ -230,8 +243,6 @@
         private void ChangePropertyValue(ChangeProperty command)
         {
             explorerPresenter.CommandHistory.Add(command);
-            Refresh();
-            gridPresenter.Refresh();
         }
 
         /// <summary>
@@ -250,21 +261,11 @@
             var swCumulativeThickness = APSIM.Shared.Utilities.SoilUtilities.ToCumThickness(swThickness);
             graph.Clear();
 
-            if (llsoil != null && llsoilsName != null)
-            {       //draw the area relative to the water LL instead.
-                graph.DrawRegion($"PAW relative to {llsoilsName}", llsoil, swCumulativeThickness,
-                             sw, swCumulativeThickness,
-                             AxisPosition.Top, AxisPosition.Left,
-                             System.Drawing.Color.LightSkyBlue, true);
-            } 
-            else
-            {       //draw the area relative to whatever the water node is currently relative to
+            //draw the area relative to whatever the water node is currently relative to
                 graph.DrawRegion($"PAW relative to {cllName}", cll, swCumulativeThickness,
                             sw, swCumulativeThickness,
                             AxisPosition.Top, AxisPosition.Left,
                             System.Drawing.Color.LightSkyBlue, true);
-            }
-            
 
             graph.DrawLineAndMarkers("Airdry", airdry,
                                      cumulativeThickness,
@@ -299,10 +300,42 @@
                         LineThickness.Normal, MarkerSize.Normal, 1, true);
             }
 
-            graph.FormatAxis(AxisPosition.Top, "Volumetric water (mm/mm)", inverted: false, double.NaN, double.NaN, double.NaN, false);
-            graph.FormatAxis(AxisPosition.Left, "Depth (mm)", inverted: true, 0, double.NaN, double.NaN, false);
+            List<double> vols = new List<double>();
+            foreach (double val in airdry)
+                vols.Add(val);
+            foreach (double val in cll)
+                vols.Add(val);
+            foreach (double val in dul)
+                vols.Add(val);
+            foreach (double val in sat)
+                vols.Add(val);
+
+            if (llsoil != null)
+                foreach (double val in llsoil)
+                    vols.Add(val);
+
+            double padding = 0.01; //add 1% to bounds
+            double xTopMin = MathUtilities.Min(vols);
+            double xTopMax = MathUtilities.Max(vols);
+            xTopMin -= xTopMax * padding;
+            xTopMax += xTopMax * padding;
+
+            double height = MathUtilities.Max(cumulativeThickness);
+            height += height * padding;
+
+            graph.FormatAxis(AxisPosition.Top, "Volumetric water (mm/mm)", inverted: false, xTopMin, xTopMax, double.NaN, false, false);
+            graph.FormatAxis(AxisPosition.Left, "Depth (mm)", inverted: true, 0, height, double.NaN, false, false);
             graph.FormatLegend(LegendPosition.RightBottom, LegendOrientation.Vertical);
+
             graph.Refresh();
+        }
+
+        /// <summary>User has clicked "copy graph" menu item.</summary>
+        /// <param name="sender">Sender of event</param>
+        /// <param name="e">Event arguments</param>
+        private void CopyGraphToClipboard(object sender, EventArgs e)
+        {
+            graph.ExportToClipboard();
         }
     }
 }

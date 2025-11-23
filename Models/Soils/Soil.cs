@@ -1,11 +1,12 @@
-﻿namespace Models.Soils
+﻿using System;
+using System.Text;
+using APSIM.Shared.Utilities;
+using Models.Core;
+using Models.Interfaces;
+using Models.Soils.Nutrients;
+
+namespace Models.Soils
 {
-    using APSIM.Shared.Utilities;
-    using Models.Core;
-    using Models.Interfaces;
-    using Models.Soils.Nutrients;
-    using System;
-    using System.Text;
 
     /// <summary>
     /// The soil class encapsulates a soil characterisation and 0 or more soil samples.
@@ -133,6 +134,7 @@
             var organic = FindChild<Organic>();
             var water = FindChild<Water>();
             var waterBalance = FindInScope<ISoilWater>();
+            var temperature = FindInScope<SoilTemp.SoilTemperature>();
 
             // Determine the target layer structure.
             var targetThickness = physical.Thickness;
@@ -144,6 +146,7 @@
             organic.Standardise(targetThickness);
             water.Standardise(targetThickness);
             waterBalance.Standardise(targetThickness);
+            temperature?.Standardise(targetThickness);
 
             foreach (var solute in FindAllChildren<Solute>())
                 solute.Standardise(targetThickness);

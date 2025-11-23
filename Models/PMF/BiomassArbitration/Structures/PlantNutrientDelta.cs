@@ -1,16 +1,12 @@
-﻿namespace Models.PMF
-{
-    using APSIM.Shared.Utilities;
-    using Models.Core;
-    using Models.Functions;
-    using Models.PMF.Interfaces;
-    using Models.PMF.Organs;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Models.Core;
+using Newtonsoft.Json;
 
-   
+namespace Models.PMF
+{
+
     /// <summary>
     /// The daily state of flows throughout the plant
     /// </summary>
@@ -54,6 +50,23 @@
 
         /// <summary>The total demand for resoure  /// </summary>
         public double TotalPlantDemandsAllocated { get { return ArbitratingOrgans.Sum(o => o.DemandsAllocated.Total); } }
+
+        /// <summary>
+        ///  The total amount of reallocation supplies that has been allocated
+        /// </summary>
+        public double TotalReAllocationSupplyAllocated { get { return ArbitratingOrgans.Sum(o => o.SuppliesAllocated.ReAllocation.Total); } }
+
+        /// <summary>
+        ///  The total amount of retranslocation supplies that has been allocated
+        /// </summary>
+        public double TotalReTranslocationSupplyAllocated { get { return ArbitratingOrgans.Sum(o => o.SuppliesAllocated.ReTranslocation.Total); } }
+
+        /// <summary>
+        ///  The total amount of fixation supplies that has been allocated
+        /// </summary>
+        public double TotalFixationSupplyAllocated { get { return ArbitratingOrgans.Sum(o => o.SuppliesAllocated.Fixation); } }
+
+
 
         //Error checking variables
         /// <summary>Gets or sets the start.</summary>

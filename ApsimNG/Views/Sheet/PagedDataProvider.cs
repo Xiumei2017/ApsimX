@@ -42,6 +42,15 @@ namespace UserInterface.Views
         /// <summary>The names of the columns to read from table.</summary>
         private IEnumerable<string> columnNameFilters;
 
+        /// <summary>
+        /// If the store is a DataStoreReader, points to its Connection.
+        /// This allows us to use SQL appropriate for different connection types.
+        /// </summary>
+        private IDatabaseConnection connection = null;
+
+        /// <summary>Column to order by</summary>
+        private string orderBy;
+
         /// <summary>Constructor.</summary>
         /// <param name="store">The data store.</param>
         /// <param name="dataTableName">Name of table to read.</param>
@@ -49,6 +58,7 @@ namespace UserInterface.Views
         /// <param name="simulationNamesInScope">The names of simulations in scope.</param>
         /// <param name="columnNameFilter">Column name filter (csv). Can be null.</param>
         /// <param name="dataFilter">The data filter to apply.</param>
+        /// <param name="sortBy">Column to sort by</param>
         /// <param name="dataPageSize">The number of rows to load at a time from the datastore table.</param>
         public PagedDataProvider(IStorageReader store, 
                                  string checkpointNameInScope,
@@ -56,14 +66,18 @@ namespace UserInterface.Views
                                  IEnumerable<string> simulationNamesInScope,
                                  string columnNameFilter,
                                  string dataFilter,
+                                 string sortBy = "",
                                  int dataPageSize = 50)
         {
             dataStore = store;
+            if (dataStore is DataStoreReader)
+                connection = (dataStore as DataStoreReader).Connection;
             checkpointName = checkpointNameInScope;
             tableName = dataTableName;
             simulationNames = simulationNamesInScope;
             rowFilter = dataFilter;
             pageSize = dataPageSize;
+            orderBy = sortBy;
             CreateTemporaryKeyset();
             GetColumnNames(columnNameFilter);
             GetData(0);
@@ -74,7 +88,8 @@ namespace UserInterface.Views
         /// <summary>Cleanup the instance.</summary>
         public void Cleanup()
         {
-            dataStore.ExecuteSql("DROP TABLE IF EXISTS keyset");
+            if (connection is SQLite)
+                dataStore.ExecuteSql("DROP TABLE IF EXISTS keyset");
         }
 
         /// <summary>Invoked when the paging is about to start.</summary>
@@ -123,25 +138,39 @@ namespace UserInterface.Views
         }
 
         /// <summary>Set the contents of a cell.</summary>
-        /// <param name="columnIndex">Column index of cell.</param>
-        /// <param name="rowIndex">Row index of cell.</param>
-        /// <param name="value">The value.</param>
-        public void SetCellContents(int columnIndex, int rowIndex, string value)
+        /// <param name="columnIndices">Column indices</param>
+        /// <param name="rowIndices">Row indices.</param>
+        /// <param name="values">The values</param>
+        public void SetCellContents(int[] columnIndices, int[] rowIndices, string[] values)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>Get data to show in grid.</summary>
         /// <param name="startRowIndex">The row index to start getting data from.</param>
+        /// <param name="orderBy">Column to order by</param>
         private DataPage GetData(int startRowIndex)
         {
             PagingStart?.Invoke(this, new EventArgs());
-            var newData = dataStore.GetData(tableName,
-                                            checkpointName,
-                                            simulationNames,
-                                            columnNames,
-                                            GetRollingCursorRowFilter(startRowIndex, pageSize));
+            DataTable newData = null;
 
+            List<string> sort = new List<string>();
+            if (orderBy.Length > 0) 
+            {
+                sort.Add(orderBy);
+                sort.Add("Clock.Today");
+                sort.Add("SimulationID");
+            }
+
+            newData = dataStore.GetData(tableName,
+                                        checkpointName,
+                                        simulationNames,
+                                        columnNames,
+                                        GetRollingCursorRowFilter(startRowIndex, pageSize),
+                                        0, 
+                                        0,
+                                        sort);
+ 
             // Remove unwanted columns from data table.
             foreach (string columnName in DataTableUtilities.GetColumnNames(newData))
                 if (!columnNames.Contains(columnName))
@@ -159,33 +188,62 @@ namespace UserInterface.Views
         /// <remarks>This concept of a rolling cursor comes from: https://sqlite.org/forum/forumpost/2cfa137263</remarks>
         private void CreateTemporaryKeyset()
         {
-            Cleanup();
             string filter = GetFilter();
-            string sql = "CREATE TEMPORARY TABLE keyset AS " +
+            string sql = String.Empty;
+            if (connection is SQLite)
+            {
+                Cleanup();
+                sql = "CREATE TEMPORARY TABLE keyset AS " +
                          $"SELECT rowid FROM \"{tableName}\" ";
-            if (!string.IsNullOrEmpty(filter))
-                sql += $"WHERE {filter}";
-
-            dataStore.GetDataUsingSql(sql);
+                if (!string.IsNullOrEmpty(filter))
+                    sql += $"WHERE {filter} ";
+                
+                string sort = "ORDER BY \"SimulationID\", \"Clock.Today\"";
+                if (orderBy.Length > 0) 
+                    sort = $"ORDER BY \"{orderBy}\", \"SimulationID\"";
+            
+                sql += sort;
+                dataStore.GetDataUsingSql(sql);
+            }
+            else if (connection is Firebird)
+            {
+                sql = "RECREATE GLOBAL TEMPORARY TABLE \"keyset\" (\"rowid\" BIGINT) ON COMMIT PRESERVE ROWS";
+                dataStore.GetDataUsingSql(sql);
+                sql = $"INSERT INTO \"keyset\" (\"rowid\") SELECT \"rowid\" FROM \"{tableName}\" ";
+                if (!string.IsNullOrEmpty(filter))
+                    sql += $"WHERE {filter}";
+                dataStore.GetDataUsingSql(sql);
+            }
         }
 
         /// <summary>Gets a filter that includes rowid to implement data pagination (rolling cursor).</summary>
         /// <param name="from"></param>
         /// <param name="count"></param>
+        /// <param name="orderBy"></param>
         /// <returns></returns>
         private string GetRollingCursorRowFilter(int from, int count)
         {
             string filter = GetFilter();
 
-            var data = dataStore.GetDataUsingSql($"SELECT rowid FROM keyset WHERE rowid >= {from+1} ORDER BY rowid LIMIT {count}");
+            DataTable data = null;
+            if (connection is SQLite)
+            {
+                data = dataStore.GetDataUsingSql($"SELECT \"rowid\" FROM \"keyset\" LIMIT {count} OFFSET {from}");
+            }
+            else if (connection is Firebird)
+            {
+                data = dataStore.GetDataUsingSql($"SELECT FIRST {count} SKIP {from} \"rowid\" FROM \"keyset\" ORDER BY \"rowid\"");
+            }
 
             if (data is null)
                 return "";
 
-            var rowIds = DataTableUtilities.GetColumnAsIntegers(data, "rowid");
+            var rowIds = DataTableUtilities.GetColumnAsLongInts(data, "rowid");
             var rowIdsCSV = StringUtilities.Build(rowIds, ",");
 
-            var returnFilter = $"RowID in ({rowIdsCSV})";
+            string returnFilter = String.Empty;
+            // if (connection is SQLite)
+                returnFilter = $"\"rowid\" in ({rowIdsCSV})";
             if (!string.IsNullOrEmpty(filter))
                 returnFilter += $" AND ({filter})";
             return returnFilter;
@@ -227,7 +285,7 @@ namespace UserInterface.Views
         private string GetFilter()
         {
             var filter = rowFilter;
-            string checkpointFilter = $"CheckpointID = {dataStore.GetCheckpointID(checkpointName)}";
+            string checkpointFilter = $"\"CheckpointID\" = {dataStore.GetCheckpointID(checkpointName)}";
             if (string.IsNullOrEmpty(filter))
                 filter = checkpointFilter;
             else
@@ -235,7 +293,7 @@ namespace UserInterface.Views
 
             if (simulationNames != null)
             {
-                var simulationFilter = $"SimulationID in ({dataStore.ToSimulationIDs(simulationNames).Join(",")})";
+                var simulationFilter = $"\"SimulationID\" in ({dataStore.ToSimulationIDs(simulationNames).Join(",")})";
                 if (string.IsNullOrEmpty(filter))
                     filter = simulationFilter;
                 else
@@ -286,11 +344,36 @@ namespace UserInterface.Views
 
         /// <summary>Is the column readonly?</summary>
         /// <param name="colIndex">Column index of cell.</param>
-        public bool IsColumnReadonly(int colIndex)
+        public bool GetCellState(int colIndex)
         {
             return false;
         }
 
+        /// <summary>Get the Units assigned to this column</summary>
+        /// <param name="colIndex">Column index of cell.</param>
+        public string GetColumnUnits(int colIndex)
+        {
+            if (units == null)
+                return "";
+            else
+                return units[colIndex];
+        }
+
+        /// <summary>Get the cell state.</summary>
+        /// <param name="colIndex">Column index of cell.</param>
+        /// <param name="rowIndex">Row index of cell.</param>
+        public SheetDataProviderCellState GetCellState(int colIndex, int rowIndex)
+        {
+            return SheetDataProviderCellState.Normal;
+        }
+
+        /// <summary>Set the cell state.</summary>
+        /// <param name="colIndex">Column index of cell.</param>
+        /// <param name="rowIndex">Row index of cell.</param>
+        public void SetCellState(int colIndex, int rowIndex)
+        {
+            throw new NotImplementedException("Cannot set state of a PagedDataProvider");
+        }
 
         /// <summary>
         ///  Encapsulates a page of DataTable rows.

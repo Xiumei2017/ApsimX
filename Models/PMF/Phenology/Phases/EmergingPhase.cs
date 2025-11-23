@@ -1,12 +1,10 @@
 ﻿using System;
-using APSIM.Shared.Documentation;
 using System.Collections.Generic;
-using Models.Core;
-using Newtonsoft.Json;
-using Models.Functions;
+using APSIM.Shared.Documentation;
 using APSIM.Shared.Utilities;
-using System.IO;
-using System.Text;
+using Models.Core;
+using Models.Functions;
+using Newtonsoft.Json;
 
 namespace Models.PMF.Phen
 {
@@ -49,7 +47,7 @@ namespace Models.PMF.Phen
 
         /// <summary>Is the phase emerged from the ground?</summary>
         [Description("Is the phase emerged?")]
-        public bool IsEmerged { get; set; } = true;
+        public bool IsEmerged { get; set; } = false;
 
         /// <summary>Fraction of phase that is complete (0-1).</summary>
         [JsonIgnore]
@@ -94,12 +92,13 @@ namespace Models.PMF.Phen
             {
                 Target = (DateUtilities.GetDate(EmergenceDate, clock.Today) - plant.SowingDate).TotalDays;
                 ProgressThroughPhase += 1;
-                if (DateUtilities.DatesEqual(EmergenceDate, clock.Today))
+                if (DateUtilities.DayMonthIsEqual(EmergenceDate, clock.Today))
                 {
                     proceedToNextPhase = true;
                 }
             }
-            else {
+            else
+            {
                 ProgressThroughPhase += TTForTimeStep;
                 if (ProgressThroughPhase > Target)
                 {

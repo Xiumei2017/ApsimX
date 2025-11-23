@@ -1,14 +1,14 @@
-﻿namespace Models.Core
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using APSIM.Shared.Documentation;
+using Models.Factorial;
+using Models.PMF;
+using Models.PMF.Interfaces;
+
+namespace Models.Core
 {
-    using Models.Factorial;
-    using Models;
-    using Models.PMF;
-    using Models.PMF.Interfaces;
-    using System;
-    using APSIM.Shared.Documentation;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
 
     /// <summary>
     /// A folder model
@@ -26,6 +26,7 @@
     [ValidParent(ParentType = typeof(Morris))]
     [ValidParent(ParentType = typeof(Sobol))]
     [ValidParent(ParentType = typeof(BiomassTypeArbitrator))]
+    [ValidParent(ParentType = typeof(IPlant))]
     public class Folder : Model
     {
         /// <summary>Show in the autodocs?</summary>
@@ -33,12 +34,10 @@
         /// Apparently, not all folders of graphs are intended to be shown in the autodocs.
         /// Hence, this flag.
         /// </remarks>
-        [Description("Include in documentation?")]
         public bool ShowInDocs { get; set; }
 
         /// <summary>Number of graphs to show per page.</summary>
-        [Description("Number of graphs to show per page")]
-        public int GraphsPerPage { get; set; } = 6;
+        private int GraphsPerPage { get; set; } = 6;
 
         /// <summary>
         /// Document the model, and any child models which should be documented.

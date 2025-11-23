@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using Models.Core;
+using Models.PMF.Library;
 using Models.PMF.Phen;
 using System.Linq;
 using APSIM.Shared.Documentation;
@@ -50,6 +51,7 @@ namespace Models.Functions
 
         /// <summary>The reset stage name</summary>
         [Description("(optional) Stage name to reset accumulation")]
+        [Display(Type = DisplayType.CropStageName)]
         public string ResetStageName { get; set; }
 
         /// <summary>The fraction removed on Cut event</summary>

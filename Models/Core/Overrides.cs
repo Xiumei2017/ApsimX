@@ -1,6 +1,4 @@
-﻿using APSIM.Shared.Utilities;
-using Models.Core.ApsimFile;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using APSIM.Shared.Utilities;
+using JetBrains.Annotations;
+using Models.Core.ApsimFile;
 
 namespace Models.Core
 {
@@ -109,6 +110,11 @@ namespace Models.Core
                 undos.Add(new Override(undoPath, oldValue, Override.MatchTypeEnum.NameAndType));
             }
 
+            // Updates the parameters from the manager model.
+            IModel pathObject = model.FindDescendant<Manager>(StringUtilities.CleanStringOfSymbols(path.Split('.').First()));
+            if (pathObject is Manager manager)
+                manager.GetParametersFromScriptModel();
+
             // Reverse the order of the undos so that get applied in the correct order.
             undos.Reverse();
             return undos;
@@ -154,11 +160,14 @@ namespace Models.Core
                     continue;
 
                 string[] values = lines[i].Split('=');
-                if (values.Length != 2)
+                if (values.Length < 2)
                     throw new Exception($"Wrong number of values specified on line {lines[i]}");
 
                 string path = values[0].Trim();
                 string value = values[1].Trim();
+                // Handles factor specifications.
+                if (values.Length > 2)
+                    value += " =" + values[2];
                 yield return new Override(path, value, Override.MatchTypeEnum.NameAndType);
             }
         }
@@ -176,7 +185,7 @@ namespace Models.Core
         {
             var match = Regex.Match(path, @"(?<rawpath>.+)\[(?<startindex>\d+):?(?<endindex>\d+)?]$");
             if (match.Success)
-            {   
+            {
                 var fullArray = model.FindByPath(match.Groups["rawpath"].Value)?.Value as IList;
                 if (fullArray != null)
                 {
@@ -303,6 +312,10 @@ namespace Models.Core
         [Serializable]
         public class Override
         {
+            /// <summary>
+            /// Parameterless constructor for serialization
+            /// </summary>
+            public Override() { }
             /// <summary>Constructor.</summary>
             /// <param name="path">The path of the property/model to override.</param>
             /// <param name="value">The new value of the property/model.</param>
@@ -316,7 +329,7 @@ namespace Models.Core
 
             /// <summary>Supported match types when finding something to override.</summary>
             public enum MatchTypeEnum
-            { 
+            {
                 /// <summary>Match on name only.</summary>
                 Name,
 
@@ -325,13 +338,13 @@ namespace Models.Core
             }
 
             /// <summary>The path of the property/model to override.</summary>
-            public string Path { get; }
+            public string Path { get; set; }
 
             /// <summary>The new value of the property/model.</summary>
-            public object Value { get; }
+            public object Value { get; set; }
 
             /// <summary>Type of matching to use.</summary>
-            public MatchTypeEnum MatchType { get; }
+            public MatchTypeEnum MatchType { get; set; }
 
             /// <summary>
             /// Equality method.
