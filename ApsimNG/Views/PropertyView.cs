@@ -20,7 +20,7 @@ namespace UserInterface.Views
     /// <remarks>
     /// The <see cref="PropertyChanged" /> event is triggered differently
     /// for different input widgets:
-    /// 
+    ///
     /// - When a check button is toggled
     /// - When a dropdown selected item is changed
     /// - When a text editor (GtkEntry or GtkTextView) loses focus,
@@ -75,7 +75,7 @@ namespace UserInterface.Views
         /// The values for the vertical scrollbar
         /// </summary>
         private ScrollerAdjustmentValues scrollV { get; set; } = null;
-        
+
         /// <summary>
         /// List of code editor views that have been created
         /// </summary>
@@ -175,11 +175,11 @@ namespace UserInterface.Views
             if (scrollV != null)
             {
                 ScrolledWindow scroller = mainWidget as ScrolledWindow;
-                scroller.Vadjustment?.Configure(scrollV.Value, 
-                                            scrollV.Lower, 
-                                            scrollV.Upper, 
-                                            scrollV.StepIncrement, 
-                                            scrollV.PageIncrement, 
+                scroller.Vadjustment?.Configure(scrollV.Value,
+                                            scrollV.Lower,
+                                            scrollV.Upper,
+                                            scrollV.StepIncrement,
+                                            scrollV.PageIncrement,
                                             scrollV.PageSize);
             }
         }
@@ -340,10 +340,9 @@ namespace UserInterface.Views
                     component = dropDown.MainWidget;
                     break;
                 case PropertyType.File:
-                case PropertyType.Files:
                 case PropertyType.Directory:
                     //case PropertyType.Directories:
-                    // Add an Entry and a Button inside a VBox.
+                    // Add an Entry and a Button inside a Box.
                     Entry fileNameInput = new Entry(property.Value?.ToString() ?? "");
                     fileNameInput.Name = property.ID.ToString();
                     fileNameInput.FocusOutEvent += UpdateText;
@@ -353,15 +352,39 @@ namespace UserInterface.Views
                     fileChooserButton.Name = property.ID.ToString();
                     if (property.DisplayMethod == PropertyType.File)
                         fileChooserButton.Clicked += (o, _) => ChooseFile(o as Widget, false, false);
-                    else if (property.DisplayMethod == PropertyType.Files)
-                        fileChooserButton.Clicked += (o, _) => ChooseFile(o as Widget, true, false);
                     else if (property.DisplayMethod == PropertyType.Directory)
                         fileChooserButton.Clicked += (o, _) => ChooseFile(o as Widget, false, true);
 
-                    Box container = new HBox();
+                    Box container = new Box(Orientation.Horizontal, 0);
                     container.PackStart(fileNameInput, true, true, 0);
                     container.PackStart(fileChooserButton, false, false, 0);
                     component = container;
+                    break;
+                case PropertyType.Files:
+                    string fileNamesText = "";
+                    if (property.Value != null)
+                    {
+                        string[] filenamesArray = ReflectionUtilities.StringToObject(typeof(string[]), property.Value.ToString(), CultureInfo.CurrentCulture) as string[];
+                        fileNamesText = string.Join("\n", filenamesArray) + "\n";
+                    }
+                    TextView filenamesEditor = new TextView();
+                    filenamesEditor.SizeAllocated += OnTextViewSizeAllocated;
+                    filenamesEditor.WrapMode = WrapMode.Word;
+                    filenamesEditor.Buffer.Text = fileNamesText;
+                    originalEntryText[property.ID] = fileNamesText;
+                    filenamesEditor.Name = property.ID.ToString();
+                    filenamesEditor.FocusOutEvent += UpdateText;
+
+                    Frame filenamesOutline = new(){ filenamesEditor };
+                    Button filesChooserButton = new("..."){ Name = property.ID.ToString() };
+                    filesChooserButton.Clicked += (o, _) => ChooseFile(o as Widget, true, false);
+
+                    Box filenamesContainer = new HBox();
+                    filenamesContainer.PackStart(filenamesOutline, true, true, 0);
+                    filenamesContainer.PackStart(filesChooserButton, false, false, 0);
+                    component = filenamesContainer;
+
+
                     break;
                 case PropertyType.Colour:
                     ColourDropDownView colourChooser = new ColourDropDownView(this);
@@ -488,16 +511,16 @@ namespace UserInterface.Views
             try
             {
                 bool doUpdate = false;
-                if (e is KeyPressEventArgs) 
+                if (e is KeyPressEventArgs)
                 {
-                    if ((e as KeyPressEventArgs).Event.Key == Gdk.Key.Return)
+                    if (!(sender is TextView) && (e as KeyPressEventArgs).Event.Key == Gdk.Key.Return)
                         doUpdate = true;
                 }
-                else 
+                else
                 {
                     doUpdate = true;
                 }
-                if (doUpdate) 
+                if (doUpdate)
                 {
                     Widget widget = null;
                     if (sender is Widget)
@@ -512,8 +535,12 @@ namespace UserInterface.Views
                         string text;
                         if (widget is Entry entry)
                             text = entry.Text;
-                        else if (widget is TextView editor)
+                        else if (widget is TextView editor) {
                             text = editor.Buffer.Text;
+                            text = text.Replace("\n", ", "); //if this is a "one thing per line", convert back to one line string
+                            if (text.EndsWith(", "))
+                                text = text.Remove(text.Length-2, 2);
+                        }
                         else
                             throw new Exception($"Unknown widget type {sender.GetType().Name}");
                         if (originalEntryText.ContainsKey(id) && !string.Equals(originalEntryText[id], text, StringComparison.CurrentCulture))
@@ -524,7 +551,7 @@ namespace UserInterface.Views
                         }
                     }
                 }
-                
+
             }
             catch (Exception err)
             {
@@ -546,10 +573,20 @@ namespace UserInterface.Views
                 Guid id = new Guid((sender as EditorView).MainWidget.Name);
                 string text = (sender as EditorView).Text;
 
-                if (originalEntryText.ContainsKey(id) && !string.Equals(originalEntryText[id], text, StringComparison.CurrentCulture))
+                //trim each line of the text and remove empty lines
+                string[] lines = text.Split('\n');
+                string trimmed = "";
+                foreach (string line in lines)
                 {
-                    var args = new PropertyChangedEventArgs(id, text);
-                    originalEntryText[id] = text;
+                    string output = line.Trim();
+                    if (output.Length > 0)
+                        trimmed += line + "\n";
+                }
+
+                if (originalEntryText.ContainsKey(id) && !string.Equals(originalEntryText[id], trimmed, StringComparison.CurrentCulture))
+                {
+                    var args = new PropertyChangedEventArgs(id, trimmed);
+                    originalEntryText[id] = trimmed;
                     PropertyChanged?.Invoke(this, args);
                 }
             }
@@ -775,8 +812,33 @@ namespace UserInterface.Views
             // whose changes are applied when it loses focus. Therefore,
             // grabbing focus on the main widget will cause any focused entries
             // to lose focus and fire off a changed event.
-            mainWidget.CanFocus = true;
-            mainWidget.GrabFocus();
+
+            // If one of the children has the focus then give the MainWidget the focus.
+            // Don't want to do this unless necessary because the user might be scrolling
+            // through the tree view (using the keyboard), looking at scripts and don't want
+            // the focus to swap to manager scripts when up and down array is pressed.
+            if (AllChildren(mainWidget as Container).Any(child => child.HasFocus))
+            {
+                mainWidget.CanFocus = true;
+                mainWidget.GrabFocus();
+            }
+        }
+
+        /// <summary>
+        /// Return all children recursively.
+        /// </summary>
+        /// <param name="parent">The parent widget</param>
+        public static IEnumerable<Widget> AllChildren(Container parent)
+        {
+            foreach (var child in parent.AllChildren)
+            {
+                if (child is Widget widget)
+                    yield return child as Widget;
+                if (child is Container container)
+                    foreach (var c in AllChildren(container))  // recursion.
+                        if (c is Widget w)
+                            yield return w;
+            }
         }
 
         /// <summary>

@@ -72,13 +72,13 @@ namespace UserInterface.Presenters
         private Dictionary<string, List<string>> modelsImplementingSpecificInterfaceDictionary = new();
 
         /// <summary> File name for reporting variables.</summary>
-        private readonly string commonReportVariablesFileName = "CommonReportingVariables.json";
+        private readonly string commonReportVariablesResourceName = "CommonReportingVariables.json";
 
         /// <summary> File name for report frequency variables.</summary>
-        private readonly string commonReportFrequencyVariablesFileName = "CommonFrequencyVariables.json";
+        private readonly string commonReportFrequencyVariablesResourceName = "CommonFrequencyVariables.json";
 
-        /// <summary> Common directory path. </summary>
-        private readonly string reportVariablesDirectoryPath = Path.Combine(new string[] { "ApsimNG", "Resources", "CommonReportVariables" });
+        /// <summary> Common resource path. </summary>
+        private readonly string reportVariablesResourcePath = "ApsimNG.Resources.CommonReportVariables";
 
         /// <summary> All in scope model names of the current apsimx file.</summary>
         public List<string> InScopeModelNames { get; set; }
@@ -90,13 +90,18 @@ namespace UserInterface.Presenters
             get { return simulationPlantModelNames; }
         }
 
-        private List<ReportVariable> GetCommonVariables(string fileName, string fileDirectoryPath)
+        private List<ReportVariable> GetCommonVariables(string resourceName, string resourcePath)
         {
-            string currentAssemblyDirectory = Assembly.GetExecutingAssembly().Location.Split("bin")[0];
-            string commonReportingVariablesFilePath = Path.Combine(currentAssemblyDirectory, fileDirectoryPath, fileName);
-            string reportingVariablesJSON = File.ReadAllText(commonReportingVariablesFilePath);
-            return JsonConvert.DeserializeObject<List<ReportVariable>>(reportingVariablesJSON);
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath + "." + resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string reportingVariablesJSON = reader.ReadToEnd();
+                    return JsonConvert.DeserializeObject<List<ReportVariable>>(reportingVariablesJSON);
+                }
+            }
         }
+
 
         public List<ReportVariable> CommonReportVariablesList
         {
@@ -146,9 +151,9 @@ namespace UserInterface.Presenters
             this.view.VariableList.Lines = report.VariableNames;
             this.view.EventList.Lines = report.EventNames;
             InScopeModelNames = GetModelScopeNames();//explorerPresenter.ApsimXFile.FindAllInScope<IModel>().Select(m => m.Name).ToList<string>();
-            SimulationPlantModelNames = explorerPresenter.ApsimXFile.FindAllInScope<Plant>().Select(m => m.Name).ToList<string>();
-            CommonReportVariablesList = GetCommonVariables(commonReportVariablesFileName, reportVariablesDirectoryPath);
-            CommonFrequencyVariablesList = GetCommonVariables(commonReportFrequencyVariablesFileName, reportVariablesDirectoryPath);
+            SimulationPlantModelNames = explorerPresenter.ApsimXFile.Node.FindAll<Plant>().Select(m => m.Name).ToList<string>();
+            CommonReportVariablesList = GetCommonVariables(commonReportVariablesResourceName, reportVariablesResourcePath);
+            CommonFrequencyVariablesList = GetCommonVariables(commonReportFrequencyVariablesResourceName, reportVariablesResourcePath);
             FillModelsImplementingSpecificInterfaceDictionary();
             AddInterfaceImplementingTypesToModelScopeNames();
             CommonReportVariables = GetReportVariables(CommonReportVariablesList, InScopeModelNames, true);
@@ -161,7 +166,7 @@ namespace UserInterface.Presenters
             (this.view as ReportView).EventList.VariableDragDataReceived += OnEventListVariableDrop;
             this.view.GroupByEdit.Text = report.GroupByVariableName;
             this.view.VariableList.ContextItemsNeeded += OnNeedVariableNames;
-            this.view.EventList.ContextItemsNeeded += OnNeedEventNames;
+            this.view.EventList.ContextItemsNeeded += OnNeedVariableNames;
             this.view.GroupByEdit.IntellisenseItemsNeeded += OnNeedVariableNames;
             this.view.VariableList.TextHasChangedByUser += OnVariableNamesChanged;
             this.view.VariableList.TextHasChangedByUser += OnVariableListTextChanged;
@@ -174,18 +179,18 @@ namespace UserInterface.Presenters
             this.view.CommonReportVariablesList.TreeHover += OnCommonVariableListTreeHover;
             this.view.CommonReportFrequencyVariablesList.TreeHover += OnCommonFrequencyListTreeHover;
 
-            Simulations simulations = report.FindAncestor<Simulations>();
+            Simulations simulations = report.Node.FindParent<Simulations>(recurse: true);
             if (simulations != null)
             {
-                dataStore = simulations.FindChild<IDataStore>();
+                dataStore = simulations.Node.FindChild<IDataStore>();
             }
 
             //// TBI this.view.VariableList.SetSyntaxHighlighter("Report");
 
             dataStorePresenter = new DataStorePresenter(new string[] { report.Name });
-            Simulation simulation = report.FindAncestor<Simulation>();
-            Experiment experiment = report.FindAncestor<Experiment>();
-            Zone paddock = report.FindAncestor<Zone>();
+            Simulation simulation = report.Node.FindParent<Simulation>(recurse: true);
+            Experiment experiment = report.Node.FindParent<Experiment>(recurse: true);
+            Zone paddock = report.Node.FindParent<Zone>(recurse: true);
 
             // Only show data which is in scope of this report.
             // E.g. data from this zone and either experiment (if applicable) or simulation.
@@ -480,7 +485,7 @@ namespace UserInterface.Presenters
         {
             this.report.ActiveTabIndex = this.view.TabIndex;
             this.view.VariableList.ContextItemsNeeded -= OnNeedVariableNames;
-            this.view.EventList.ContextItemsNeeded -= OnNeedEventNames;
+            this.view.EventList.ContextItemsNeeded -= OnNeedVariableNames;
             this.view.GroupByEdit.IntellisenseItemsNeeded -= OnNeedVariableNames;
             this.view.VariableList.TextHasChangedByUser -= OnVariableNamesChanged;
             this.view.EventList.TextHasChangedByUser -= OnEventNamesChanged;
@@ -493,11 +498,11 @@ namespace UserInterface.Presenters
 
 
         /// <summary>
-        /// Creates a DataTable from the reportVariables inside a resource file name. 
+        /// Creates a DataTable from the reportVariables inside a resource file name.
         /// </summary>
         /// <param name="variableList"> List of ReportVariables</param>
         /// <param name="inputStrings"> String List containing model names or properties to use as filters.</param>
-        /// <param name="isModelScope"> A flag to determine if GetReportVariables should perform a substring check on the ReportVariable.Description field. 
+        /// <param name="isModelScope"> A flag to determine if GetReportVariables should perform a substring check on the ReportVariable.Description field.
         /// If inputStrings are model names and isModelScope is false, many duplicates will appear in the common report variables/events lists.
         /// </param>
         /// <returns>A <see cref="DataTable"/> containing commonReportVariables or commonReportFrequencyVariables.</returns>
@@ -647,7 +652,7 @@ namespace UserInterface.Presenters
         {
             if (!string.IsNullOrWhiteSpace(interfaceName))
             {
-                List<IModel> implementingModels = explorerPresenter.ApsimXFile.FindAllInScope()
+                List<IModel> implementingModels = explorerPresenter.ApsimXFile.Node.FindAll<IModel>()
                     .Where(model => model.GetType().GetInterfaces().ToList().Any(type => type.Name == interfaceName)).ToList();
                 List<string> implementingModelNames = implementingModels.Select(model => model.Name).ToList();
                 return implementingModelNames;
@@ -663,7 +668,7 @@ namespace UserInterface.Presenters
         {
             List<string> modelNamesInScope = new();
             Simulations simulations = explorerPresenter.ApsimXFile;
-            List<IModel> modelInScope = simulations.FindAllInScope<IModel>().ToList();
+            List<IModel> modelInScope = simulations.Node.FindAll<IModel>().ToList();
             modelNamesInScope = modelInScope.Select(x => x.GetType().GetFriendlyName()).Distinct<string>().ToList();
             return modelNamesInScope;
         }
@@ -676,14 +681,6 @@ namespace UserInterface.Presenters
         private void OnNeedVariableNames(object sender, NeedContextItemsArgs e)
         {
             GetCompletionOptions(sender, e, true, false, true);
-        }
-
-        /// <summary>The view is asking for event names.</summary>
-        /// <param name="sender">The sending object</param>
-        /// <param name="e">The argument values</param>
-        private void OnNeedEventNames(object sender, NeedContextItemsArgs e)
-        {
-            GetCompletionOptions(sender, e, false, false, true);
         }
 
         /// <summary>
@@ -798,7 +795,7 @@ namespace UserInterface.Presenters
         }
 
         /// <summary>
-        /// Handles the adding of Report variables to the Report Variable Editor. 
+        /// Handles the adding of Report variables to the Report Variable Editor.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -829,13 +826,13 @@ namespace UserInterface.Presenters
             if (plantVariableLines.Count > 0)
                 // Makes the last line the one that is selected when multiples are added, such as when plant variable lines are added.
                 view.VariableList.Location = new ManagerCursorLocation( variableCode.Length, currentReportVariablesLineNumber + (plantVariableLines.Count - 1));
-            else 
+            else
                 view.VariableList.Location = new ManagerCursorLocation ( variableCode.Length, currentReportVariablesLineNumber);
         }
 
 
         /// <summary>
-        /// Handles the adding of Report Frequency variables to the Report Frequency Variable Editor. 
+        /// Handles the adding of Report Frequency variables to the Report Frequency Variable Editor.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -865,7 +862,7 @@ namespace UserInterface.Presenters
             if (plantVariableLines.Count > 0)
                 // Makes the last line the one that is selected when multiples are added, such as when plant variable lines are added.
                 view.EventList.Location = new ManagerCursorLocation (variableCode.Length, currentReportFrequencyVariablesLineNumber + (plantVariableLines.Count - 1) );
-            else 
+            else
                 view.EventList.Location = new ManagerCursorLocation (variableCode.Length, currentReportFrequencyVariablesLineNumber);
         }
 
@@ -878,9 +875,9 @@ namespace UserInterface.Presenters
         {
             List<string> plantCodeLines = new();
             List<IPlant> areaPlants = new();
-            if (report.FindAncestor<Folder>() != null)
-                areaPlants = explorerPresenter.ApsimXFile.FindAllInScope<IPlant>().ToList();
-            else areaPlants = report.FindAncestor<Zone>().Plants;
+            if (report.Node.FindParent<Folder>(recurse: true) != null)
+                areaPlants = explorerPresenter.ApsimXFile.Node.FindAll<IPlant>().ToList();
+            else areaPlants = report.Node.FindParent<Zone>(recurse: true).Plants;
             // Make sure plantsNames only has unique names. If under replacements you'll may have many many plants of the same name.
             areaPlants = areaPlants.GroupBy(plant => plant.Name).Select(plant => plant.First()).ToList();
             foreach (IPlant plant in areaPlants)
@@ -908,7 +905,7 @@ namespace UserInterface.Presenters
             foreach (ReportVariable reportVariable in combinedReportVariableLists)
             {
                 List<string> nodeStrings = reportVariable.Node.Split(",").ToList();
-                // Some ReportVariables have multiple names under the node property. 
+                // Some ReportVariables have multiple names under the node property.
                 foreach (string nodeString in nodeStrings)
                     // Tests if the node value matches the signature of an Interface name.
                     if (nodeString.StartsWith("I") && nodeString[1].IsAlphaUpper())

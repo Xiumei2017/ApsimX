@@ -5,6 +5,7 @@ using StdUnits;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using APSIM.Core;
 
 namespace Models.GrazPlan
 {
@@ -361,6 +362,12 @@ namespace Models.GrazPlan
         /// </summary>
         [Units("kg")]
         public double BaseWeight { get; set; }
+
+        /// <summary>
+        /// Gets the empty body weight.
+        /// </summary>
+        [Units("kg")]
+        public double EmptyBodyWeight => BaseWeight / Genotype.GainC[18];
 
         /// <summary>
         /// Gets or sets the fleece-free, conceptus-free weight, but including the wool stubble
@@ -979,6 +986,9 @@ namespace Models.GrazPlan
         public AnimalGroup Copy()
         {
             AnimalGroup theCopy = ReflectionUtilities.Clone(this) as AnimalGroup;
+            Node.Create(theCopy.Genotype);
+            if (theCopy.MatedTo != null)
+                Node.Create(theCopy.MatedTo);
             theCopy.weather = weather;
             theCopy.clock = clock;
             theCopy.stockList = stockList;

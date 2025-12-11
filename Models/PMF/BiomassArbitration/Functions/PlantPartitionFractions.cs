@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using APSIM.Core;
 using Models.Core;
+using Models.Core.ApsimFile;
 using Models.Functions;
-using Models.PMF.Interfaces;
 
 namespace Models.PMF
 {
@@ -16,8 +17,11 @@ namespace Models.PMF
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [ValidParent(ParentType = typeof(IPlant))]
     [ValidParent(ParentType = typeof(BiomassArbitrator))]
-    public class PlantPartitionFractions : Model
+    public class PlantPartitionFractions : Model, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
 
         [Link(Type = LinkType.Ancestor)]
         private Plant plant = null;
@@ -26,7 +30,7 @@ namespace Models.PMF
         private List<string> organNames = new List<string>();
 
         /// <summary> List of Child Functions to represent each organ</summary>
-        /// 
+        ///
         public IEnumerable<IFunction> ChildFunctions { get; set; }
 
         /// <summary>Dictionary containing each organs partitioning fraction</summary>
@@ -38,12 +42,12 @@ namespace Models.PMF
         [EventSubscribe("Commencing")]
         virtual protected void OnSimulationCommencing(object sender, EventArgs e)
         {
-            foreach (Organ organ in plant.FindAllChildren<Organ>())
+            foreach (Organ organ in Structure.FindChildren<Organ>(relativeTo: plant))
             {
                 organNames.Add(organ.Name + "Fraction");
             }
 
-            ChildFunctions = FindAllChildren<IFunction>().ToList();
+            ChildFunctions = Structure.FindChildren<IFunction>().ToList();
 
             int orgNum = 0;
             foreach (IFunction c in ChildFunctions)
@@ -71,53 +75,6 @@ namespace Models.PMF
 
             if ((PartitionFractions.Sum(x => x.Value) < 0.99) || (PartitionFractions.Sum(x => x.Value) > 1.01))
                 throw new Exception("Sum of partitioning fractions in " + this.FullPath + "does not add to 1");
-        }
-
-
-
-
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        /// <param name="tags">The list of tags to add to.</param>
-        /// <param name="headingLevel">The level (e.g. H2) of the headings.</param>
-        /// <param name="indent">The level of indentation 1, 2, 3 etc.</param>
-        public void Document(List<AutoDocumentation.ITag> tags, int headingLevel, int indent)
-        {
-
-            // add a heading
-            tags.Add(new AutoDocumentation.Heading(Name, headingLevel));
-
-            // get description of this class
-            AutoDocumentation.DocumentModelSummary(this, tags, headingLevel, indent, false);
-
-            // write memos
-            foreach (IModel memo in this.FindAllChildren<Memo>())
-                AutoDocumentation.DocumentModel(memo, tags, headingLevel + 1, indent);
-
-            // find parent organ's name
-            if (Parent == null)
-                return;
-            string organName = "";
-            bool seekingParentOrgan = true;
-            IModel parentClass = this.Parent;
-            while (seekingParentOrgan)
-            {
-                if (parentClass is IOrgan)
-                {
-                    seekingParentOrgan = false;
-                    organName = (parentClass as IOrgan).Name;
-                    if (parentClass is IPlant)
-                        throw new Exception(Name + "cannot find parent organ to get Structural and Storage N status");
-                }
-                parentClass = parentClass.Parent;
-            }
-
-            // add a description of the equation for this function
-            tags.Add(new AutoDocumentation.Paragraph("<i>" + Name + " = [" + organName + "].maximumNconc × (["
-                + organName + "].Live.Wt + potentialAllocationWt) - [" + organName + "].Live.N</i>", indent));
-            tags.Add(new AutoDocumentation.Paragraph("The demand for storage N is further reduced by a factor specified by the ["
-                + organName + "].NitrogenDemandSwitch.", indent));
-
         }
     }
 }

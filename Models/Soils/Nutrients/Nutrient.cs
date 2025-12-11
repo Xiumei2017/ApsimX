@@ -1,4 +1,4 @@
-using APSIM.Shared.Documentation;
+using APSIM.Numerics;
 using APSIM.Shared.Graphing;
 using APSIM.Shared.Utilities;
 using Models.Core;
@@ -8,6 +8,8 @@ using Models.Surface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using APSIM.Core;
+using DocumentFormat.OpenXml.Office.CustomXsn;
 
 namespace Models.Soils.Nutrients
 {
@@ -17,7 +19,7 @@ namespace Models.Soils.Nutrients
     /// </summary>
     /// <structure>
     /// Soil organic matter is modelled as a series of discrete organic matter pools which are described in terms of their masses of carbon and nutrients. These pools are initialised according to approaches specific to each pool.  Organic matter pools may have carbon flows, such as a decomposition process, associated to them.  These carbon flows are also specific to each pool, are independently specified, and are described in each case in the documentation for each organic matter pool below.
-    /// 
+    ///
     /// Mineral nutrient pools (e.g. Nitrate, Ammonium, Urea) are described as solutes within the model.  Each pool captures the mass of the nutrient (e.g. N,P) and they may also contain nutrient flows to describe losses or transformations for that particular compound (e.g. denitrification of nitrate, hydrolysis of urea).
     /// </structure>
     /// <pools>
@@ -29,13 +31,17 @@ namespace Models.Soils.Nutrients
     /// The soil mineral nutrient pools used within the model are described in the following sections in terms of their initialisation and the flows occurring from them.
     /// </solutes>
     [Serializable]
-    [ScopedModel]
     [ValidParent(ParentType = typeof(NutrientPatchManager))]
     [ValidParent(ParentType = typeof(Soil))]
     [ViewName("UserInterface.Views.DirectedGraphView")]
     [PresenterName("UserInterface.Presenters.DirectedGraphPresenter")]
-    public class Nutrient : Model, INutrient, IVisualiseAsDirectedGraph
+    public class Nutrient : Model, INutrient, IVisualiseAsDirectedGraph, IScopedModel, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
+
         private readonly double CinFOM = 0.4;      // Carbon content of FOM
         private double[] totalOrganicN;
         private double[] fomCNRFactor;
@@ -121,7 +127,7 @@ namespace Models.Soils.Nutrients
         /// <summary>Total C lost to the atmosphere</summary>
         [Units("kg/ha")]
         public IReadOnlyList<double> Catm => catm;
-       
+
         /// <summary>Total N lost to the atmosphere</summary>
         [Units("kg/ha")]
         public IReadOnlyList<double> Natm => natm;
@@ -137,7 +143,7 @@ namespace Models.Soils.Nutrients
         /// <summary>Nitrified Nitrogen (from NH4 to either NO3 or N2O).</summary>
         [Units("kg/ha")]
         public IReadOnlyList<double> NitrifiedN => nitrifiedN;
-        
+
         /// <summary>Urea converted to NH4 via hydrolysis.</summary>
         [Units("kg/ha")]
         public IReadOnlyList<double> HydrolysedN => hydrolysis.Value;
@@ -263,7 +269,7 @@ namespace Models.Soils.Nutrients
             }
         }
 
-        /// <summary>Reset all pools, flows and solutes</summary> 
+        /// <summary>Reset all pools, flows and solutes</summary>
         public void Reset()
         {
             foreach (OrganicPool pool in nutrientPools)
@@ -274,6 +280,15 @@ namespace Models.Soils.Nutrients
 
             foreach (Solute solute in solutes)
                 solute.Reset();
+        }
+
+        /// <summary>
+        /// Add a solute.
+        /// </summary>
+        /// <param name="solute">The solute to add.</param>
+        public void AddSolute(Solute solute)
+        {
+            Structure.AddChild(solute);
         }
 
         /// <summary>
@@ -297,9 +312,9 @@ namespace Models.Soils.Nutrients
 
             // Try getting solutes from children first. This happens when using NutrientPatchManager.
             // If not found, use scope to locate solutes.
-            solutes = FindAllChildren<ISolute>();
+            solutes = Structure.FindChildren<ISolute>();
             if (!solutes.Any())
-                solutes = FindAllInScope<ISolute>();
+                solutes = Structure.FindAll<ISolute>();
 
             Inert = nutrientPools.First(pool => pool.Name == "Inert");
             Microbial = nutrientPools.First(pool => pool.Name == "Microbial");
@@ -313,7 +328,7 @@ namespace Models.Soils.Nutrients
             hydrolysis = nutrientFlows.First(flow => flow.Name == "Hydrolysis");
             denitrification = nutrientFlows.First(flow => flow.Name == "Denitrification");
             nitrification = nutrientFlows.First(flow => flow.Name == "Nitrification");
-            organicFlows = FindAllDescendants<OrganicFlow>().ToList();
+            organicFlows = Structure.FindChildren<OrganicFlow>(recurse: true).ToList();
 
             Reset();
             FOM = new CompositeNutrientPool(new IOrganicPool[] { FOMCarbohydrate, FOMCellulose, FOMLignin });
@@ -327,7 +342,7 @@ namespace Models.Soils.Nutrients
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         [EventSubscribe("StartOfSimulation")]
         private void OnStartOfSimulation(object sender, EventArgs e)
-        { 
+        {
             CalculateVariables();
         }
 
@@ -411,25 +426,5 @@ namespace Models.Soils.Nutrients
             (FOM as CompositeNutrientPool).Calculate();
         }
 
-        /// <inheritdoc/>
-        public override IEnumerable<ITag> Document()
-        {
-            yield return new Section(Name, GetModelDescription());
-        }
-
-        /// <summary>
-        /// Get a description of the model from the summary, structure, pools, and solute
-        /// xml documentation comments in the source code.
-        /// </summary>
-        /// <remarks>
-        /// Note that the returned tags are inside sections.
-        /// </remarks>
-        public new IEnumerable<ITag> GetModelDescription()
-        {
-            yield return new Paragraph(CodeDocumentation.GetSummary(GetType()));
-            yield return new Section("Structure", new Paragraph(CodeDocumentation.GetCustomTag(GetType(),"structure")));
-            yield return new Section("Pools", new Paragraph(CodeDocumentation.GetCustomTag(GetType(),"pools")));
-            yield return new Section("Solutes", new Paragraph(CodeDocumentation.GetCustomTag(GetType(),"solutes")));
-        }
     }
 }

@@ -9,6 +9,9 @@ using Models.Core.Attributes;
 using System.IO;
 using APSIM.Shared.Utilities;
 using Models.CLEM.Reporting;
+using Models.CLEM.Groupings;
+using APSIM.Numerics;
+using APSIM.Core;
 
 namespace Models.CLEM.Activities
 {
@@ -24,7 +27,7 @@ namespace Models.CLEM.Activities
     [Description("Performs grazing of a specified herd and pasture (paddock)")]
     [Version(1, 0, 1, "")]
     [HelpUri(@"Content/Features/Activities/Ruminant/RuminantGraze.htm")]
-    class RuminantActivityGrazePastureHerd : CLEMRuminantActivityBase, IValidatableObject
+    class RuminantActivityGrazePastureHerd : CLEMRuminantActivityBase, IValidatableObject, IStructureDependency
     {
         /// <summary>
         /// Link to clock
@@ -146,7 +149,22 @@ namespace Models.CLEM.Activities
 
             isStandAloneModel = true;
 
-            this.InitialiseHerd(true, false);
+            // add ruminant activity filter group to ensure correct individuals are selected
+            RuminantActivityGroup herdGroup = new()
+            {
+                Name = $"Filter_{RuminantTypeName}"
+            };
+            herdGroup.Children.Add(
+                new FilterByProperty()
+                {
+                    PropertyOfIndividual = "HerdName",
+                    Operator = System.Linq.Expressions.ExpressionType.Equal,
+                    Value = RuminantTypeName
+                }
+            );
+            Structure.AddChild(herdGroup);
+
+            this.InitialiseHerd(false, false);
 
             // if no settings have been provided from parent set limiter to 1.0. i.e. no limitation
             if (MathUtilities.FloatsAreEqual(GrazingCompetitionLimiter, 0))
@@ -154,24 +172,6 @@ namespace Models.CLEM.Activities
 
             GrazeFoodStoreModel = Resources.FindResourceType<GrazeFoodStore, GrazeFoodStoreType>(this, GrazeFoodStoreTypeName, OnMissingResourceActionTypes.ReportErrorAndStop, OnMissingResourceActionTypes.ReportErrorAndStop);
             RuminantTypeModel = Resources.FindResourceType<RuminantHerd, RuminantType>(this, RuminantTypeName, OnMissingResourceActionTypes.ReportErrorAndStop, OnMissingResourceActionTypes.ReportErrorAndStop);
-        }
-
-        /// <summary>An event handler to allow us to initialise ourselves.</summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        [EventSubscribe("CLEMValidate")]
-        private void OnFinalInitialise(object sender, EventArgs e)
-        {
-            shortfallReportingCutoff = FindInScope<ReportResourceShortfalls>()?.PropPastureShortfallOfDesiredIntake??0.02;
-
-            // if this is the last of newly added models that will be set to hidden
-            // reset the simulation subscriptions to correct the new order before running the simulation.
-            if (IsHidden)
-            {
-                Events events = new Events(FindAncestor<Simulation>());
-                //events.DisconnectEvents();
-                events.ReconnectEvents("Models.Clock", "CLEMGetResourcesRequired");
-            }
         }
 
         /// <summary>An event handler to allow us to clear requests at start of month.</summary>
@@ -419,7 +419,7 @@ namespace Models.CLEM.Activities
 
             if (GrazeFoodStoreTypeName.Contains("."))
             {
-                ResourcesHolder resHolder = FindInScope<ResourcesHolder>();
+                ResourcesHolder resHolder = Structure.Find<ResourcesHolder>();
                 if (resHolder is null || resHolder.FindResourceType<GrazeFoodStore, GrazeFoodStoreType>(this, GrazeFoodStoreTypeName) is null)
                 {
                     string[] memberNames = new string[] { "Location is not valid" };

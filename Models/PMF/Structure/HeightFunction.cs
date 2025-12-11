@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using System.Linq;
+using APSIM.Core;
 using Models.Core;
 using Models.Functions;
+using Models.PMF.Organs;
 using Newtonsoft.Json;
 
 namespace Models.PMF.Struct
@@ -12,9 +14,14 @@ namespace Models.PMF.Struct
     /// Calculates the potential height increment and then multiplies it by the smallest of any childern functions (Child functions represent stress).
     /// </summary>
     [Serializable]
+    [ValidParent(ParentType = typeof(SimpleLeaf))]
     [ValidParent(ParentType = typeof(Structure))]
-    public class HeightFunction : Model, IFunction
+    public class HeightFunction : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>The potential height</summary>
         [Link(Type = LinkType.Child, ByName = true)]
         private IFunction PotentialHeight = null;
@@ -36,12 +43,12 @@ namespace Models.PMF.Struct
         public double Value(int arrayIndex = -1)
         {
             if (ChildFunctions == null)
-                ChildFunctions = FindAllChildren<IFunction>();
+                ChildFunctions = Structure.FindChildren<IFunction>();
 
             double PotentialHeightIncrement = PotentialHeight.Value(arrayIndex) - PotentialHeightYesterday;
             double StressValue = 1.0;
             //This function is counting potential height as a stress.
-            foreach (IFunction F in ChildFunctions)
+            foreach (IFunction F in ChildFunctions.Where(f => f != PotentialHeight))
             {
                 StressValue = Math.Min(StressValue, F.Value(arrayIndex));
             }
@@ -75,17 +82,6 @@ namespace Models.PMF.Struct
         private void OnPlantEnding(object sender, EventArgs e)
         {
             Clear();
-        }
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            foreach (var child in FindAllChildren<Memo>())
-                foreach (var tag in child.Document())
-                    yield return tag;
-
-            foreach (var tag in GetModelDescription())
-                yield return tag;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Models.Storage
 
         /// <summary>A list of all write commands.</summary>
         /// <remarks>NEVER modify this without first acquiring a lock on <see cref="lockObject" />.</remarks>
-        private List<IRunnable> commands = new List<IRunnable>();
+        private Queue<IRunnable> commands = new();
 
         /// <summary>A sleep job to stop the job runner from exiting.</summary>
         private IRunnable sleepJob = new JobRunnerSleepJob(10);
@@ -136,7 +136,7 @@ namespace Models.Storage
                     tables.Add(table.TableName, tableDetails);
                 }
 
-                commands.Add(new WriteTableCommand(Connection, table, tableDetails, deleteOldData: false));
+                commands.Enqueue(new WriteTableCommand(Connection, table, tableDetails, deleteOldData: false));
                 if (!TablesModified.Contains(table.TableName))
                     TablesModified.Add(table.TableName);
             }
@@ -180,7 +180,7 @@ namespace Models.Storage
                     tableDetails = new DatabaseTableDetails(Connection, table.TableName);
                     tables.Add(table.TableName, tableDetails);
                 }
-                commands.Add(new WriteTableCommand(Connection, table, tableDetails, deleteAllData));
+                commands.Enqueue(new WriteTableCommand(Connection, table, tableDetails, deleteAllData));
                 if (!TablesModified.Contains(table.TableName))
                     TablesModified.Add(table.TableName);
             }
@@ -232,12 +232,14 @@ namespace Models.Storage
                 commandRunner.Stop();
                 idle = true;
                 commandRunner = null;
-                commands.Clear();
                 lock (lockObject)
+                {
+                    commands.Clear();
                     simulationIDs.Clear();
-                checkpointIDs.Clear();
-                simulationNamesThatHaveBeenCleanedUp.Clear();
-                units.Clear();
+                    checkpointIDs.Clear();
+                    simulationNamesThatHaveBeenCleanedUp.Clear();
+                    units.Clear();
+                }
             }
         }
 
@@ -265,13 +267,16 @@ namespace Models.Storage
                 {
                     WaitForIdle();
                     stopping = true;
+                    commandRunner.Stop();
                     commandRunner = null;
-                    commands.Clear();
                     lock (lockObject)
+                    {
+                        commands.Clear();
                         simulationIDs.Clear();
-                    checkpointIDs.Clear();
-                    simulationNamesThatHaveBeenCleanedUp.Clear();
-                    units.Clear();
+                        checkpointIDs.Clear();
+                        simulationNamesThatHaveBeenCleanedUp.Clear();
+                        units.Clear();
+                    }
                 }
             }
         }
@@ -291,7 +296,8 @@ namespace Models.Storage
                 {
                     if (commands.Count > 0)
                     {
-                        command = commands[0];
+                        idle = false;
+                        command = commands.Dequeue();
                         // The WaitForIdle() function will wait until there are no jobs
                         // and idle is set to true. Therefore, we should update the value
                         // of idle *before* removing this command from the commands list.
@@ -300,7 +306,6 @@ namespace Models.Storage
                         // list is empty, which would cause WaitForIdle() to return, even
                         // though the job runner actually hasn't finished running this command.
                         idle = command == null;
-                        commands.RemoveAt(0);
                     }
                     else
                         idle = true;
@@ -333,7 +338,7 @@ namespace Models.Storage
                 // For that reason, catch any exceptions and proceed.
             }
             lock (lockObject)
-                commands.Add(new EmptyCommand(Connection));
+                commands.Enqueue(new EmptyCommand(Connection));
             Stop();
         }
 
@@ -344,7 +349,7 @@ namespace Models.Storage
         {
             Start();
             lock (lockObject)
-                commands.Add(new AddCheckpointCommand(this, name, filesToStore));
+                commands.Enqueue(new AddCheckpointCommand(this, name, filesToStore));
             Stop();
         }
 
@@ -355,7 +360,7 @@ namespace Models.Storage
             Start();
             lock (lockObject)
             {
-                commands.Add(new DeleteCheckpointCommand(this, GetCheckpointID(name)));
+                commands.Enqueue(new DeleteCheckpointCommand(this, GetCheckpointID(name)));
                 checkpointIDs.Remove(name);
             }
             Stop();
@@ -367,7 +372,7 @@ namespace Models.Storage
         {
             Start();
             lock (lockObject)
-                commands.Add(new RevertCheckpointCommand(this, GetCheckpointID(name)));
+                commands.Enqueue(new RevertCheckpointCommand(this, GetCheckpointID(name)));
             Stop();
         }
 
@@ -543,7 +548,7 @@ namespace Models.Storage
             if (wait)
                 Start();
             lock (lockObject)
-                commands.Add(Clean(names));
+                commands.Enqueue(Clean(names));
             if (wait)
                 Stop();
         }
@@ -558,7 +563,7 @@ namespace Models.Storage
                     if (commandRunner == null)
                     {
                         stopping = false;
-                        commandRunner = new JobRunner(numProcessors: (Connection is Firebird && (Connection as Firebird).fbDBServerType == FirebirdSql.Data.FirebirdClient.FbServerType.Default) ? -1 : 1);
+                        commandRunner = new JobRunner(numProcessors: 1);
                         commandRunner.Add(this);
                         commandRunner.Run();
                         ReadExistingDatabase(Connection);

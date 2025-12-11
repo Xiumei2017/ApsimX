@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using APSIM.Core;
 using Models.Core;
 using Models.Functions;
 using Models.PMF.Interfaces;
@@ -8,15 +9,15 @@ using Newtonsoft.Json;
 namespace Models.PMF.Struct
 {
     /// <summary>
-    /// The LeafCulms model manages the canopy resources produced by tillering. Two main tillering strategies are provided by default, and are managed via 
-    /// the TilleringMethod switch defined in SorghumLeaf, which can be manipulated via script methods. 
+    /// The LeafCulms model manages the canopy resources produced by tillering. Two main tillering strategies are provided by default, and are managed via
+    /// the TilleringMethod switch defined in SorghumLeaf, which can be manipulated via script methods.
     /// FixedTillering will use the FTN property provided as part of the sowing method to determine the total number of fertile tillers.
-    /// Setting FTN to a negative value will calculate the number of fixed tillers using latitude and sowing density to provide a rule of thumb value. 
+    /// Setting FTN to a negative value will calculate the number of fixed tillers using latitude and sowing density to provide a rule of thumb value.
     /// These values have been derived using data from the Australian sorghum growing area, and may not be suitable for other locations.
-    /// DynamicTillering will calculate the potential number of tillers - usually determined by the time the 6th leaf has appeared. 
+    /// DynamicTillering will calculate the potential number of tillers - usually determined by the time the 6th leaf has appeared.
     /// The number of fertile tillers is then maintained by the addition or removal of active tillers. Further information provided below for each method.
-    /// 
-    /// </summary>	
+    ///
+    /// </summary>
     [Serializable]
     [ValidParent(ParentType = typeof(Plant))]
     [ViewName("UserInterface.Views.PropertyView")]
@@ -25,54 +26,61 @@ namespace Models.PMF.Struct
     {
         /// <summary>The parent Plant</summary>
         [Link]
-        Plant plant = null;
+        private readonly Plant plant = null;
 
         /// <summary> Tillering Method that uses a fixed number of tillers</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private ITilleringMethod fixedTillering = null;
+        private readonly ITilleringMethod fixedTillering = null;
 
         /// <summary> Tillering Method that manages number of tillers dynamically</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private ITilleringMethod dynamicTillering = null;
+        private readonly ITilleringMethod dynamicTillering = null;
 
         /// <summary> Expansion stress. </summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction expansionStress = null;
+        private readonly IFunction expansionStress = null;
 
         /// <summary> Appearance rate changes when this many leaves are remaining</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction noRateChange1 = null;
+        private readonly IFunction noRateChange1 = null;
 
         /// <summary> Appearance rate can change again when this many leaves are remaining</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction noRateChange2 = null;
+        private readonly IFunction noRateChange2 = null;
 
         /// <summary> The Initial Appearance rate for phyllocron.</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction appearanceRate1 = null;
+        private readonly IFunction appearanceRate1 = null;
 
         /// <summary>The Appearance rate for phyllocron after noRateChange 1 .</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction appearanceRate2 = null;
+        private readonly IFunction appearanceRate2 = null;
 
         /// <summary>The Appearance rate for phyllocron after noRateChange 2 .</summary>
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction appearanceRate3 = null;
+        private readonly IFunction appearanceRate3 = null;
 
         [Link(Type = LinkType.Child, ByName = true)]
-        private IFunction leafNoAtEmergence = null;
+        private readonly IFunction leafNoAtEmergence = null;
 
         /// <summary> Set through Sowing Event</summary>
         [JsonIgnore]
         public int TilleringMethod { get; set; }
 
-        private ITilleringMethod tillering => TilleringMethod == 0 ? fixedTillering : dynamicTillering;
+        /// <summary>
+        /// Always use dynamic tillering. Dynamic, Fixed Rule of
+        /// Thumb, will all put on tillers in the same way. The two differences are:
+        /// - Fixed Tillering - The fertile tiller number is supplied
+        /// - Rule of Thumb Tillering - The fertile tiller number is calculated using lat/long and sowing density etc.
+        /// - Dynamic Tillering - Will put on tillers dynamically using GxMxE factors. It will also peform tiller cessation.
+        /// </summary>
+        private ITilleringMethod Tillering => dynamicTillering;
 
         /// <summary> FertileTillerNumber is determined by the tillering method chosen</summary>
 		[JsonIgnore]
         public double FertileTillerNumber
         {
-            get => tillering.FertileTillerNumber;
+            get => Tillering.FertileTillerNumber;
             set
             {
                 //the preferred method for setting FertileTillerNumber is during the sowing event
@@ -81,9 +89,23 @@ namespace Models.PMF.Struct
             }
         }
 
+        /// <summary>Maximum SLA for tiller cessation</summary>
+        [JsonIgnore]
+        public double MaxSLA
+        {
+            get => Tillering.MaxSLA;
+        }
+
+        /// <summary>CalculatedTillerNumber is determined by the tillering method chosen</summary>
+		[JsonIgnore]
+        public double CalculatedTillerNumber
+        {
+            get => Tillering.CalculatedTillerNumber;
+        }
+
         /// <summary> CurrentTillerNumber is determined by the tillering method chosen</summary>
 		[JsonIgnore]
-        public double CurrentTillerNumber { get => tillering.CurrentTillerNumber; }
+        public double CurrentTillerNumber { get => Tillering.CurrentTillerNumber; }
 
         /// <summary> Subsequent tillers are slightly smaller - adjust that size using a percentage</summary>
         [Link(Type = LinkType.Child, ByName = true)]
@@ -99,7 +121,13 @@ namespace Models.PMF.Struct
 
         /// <summary>Leaf number.</summary>
         [JsonIgnore]
-        public double LeafNo { get { return Culms[0].CurrentLeafNo; } }
+        public double LeafNo
+        {
+            get
+            {
+                return Culms[0]?.CurrentLeafNo ?? 0;
+            }
+        }
 
         /// <summary> Amount of Leaf that appears today</summary>
         [JsonIgnore]
@@ -107,11 +135,11 @@ namespace Models.PMF.Struct
 
         /// <summary> Potential leaf growth for today for all culms</summary>
         [JsonIgnore]
-        public double dltPotentialLAI { get; set; }
+        public double DltPotentialLAI { get; set; }
 
         /// <summary> Potential leaf growth after stress for today for all culms</summary>
         [JsonIgnore]
-        public double dltStressedLAI { get; set; }
+        public double DltStressedLAI { get; set; }
 
         /// <summary> Collection of Culms </summary>
         [JsonIgnore]
@@ -133,8 +161,23 @@ namespace Models.PMF.Struct
         {
             get
             {
-                return Culms[0].LeafSizes.ToArray();
+                return Culms[0]?.LeafSizes.ToArray();
             }
+        }
+
+        /// <summary>Determines whether all leaves on all tillers have fully expanded.</summary>
+        public bool AreAllLeavesFullyExpanded()
+        {
+            var areAllLeavesFullyExpanded = true;
+            foreach (var culm in Culms)
+            {
+                if (culm.Proportion > 0 && culm.CurrentLeafNo < culm.FinalLeafNo)
+                {
+                    areAllLeavesFullyExpanded = false;
+                    break;
+                }
+            }
+            return areAllLeavesFullyExpanded;
         }
 
         /// <summary>
@@ -144,14 +187,17 @@ namespace Models.PMF.Struct
         public void Initialize()
         {
             Culms.Clear();
-            Culms.Add(new Culm(0));
-            Culms[0].CurrentLeafNo = leafNoAtEmergence.Value();
+            Culms.Add(new Culm(0)
+            {
+                CurrentLeafNo = leafNoAtEmergence.Value(),
+                CulmNo = 0
+            });
 
             TTTargetFI = 0;
             FinalLeafNo = 0;
             dltLeafNo = 0;
-            dltPotentialLAI = 0.0;
-            dltStressedLAI = 0.0;
+            DltPotentialLAI = 0.0;
+            DltStressedLAI = 0.0;
         }
 
         /// <summary> Reset Culms at start of the simulation </summary>
@@ -164,28 +210,27 @@ namespace Models.PMF.Struct
         /// <summary>Calculate Potential Leaf Area</summary>
         public void CalculatePotentialArea()
         {
-            //FinalLeafNo = numberOfLeaves.Value();
-            Culms.ForEach(c => c.FinalLeafNo = FinalLeafNo);
+            Culms.ForEach(c => c.FinalLeafNo = FinalLeafNo - c.CulmNo);
 
-            dltLeafNo = tillering.CalcLeafNumber();
+            dltLeafNo = Tillering.CalcLeafNumber();
 
-            dltPotentialLAI = tillering.CalcPotentialLeafArea();
+            DltPotentialLAI = Tillering.CalcPotentialLeafArea();
             double expStress = expansionStress.Value();
-            dltStressedLAI = dltPotentialLAI * expStress;
+            DltStressedLAI = DltPotentialLAI * expStress;
             Culms.ForEach(c => c.DltStressedLAI = c.DltLAI * expStress);
         }
 
         /// <summary>Calculate Actual Area - adjusts potential growth </summary>
         public double CalculateActualArea()
         {
-            double actualLAI = tillering.CalcActualLeafArea(dltStressedLAI);
+            double actualLAI = Tillering.CalcActualLeafArea(DltStressedLAI);
 
-            Culms.ForEach(c => c.TotalLAI = c.TotalLAI + c.DltStressedLAI);
+            Culms.ForEach(c => c.TotalLAI += c.DltStressedLAI);
             return actualLAI;
         }
 
         /// <summary>Calculate Actual Area - adjusts potential growth </summary>
-        public double getLeafAppearanceRate(double remainingLeaves)
+        public double GetLeafAppearanceRate(double remainingLeaves)
         {
             //allowing for 2 rate changes although current crops only utilise 1
             if (remainingLeaves <= noRateChange2.Value())
@@ -207,6 +252,5 @@ namespace Models.PMF.Struct
                 TilleringMethod = data.TilleringMethod;
             }
         }
-
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using APSIM.Shared.Utilities;
 using Models.Core;
 using Newtonsoft.Json;
@@ -16,8 +15,12 @@ namespace Models.Storage
     [ViewName("ApsimNG.Resources.Glade.DataStoreView.glade")]
     [PresenterName("UserInterface.Presenters.DataStorePresenter")]
     [ValidParent(ParentType = typeof(Simulations))]
-    public class DataStore : Model, IDataStore, IDisposable
+    public class DataStore : Model, IDataStore, IDisposable, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>A database connection</summary>
         [NonSerialized]
         private IDatabaseConnection connection = null;
@@ -51,10 +54,6 @@ namespace Models.Storage
                 Open();
             }
         }
-        /// <summary>
-        /// Selector for the database type. Set in the constructors.
-        /// </summary>
-        public bool useFirebird { get; set; } = false;
 
         /// <summary>
         /// Returns the file name of the .db file.
@@ -84,23 +83,6 @@ namespace Models.Storage
 
         /// <summary>Get a writer to perform write operations on the datastore.</summary>
         public IStorageWriter Writer { get { return dbWriter; } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [JsonIgnore]
-        public override IModel Parent
-        {
-            get
-            {
-                return base.Parent;
-            }
-            set
-            {
-                base.Parent = value;
-                OnCreated();
-            }
-        }
 
         /// <summary>Constructor</summary>
         public DataStore()
@@ -207,14 +189,14 @@ namespace Models.Storage
         /// </summary>
         public void UpdateFileName()
         {
-            string extension = useFirebird ? ".fdb" : ".db";
+            string extension = ".db";
 
-            Simulations simulations = FindAncestor<Simulations>();
+            Simulations simulations = Structure?.FindParent<Simulations>(recurse: true);
 
             // If we have been cloned prior to a run, then we won't be able to locate
             // the simulations object. In this situation we can fallback to using the
             // parent simulation's filename (which should be the same anyway).
-            Simulation simulation = FindAncestor<Simulation>();
+            Simulation simulation = Structure?.FindParent<Simulation>(recurse: true);
 
             if (useInMemoryDB)
                 FileName = ":memory:";
@@ -232,10 +214,7 @@ namespace Models.Storage
             if (FileName == null)
                 UpdateFileName();
 
-            if (useFirebird)
-                connection = new Firebird();
-            else
-                connection = new SQLite();
+            connection = new SQLite();
 
             connection.OpenDatabase(FileName, readOnly: false);
 
@@ -308,15 +287,6 @@ namespace Models.Storage
                 throw new NotImplementedException();
             }
             return "";
-        }
-
-        /// <summary>
-        /// Override the Document() function but do nothing.
-        /// This model does not show any documentation.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            yield break;
         }
     }
 }

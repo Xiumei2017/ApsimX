@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
-using Models.Functions;
 using Newtonsoft.Json;
 
 namespace Models.PMF.Phen
@@ -14,19 +12,16 @@ namespace Models.PMF.Phen
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [ValidParent(ParentType = typeof(Phenology))]
-    public class GenericPhase : Model, IPhase, IPhaseWithTarget
+    public class GenericPhase : Model, IPhase, IPhaseWithTarget, IPhaseWithSetableCompletionDate
     {
-        // 1. Links
-        //----------------------------------------------------------------------------------------------------------------
-
         [Link(Type = LinkType.Child, ByName = true)]
         private IFunction target = null;
 
         [Link(Type = LinkType.Child, ByName = true)]
         private IFunction progression = null;
 
-        // 2. Public properties
-        //-----------------------------------------------------------------------------------------------------------------
+        [Link] 
+        private IClock clock = null;
 
         /// <summary>The phenological stage at the start of this phase.</summary>
         [Description("Start")]
@@ -40,18 +35,11 @@ namespace Models.PMF.Phen
         [Description("Is the phase emerged?")]
         public bool IsEmerged { get; set; } = true;
 
-        /// <summary>Fraction of phase that is complete (0-1).</summary>
-        [JsonIgnore]
-        public double FractionComplete
-        {
-            get
-            {
-                if (Target == 0.0)
-                    return 1.0;
-                else
-                    return ProgressThroughPhase / Target;
-            }
-        }
+        /// <summary>First date in this phase</summary>
+        private DateTime startDate;
+
+        /// <summary>Flag for the first day of this phase</summary>
+        private double fractionCompleteYesterday;
 
         /// <summary>Units of progress through phase on this time step.</summary>
         [JsonIgnore]
@@ -66,14 +54,30 @@ namespace Models.PMF.Phen
         [Units("oD")]
         public double Target { get { return target.Value(); } }
 
-        // 3. Public methods
-        //-----------------------------------------------------------------------------------------------------------------
+        /// <summary>Data to progress.  Is empty by default.  If set by external model, phase will ignore its mechanisum and wait for the specified date to progress</summary>
+        [JsonIgnore]
+        public string DateToProgress { get; set; } = "";
+                
+        /// <summary>Fraction of phase that is complete (0-1).</summary>
+        [JsonIgnore]
+        public double FractionComplete
+        {
+            get
+            {
+                return Phenology.FractionComplete(DateToProgress, ProgressThroughPhase, Target, startDate, clock.Today, fractionCompleteYesterday);
+            }
+        }
+
         /// <summary>Compute the phenological development during one time-step.</summary>
         /// <remarks>Returns true when target is met.</remarks>
         public bool DoTimeStep(ref double propOfDayToUse)
         {
-            bool proceedToNextPhase = false;
+            if (!String.IsNullOrEmpty(DateToProgress))
+            {
+                return Phenology.checkIfCompletionDate(ref startDate, clock.Today, DateToProgress, ref propOfDayToUse);
+            }
 
+            bool proceedToNextPhase = false;
             if (ProgressThroughPhase >= Target)
             {
                 // We have entered this timestep after Target decrease below progress so exit without doing anything
@@ -83,6 +87,7 @@ namespace Models.PMF.Phen
             {
                 ProgressionForTimeStep = progression.Value() * propOfDayToUse;
                 ProgressThroughPhase += ProgressionForTimeStep;
+                fractionCompleteYesterday = FractionComplete;
 
                 if (ProgressThroughPhase > Target)
                 {
@@ -95,38 +100,18 @@ namespace Models.PMF.Phen
                     ProgressThroughPhase = Target;
                 }
             }
+
             return proceedToNextPhase;
         }
 
         /// <summary>Resets the phase.</summary>
-        public void ResetPhase() { ProgressThroughPhase = 0.0; }
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            // Write description of this class.
-            yield return new Paragraph($"This phase goes from {Start.ToLower()} to {End.ToLower()}.");
-
-            // Write memos
-            foreach (var tag in DocumentChildren<Memo>())
-                yield return tag;
-
-            yield return new Paragraph($"The *Target* for completion is calculated as:");
-
-            // Write target
-            foreach (var tag in target.Document())
-                yield return tag;
-
-            yield return new Paragraph($"*Progression* through phase is calculated daily and accumulated until the *Target* is reached.");
-
-            // Write progression
-            foreach (var tag in progression.Document())
-                yield return tag;
+        public void ResetPhase() 
+        { 
+            ProgressThroughPhase = 0.0;
+            DateToProgress = "";
+            fractionCompleteYesterday = 0;
+            startDate = DateTime.MinValue;
         }
-
-
-        // 4. Private method
-        //-----------------------------------------------------------------------------------------------------------------
 
         /// <summary>Called when [simulation commencing].</summary>
         [EventSubscribe("Commencing")]

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.Functions;
 using Models.PMF.Interfaces;
@@ -8,7 +7,7 @@ using Models.PMF.Interfaces;
 namespace Models.PMF
 {
     /// <summary>
-    /// This class holds the functions for calculating the absolute demands and priorities for each biomass fraction. 
+    /// This class holds the functions for calculating the absolute demands and priorities for each biomass fraction.
     /// </summary>
     [Serializable]
     [ValidParent(ParentType = typeof(IOrgan))]
@@ -44,29 +43,5 @@ namespace Models.PMF
         [Units("g/m2")]
         public IFunction QStoragePriority = null;
 
-        /// <summary>Document the model.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            // add a heading
-            yield return new Section(Name, GetTags());
-        }
-
-        /// <summary>
-        /// Get the tags used in this model's description.
-        /// </summary>
-        private IEnumerable<ITag> GetTags()
-        {
-            // Write the model description.
-            foreach (ITag tag in GetModelDescription())
-                yield return tag;
-
-            // Write memos.
-            foreach (ITag tag in DocumentChildren<Memo>())
-                yield return tag;
-
-            // Write child functions.
-            foreach (ITag tag in DocumentChildren<IFunction>())
-                yield return tag;
-        }
     }
 }

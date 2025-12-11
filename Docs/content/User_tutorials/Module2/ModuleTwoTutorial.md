@@ -104,12 +104,13 @@ The APSIM residue model will decompose residues at differing rates according to 
 To demonstrate this we will reproduce the previous simulation but apply legume residues in the place of the wheat residues.
 
 1. Create another copy of the `Clay Residue` simulation. Rename it to `Clay Chickpea Residue`. Remove the graph component.
-2. Change the SurfaceOrganicMatter residue parameters to 3000 kg/ha of chickpea residue. 
+	- Remove the [Weather].Rain Report Variable from the Report node in the 'Clay Chickpea Residue' simulation.
+3. Change the SurfaceOrganicMatter residue parameters to 3000 kg/ha of chickpea residue. 
 	- Also change the initial residue pool to 'chickpea'.
-3. Change the C:N ratio to 25.
+4. Change the C:N ratio to 25.
 ![Surface organic matter chickpea](/images/moduleTwoImages/step7.png)
-4. Run the simulation.
-5. Create a graph with all three residue simulations with residue as a function of time. Call the graph `Cover`.
+5. Run the simulation.
+6. Create a graph with all three residue simulations with residue as a function of time. Call the graph `Cover`.
 	- To do this:
 		- right-click the `simulations` node
 		- click `Add model...`
@@ -118,9 +119,9 @@ To demonstrate this we will reproduce the previous simulation but apply legume r
 		- right-click `Cover` graph
 		- click `Add model...`
 		- double-click `Series`
-6. Change the variables to match the image below:
+7. Change the variables to match the image below:
 ![Series variables for cover graph](/images/moduleTwoImages/step8.png)
-7. If you'd like the lengend to appear on the right of the graph like the image:
+8. If you'd like the lengend to appear on the right of the graph like the image:
 	- Click one of the legend items
 	- a menu will appear at the bottom of the graph and you can change the drop down menu's value to top right or any other position to your liking.
 	![Change legend location](/images/moduleTwoImages/step9.png)

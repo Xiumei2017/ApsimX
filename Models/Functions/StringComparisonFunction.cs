@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
+using Newtonsoft.Json;
 
 namespace Models.Functions
 {
@@ -10,8 +10,11 @@ namespace Models.Functions
     [Description("Tests if value of a string property is equal to a given value and returns a value depending on the result.")]
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
-    public class StringComparisonFunction : Model, IFunction
+    public class StringComparisonFunction : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
 
         /// <summary>The propertyname</summary>
         [Description("Name of string property to compare")]
@@ -33,7 +36,7 @@ namespace Models.Functions
         /// <value>The value.</value>
         public double Value(int arrayIndex = -1)
         {
-            object s = Locator.Get(PropertyName);
+            object s = Structure.Get(PropertyName);
 
             string PropertyString;
             if (s == null)
@@ -51,20 +54,6 @@ namespace Models.Functions
                 return TrueValue.Value(arrayIndex);
             else
                 return FalseValue.Value(arrayIndex);
-        }
-
-        /// <summary>
-        /// Document the model.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            yield return new Paragraph($"If {PropertyName} = {StringValue} Then");
-            foreach (ITag tag in TrueValue.Document())
-                yield return tag;
-
-            yield return new Paragraph("Else");
-            foreach (ITag tag in FalseValue.Document())
-                yield return tag;
         }
     }
 }

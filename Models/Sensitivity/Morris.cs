@@ -5,6 +5,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using APSIM.Core;
+using APSIM.Numerics;
 using APSIM.Shared.Utilities;
 using Models.Core;
 using Models.Core.Run;
@@ -26,8 +28,12 @@ namespace Models
     [PresenterName("UserInterface.Presenters.PropertyAndGridPresenter")]
     [ValidParent(ParentType = typeof(Simulations))]
     [ValidParent(ParentType = typeof(Folder))]
-    public class Morris : Model, ISimulationDescriptionGenerator, IGridModel, IPostSimulationTool
+    public class Morris : Model, ISimulationDescriptionGenerator, IPostSimulationTool, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         [Link]
         private IDataStore dataStore = null;
 
@@ -97,6 +103,7 @@ namespace Models
         /// <remarks>
         /// Needs to be public so that it gets written to .apsimx file
         /// </remarks>
+        [Display]
         public List<Parameter> Parameters { get; set; }
 
         /// <summary>
@@ -127,30 +134,10 @@ namespace Models
         /// <summary>Have the values of the parameters changed?</summary>
         public bool ParametersHaveChanged { get; set; } = false;
 
-        /// <summary>Tabular data. Called by GUI.</summary>
-        [JsonIgnore]
-        public List<GridTable> Tables
-        {
-            get
-            {
-                List<GridTableColumn> columns = new List<GridTableColumn>();
-
-                columns.Add(new GridTableColumn("Name", new VariableProperty(this, GetType().GetProperty("Parameters"))));
-                columns.Add(new GridTableColumn("Path", new VariableProperty(this, GetType().GetProperty("Parameters"))));
-                columns.Add(new GridTableColumn("LowerBound", new VariableProperty(this, GetType().GetProperty("Parameters"))));
-                columns.Add(new GridTableColumn("UpperBound", new VariableProperty(this, GetType().GetProperty("Parameters"))));
-
-                List<GridTable> tables = new List<GridTable>();
-                tables.Add(new GridTable(Name, columns, this));
-
-                return tables;
-            }
-        }
-
         /// <summary>Gets a list of simulation descriptions.</summary>
         public List<SimulationDescription> GenerateSimulationDescriptions()
         {
-            var baseSimulation = this.FindChild<Simulation>();
+            var baseSimulation = Structure.FindChild<Simulation>();
 
             // Calculate all combinations.
             CalculateFactors();
@@ -268,7 +255,7 @@ namespace Models
         {
             get
             {
-                return this.FindChild<Simulation>();
+                return Structure.FindChild<Simulation>();
             }
         }
 
@@ -336,7 +323,7 @@ namespace Models
                 DataView eeView = new DataView(eeDataRaw);
                 IndexedDataTable eeTableKey = new IndexedDataTable(new string[] { "Parameter", AggregationVariableName });
 
-                // Create a path variable. 
+                // Create a path variable.
                 var pathValues = Enumerable.Range(1, NumPaths).ToArray();
 
                 foreach (var parameter in Parameters)

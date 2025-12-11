@@ -10,7 +10,7 @@ namespace Models.CLEM.Resources
 {
     ///<summary>
     /// Resource type pricing
-    ///</summary> 
+    ///</summary>
     [Serializable]
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
@@ -20,7 +20,6 @@ namespace Models.CLEM.Resources
     [ValidParent(ParentType = typeof(GreenhouseGasesType))]
     [ValidParent(ParentType = typeof(HumanFoodStoreType))]
     [ValidParent(ParentType = typeof(LandType))]
-    [ValidParent(ParentType = typeof(OtherAnimalsType))]
     [ValidParent(ParentType = typeof(ProductStoreType))]
     [ValidParent(ParentType = typeof(ProductStoreTypeManure))]
     [ValidParent(ParentType = typeof(WaterType))]
@@ -72,7 +71,7 @@ namespace Models.CLEM.Resources
         }
 
         /// <summary>
-        /// Calulate the value of an amount of resource 
+        /// Calulate the value of an amount of resource
         /// </summary>
         /// <param name="amount">Amount of resource to value</param>
         /// <param name="respectUseWholePacket">Determing if purchase in whole packets is to be obeyed in calculation</param>
@@ -94,7 +93,7 @@ namespace Models.CLEM.Resources
 
         /// <inheritdoc/>
         [JsonIgnore]
-        public IResourceType Resource { get { return FindAncestor<IResourceType>(); } }
+        public IResourceType Resource { get { return Structure.FindParent<IResourceType>(recurse: true); } }
 
         /// <inheritdoc/>
         [JsonIgnore]

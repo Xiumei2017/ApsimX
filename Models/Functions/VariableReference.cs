@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
-using APSIM.Shared.Utilities;
+using System.Text.Json.Serialization;
+using APSIM.Core;
 using Models.Core;
 
 namespace Models.Functions
@@ -13,10 +12,15 @@ namespace Models.Functions
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [Description("Returns the value of a nominated internal Plant numerical variable")]
-    public class VariableReference : Model, IFunction
+    public class VariableReference : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         private string trimmedVariableName = "";
-        private IVariable variable = null;
+        private VariableComposite variable = null;
+
 
         /// <summary>The variable name</summary>
         [Description("Specify an internal variable")]
@@ -33,7 +37,6 @@ namespace Models.Functions
             }
         }
 
-
         /// <summary>Gets the value.</summary>
         /// <value>The value.</value>
         public double Value(int arrayIndex = -1)
@@ -42,7 +45,7 @@ namespace Models.Functions
             {
                 try
                 {
-                    variable = Locator.GetObject(trimmedVariableName, LocatorFlags.ThrowOnError);
+                    variable = Structure.GetObject(trimmedVariableName, LocatorFlags.ThrowOnError);
                 }
                 catch (Exception err)
                 {
@@ -64,15 +67,5 @@ namespace Models.Functions
                 return doubleValue;
             }
         }
-
-        /// <summary>
-        /// Document the model.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            string variable = StringUtilities.RemoveTrailingString(VariableName, ".Value()");
-            yield return new Paragraph($"*{Name} = {variable}*");
-        }
-
     }
 }

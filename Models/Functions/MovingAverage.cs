@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
+using APSIM.Numerics;
 using APSIM.Shared.Utilities;
 using Models.Core;
 using Models.PMF.Phen;
@@ -15,8 +16,12 @@ namespace Models.Functions
     [Description("Maintains a moving average of a given value for a user-specified number of simulation days")]
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
-    public class MovingAverageFunction : Model, IFunction
+    public class MovingAverageFunction : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>The number of days over which to calculate the moving average</summary>
         [Description("Number of Days")]
         public int NumberOfDays { get; set; }
@@ -42,7 +47,7 @@ namespace Models.Functions
             get
             {
                 IFunction value;
-                IEnumerable<IFunction> ChildFunctions = FindAllChildren<IFunction>();
+                IEnumerable<IFunction> ChildFunctions = Structure.FindChildren<IFunction>();
                 if (ChildFunctions.Count() == 1)
                     value = ChildFunctions.First();
                 else
@@ -102,15 +107,6 @@ namespace Models.Functions
             if (NumberOfDays == 0)
                 throw new ApsimXException(this, "Number of days for moving average cannot be zero in function " + this.Name);
             return MathUtilities.Average(AccumulatedValues);
-        }
-
-        /// <summary>
-        /// Document the model.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            if (FindAllChildren<IFunction>().Count() == 1)
-                yield return new Paragraph($"{Name} is calculated from a moving average of {ChildFunction.Name} over a series of {NumberOfDays} days.");
         }
     }
 }

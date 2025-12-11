@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using APSIM.Core;
 using Models.Core;
 using Models.Functions;
 using Models.PMF.Interfaces;
@@ -9,7 +9,7 @@ namespace Models.PMF
 {
 
     /// <summary>
-    /// This is the basic organ class that contains biomass structures and transfers
+    /// This is the class where daily nutirent supplies and demands are parameterised.  All supplies and demands are in g and are independent of area so arbitration can scale across zones of different sizes
     /// </summary>
     [Serializable]
     [ViewName("UserInterface.Views.PropertyView")]
@@ -27,11 +27,11 @@ namespace Models.PMF
 
         /// <summary>The demand of nutrients by the organ from the arbitrator</summary>
         [Link(Type = LinkType.Child)]
-        [Units("g/m2/d")]
+        [Units("g/d")]
         private NutrientDemandFunctions demandFunctions = null;
 
         /// <summary>The supply of nutrients from the organ to the arbitrator</summary>
-        [Units("g/m2")]
+        [Units("g/d")]
         [Link(Type = LinkType.Child)]
         private NutrientSupplyFunctions supplyFunctions = null;
 
@@ -53,14 +53,11 @@ namespace Models.PMF
         /// <summary>Constructor</summary>
         public OrganNutrientDelta()
         {
-            //demandFunctions = new NutrientDemandFunctions();
-            //supplyFunctions = new NutrientSupplyFunctions();
-            //thresholds = new NutrientConcentrationFunctions();
             Supplies = new OrganNutrientSupplies();
             SuppliesAllocated = new OrganNutrientSupplies();
-            Demands = new NutrientPoolsState(0, 0, 0);
-            PriorityScaledDemand = new NutrientPoolsState(0, 0, 0);
-            DemandsAllocated = new NutrientPoolsState(0, 0, 0);
+            Demands = new NutrientPoolsState();
+            PriorityScaledDemand = new NutrientPoolsState();
+            DemandsAllocated = new NutrientPoolsState();
         }
 
         ///4. Public Events And Enums
@@ -105,7 +102,7 @@ namespace Models.PMF
         {
             get
             {
-                NutrientPoolsState outstanding = new NutrientPoolsState(Demands - DemandsAllocated);
+                NutrientPoolsState outstanding = Demands - DemandsAllocated;
                 return outstanding;
             }
         }
@@ -145,7 +142,7 @@ namespace Models.PMF
                     throw new Exception("Concentrations of Carbon in "+organ.Name+" must add to 1 to keep demands entire");
         }
 
-        /// <summary>Calculate and return the dry matter demand (g/m2)</summary>
+        /// <summary>Calculate and return the dry matter demand (g)</summary>
         public void SetSuppliesAndDemands()
         {
             Clear();
@@ -191,29 +188,7 @@ namespace Models.PMF
         [EventSubscribe("Commencing")]
         protected void OnSimulationCommencing(object sender, EventArgs e)
         {
-            // Deltas = new OrganResourceStates();
-            // Live = new ResourcePools();
-            //  Dead = new ResourcePools();
             ConcentrationOrFraction = new NutrientPoolsState(0, 0, 0);
-        }
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        /// <param name="tags">The list of tags to add to.</param>
-        /// <param name="headingLevel">The level (e.g. H2) of the headings.</param>
-        /// <param name="indent">The level of indentation 1, 2, 3 etc.</param>
-        public void Document(List<AutoDocumentation.ITag> tags, int headingLevel, int indent)
-        {
-
-            // add a heading, the name of this organ
-            tags.Add(new AutoDocumentation.Heading(Name, headingLevel));
-
-            // write the basic description of this class, given in the <summary>
-            AutoDocumentation.DocumentModelSummary(this, tags, headingLevel, indent, false);
-
-            // write the memos
-            foreach (IModel memo in this.FindAllChildren<Memo>())
-                AutoDocumentation.DocumentModel(memo, tags, headingLevel + 1, indent);
-
         }
     }
 

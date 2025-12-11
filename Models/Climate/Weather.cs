@@ -1,4 +1,6 @@
-﻿using APSIM.Shared.Utilities;
+﻿using APSIM.Core;
+using APSIM.Numerics;
+using APSIM.Shared.Utilities;
 using Models.Core;
 using Models.Interfaces;
 using Newtonsoft.Json;
@@ -7,7 +9,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 
 namespace Models.Climate
 {
@@ -19,8 +20,17 @@ namespace Models.Climate
     [PresenterName("UserInterface.Presenters.MetDataPresenter")]
     [ValidParent(ParentType = typeof(Simulation))]
     [ValidParent(ParentType = typeof(Zone))]
-    public class Weather : Model, IWeather, IReferenceExternalFiles
+    public class Weather : Model, IWeather, IReferenceExternalFiles, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
+
+        [Link]
+        private Simulation simulation = null;
+
+
         /// <summary>
         /// A link to the clock model.
         /// </summary>
@@ -131,12 +141,12 @@ namespace Models.Climate
         {
             get
             {
-                Simulation simulation = FindAncestor<Simulation>();
+                Simulation simulation = Structure.FindParent<Simulation>(recurse: true);
                 if (simulation != null)
                     return PathUtilities.GetAbsolutePath(this.constantsFile, simulation.FileName);
                 else
                 {
-                    Simulations simulations = FindAncestor<Simulations>();
+                    Simulations simulations = Structure.FindParent<Simulations>(recurse: true);
                     if (simulations != null)
                         return PathUtilities.GetAbsolutePath(this.constantsFile, simulations.FileName);
                     else
@@ -145,48 +155,56 @@ namespace Models.Climate
             }
             set
             {
-                Simulations simulations = FindAncestor<Simulations>();
-                if (simulations != null)
-                    this.constantsFile = PathUtilities.GetRelativePath(value, simulations.FileName);
-                else
                     this.constantsFile = value;
             }
         }
+
+        /// <summary>
+        /// Filename for the weather file.
+        /// </summary>
+        private string fileName;
 
         /// <summary>
         /// Gets or sets the file name. Should be relative filename where possible.
         /// </summary>
         [Summary]
         [Description("Weather file name")]
-        public string FileName { get; set; }
+        public string FileName
+        {
+            get
+            {
+                string apsimFilePath = "";
+                if (Node != null)
+                    apsimFilePath = Node.FileName;
+                else if (simulation != null)
+                    apsimFilePath = simulation.FileName;
+                else
+                {
+                    Simulations sims = Node.FindParent<Simulations>(recurse: true);
+                    if (sims != null)
+                        apsimFilePath = sims.FileName;
+                }
+
+                if (string.IsNullOrEmpty(apsimFilePath))
+                    throw new Exception("Cannot determine weather file path: Weather model is not attached to a simulation node or simulation. Please ensure the weather model is correctly attached to a simulation node.");
+                else
+                    return PathUtilities.GetRelativePath(fileName, apsimFilePath);
+            }
+            set { fileName = value; }
+        }
 
         /// <summary>
         /// Gets or sets the full file name (with path). The user interface uses this.
         /// </summary>
         [JsonIgnore]
-        public string FullFileName
+        private string FullFileName
         {
             get
             {
-                Simulation simulation = FindAncestor<Simulation>();
-                if (simulation != null && simulation.FileName != null)
-                    return PathUtilities.GetAbsolutePath(this.FileName, simulation.FileName);
+                if (this.Node != null)
+                    return PathUtilities.GetAbsolutePath(fileName, this.Node.FileName);
                 else
-                {
-                    Simulations simulations = FindAncestor<Simulations>();
-                    if (simulations != null)
-                        return PathUtilities.GetAbsolutePath(this.FileName, simulations.FileName);
-                    else
-                        return PathUtilities.GetAbsolutePath(this.FileName, "");
-                }
-            }
-            set
-            {
-                Simulations simulations = FindAncestor<Simulations>();
-                if (simulations != null)
-                    this.FileName = PathUtilities.GetRelativePath(value, simulations.FileName);
-                else
-                    this.FileName = value;
+                    throw new Exception("Cannot determine full weather file path: Weather model is not attached to a simulation node. Ensure the weather model is attached to a simulation node to resolve this error.");
             }
         }
 
@@ -362,7 +380,7 @@ namespace Models.Climate
         /// Gets or sets the CO2 level. If not specified in the weather file the default is 350.
         /// </summary>
         [JsonIgnore]
-        public double CO2 { 
+        public double CO2 {
             get
             {
                 if (this.reader == null || this.reader.Constant("co2") == null)
@@ -370,7 +388,7 @@ namespace Models.Climate
                 else
                     return this.reader.ConstantAsDouble("co2");
             }
-            set 
+            set
             {
                 co2Value = value;
             }
@@ -386,6 +404,7 @@ namespace Models.Climate
         /// <summary>
         /// Gets the latitude
         /// </summary>
+        [JsonIgnore]
         public double Latitude
         {
             get
@@ -395,11 +414,17 @@ namespace Models.Climate
 
                 return this.reader.ConstantAsDouble("Latitude");
             }
+            set
+            {
+                if (this.reader != null)
+                    reader.Constant("Latitude").Value = value.ToString();
+            }
         }
 
         /// <summary>
         /// Gets the longitude
         /// </summary>
+        [JsonIgnore]
         public double Longitude
         {
             get
@@ -415,6 +440,7 @@ namespace Models.Climate
         /// Gets the average temperature
         /// </summary>
         [Units("°C")]
+        [JsonIgnore]
         public double Tav
         {
             get
@@ -426,11 +452,17 @@ namespace Models.Climate
 
                 return this.reader.ConstantAsDouble("tav");
             }
+            set
+            {
+                if (this.reader != null)
+                    reader.Constant("tav").Value = value.ToString();
+            }
         }
 
         /// <summary>
         /// Gets the temperature amplitude.
         /// </summary>
+        [JsonIgnore]
         public double Amp
         {
             get
@@ -441,6 +473,11 @@ namespace Models.Climate
                     this.CalcTAVAMP();
 
                 return this.reader.ConstantAsDouble("amp");
+            }
+            set
+            {
+                if (this.reader != null)
+                    reader.Constant("amp").Value = value.ToString();
             }
         }
 
@@ -576,6 +613,14 @@ namespace Models.Climate
             }
         }
 
+        /// <summary>Get a constant from the weather file.</summary>
+        /// <param name="name">Name of constant</param>
+        /// <returns>The value (as a string) or null if not found.</returns>
+        public string GetConstant(string name)
+        {
+            return reader.Constant(name)?.Value;
+        }
+
         /// <summary>
         /// Overrides the base class method to allow for initialization.
         /// </summary>
@@ -597,6 +642,7 @@ namespace Models.Climate
                 this.AirPressure = 1010;
             if (DiffuseFraction == 0)
                 this.DiffuseFraction = -1;
+
             if (reader != null)
             {
                 reader.Close();
@@ -735,7 +781,7 @@ namespace Models.Climate
                     break;
                 }
             }
-            
+
             if (this.reader == null)
                 if (!this.OpenDataFile())
                     throw new ApsimXException(this, "Cannot find weather file '" + this.FileName + "'");
@@ -756,7 +802,7 @@ namespace Models.Climate
                 throw new Exception("Non consecutive dates found in file: " + this.FileName + ".");
 
             //since this data was valid, store in our cache for next time
-            
+
             WeatherRecordEntry record = new WeatherRecordEntry();
             record.Date = date;
             record.MetData = readMetData;
@@ -764,7 +810,7 @@ namespace Models.Climate
                 this.weatherCache.AddBefore(this.weatherCache.Find(previousEntry), record);
             else
                 this.weatherCache.AddFirst(record);
-            
+
 
             return CheckDailyMetData(readMetData);
         }
@@ -892,26 +938,27 @@ namespace Models.Climate
         /// <returns>True if the file was successfully opened</returns>
         public bool OpenDataFile()
         {
-            if (!System.IO.File.Exists(this.FullFileName) &&
-                System.IO.Path.GetExtension(FullFileName) == string.Empty)
+            string fullFileName = FullFileName;
+            if (!File.Exists(fullFileName) &&
+                Path.GetExtension(fullFileName) == string.Empty)
                 FileName += ".met";
 
-            if (System.IO.File.Exists(this.FullFileName))
+            if (File.Exists(fullFileName))
             {
                 if (this.reader == null)
                 {
-                    if (ExcelUtilities.IsExcelFile(FullFileName) && string.IsNullOrEmpty(ExcelWorkSheetName))
-                        throw new Exception($"Unable to open excel file {FullFileName}: no sheet name is specified");
+                    if (ExcelUtilities.IsExcelFile(fullFileName) && string.IsNullOrEmpty(ExcelWorkSheetName))
+                        throw new Exception($"Unable to open excel file {fullFileName}: no sheet name is specified");
 
                     this.reader = new ApsimTextFile();
-                    this.reader.Open(this.FullFileName, this.ExcelWorkSheetName);
+                    this.reader.Open(fullFileName, this.ExcelWorkSheetName);
 
                     if (this.reader.Headings == null)
                     {
                         string message = "Cannot find the expected header in ";
-                        if (ExcelUtilities.IsExcelFile(FullFileName))
+                        if (ExcelUtilities.IsExcelFile(fullFileName))
                             message += $"sheet '{ExcelWorkSheetName}' of ";
-                        message += $"weather file: {FullFileName}";
+                        message += $"weather file: {fullFileName}";
                         throw new Exception(message);
                     }
 
@@ -938,19 +985,19 @@ namespace Models.Climate
 
                     if (this.maximumTemperatureIndex == -1)
                         if (this.reader == null || this.reader.Constant("maxt") == null)
-                            throw new Exception("Cannot find MaxT in weather file: " + this.FullFileName);
+                            throw new Exception("Cannot find MaxT in weather file: " + fullFileName);
 
                     if (this.minimumTemperatureIndex == -1)
                         if (this.reader == null || this.reader.Constant("mint") == null)
-                            throw new Exception("Cannot find MinT in weather file: " + this.FullFileName);
+                            throw new Exception("Cannot find MinT in weather file: " + fullFileName);
 
                     if (this.radiationIndex == -1)
                         if (this.reader == null || this.reader.Constant("radn") == null)
-                            throw new Exception("Cannot find Radn in weather file: " + this.FullFileName);
+                            throw new Exception("Cannot find Radn in weather file: " + fullFileName);
 
                     if (this.rainIndex == -1)
                         if (this.reader == null || this.reader.Constant("rain") == null)
-                            throw new Exception("Cannot find Rain in weather file: " + this.FullFileName);
+                            throw new Exception("Cannot find Rain in weather file: " + fullFileName);
                 }
                 else
                 {
@@ -962,6 +1009,7 @@ namespace Models.Climate
             }
             else
             {
+
                 return false;
             }
         }
@@ -1026,7 +1074,15 @@ namespace Models.Climate
             // get dataset size
             DateTime start = this.reader.FirstDate;
             DateTime last = this.reader.LastDate;
+
             int nyears = last.Year - start.Year + 1;
+
+            DateTime endDate = new DateTime(last.Year, start.Month, start.Day); //get same day of year as start date
+            if (endDate > last)
+                endDate = new DateTime(last.Year-1, start.Month, start.Day);
+
+            if ((endDate - start).TotalDays < 730)
+                throw new Exception("Tav and Amp cannot be calculated from less than two years of met data.");
 
             // temp storage arrays
             double[,] monthlyMeans = new double[12, nyears];
@@ -1059,7 +1115,7 @@ namespace Models.Climate
                 monthlySums[curMonth - 1, yearIndex] = monthlySums[curMonth - 1, yearIndex] + ((maxt + mint) * 0.5);
                 monthlyDays[curMonth - 1, yearIndex]++;
 
-                if (curDate >= last)
+                if (curDate >= endDate)
                     moreData = false;
             }
 

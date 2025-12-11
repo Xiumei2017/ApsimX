@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Newtonsoft.Json;
 
@@ -22,8 +22,15 @@ namespace Models.PMF
     [ValidParent(ParentType = typeof(GrazPlan.Stock))]
     [ValidParent(ParentType = typeof(Folder))]
     [ValidParent(ParentType = typeof(ModelOverrides))]
-    public class Cultivar : Model, ILineEditor
+    [ValidParent(ParentType = typeof(Sugarcane))]
+    [ValidParent(ParentType = typeof(OilPalm.OilPalm))]
+    [ValidParent(ParentType = typeof(AgPasture.PastureSpecies))]
+    public class Cultivar : Model, ILineEditor, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>Default constructor.</summary>
         /// <remarks>This is needed for AddModel to work.</remarks>
         public Cultivar()
@@ -42,10 +49,10 @@ namespace Models.PMF
         }
 
         /// <summary>The model the cultivar is relative to.</summary>
-        private IModel relativeToModel;
+        private INodeModel relativeToModel;
 
-        /// <summary>The collection of undo overrides that undo the overrides.</summary>
-        private IEnumerable<Overrides.Override> undos;
+        /// <summary>The collection of commands.</summary>
+        private IEnumerable<IModelCommand> commands;
 
         /// <summary>The collection of commands that must be executed when applying this cultivar.</summary>
         public string[] Command { get; set; }
@@ -66,30 +73,37 @@ namespace Models.PMF
         /// <summary>
         /// Return all names by which this cultivar is known.
         /// </summary>
-        public IEnumerable<string> GetNames()
+        public List<string> GetNames()
         {
-            yield return Name;
-            foreach (string name in FindAllChildren<Alias>().Select(a => a.Name))
-                yield return name;
+            List<string> names = new List<string>();
+            names.Add(Name);
+            foreach (string name in Structure.FindChildren<Alias>().Select(a => a.Name))
+                names.Add(name);
+
+            return names;
         }
 
         /// <summary>Apply commands.</summary>
         /// <param name="model">The underlying model to apply the commands to</param>
         public void Apply(IModel model)
         {
-            relativeToModel = model;
-            if (Command != null)
-                undos = Overrides.Apply(model, Overrides.ParseStrings(Command));
+            if (Command == null)
+                return;
+
+            relativeToModel = model as INodeModel;
+
+            commands = CommandLanguage.StringToCommands(Command.Select(c => c.Trim()), relativeToModel, relativeToDirectory: null);
+            CommandProcessor.Run(commands, relativeToModel, runner: null);
         }
 
         /// <summary>Undoes cultivar changes, if any.</summary>
         public void Unapply()
         {
-            if (undos != null)
+            if (commands != null)
             {
-                Overrides.Apply(relativeToModel, undos);
-                relativeToModel = null;
-                undos = null;
+                foreach (SetPropertyCommand command in commands)
+                    command.Undo();
+                commands = null;
             }
         }
 
@@ -101,17 +115,6 @@ namespace Models.PMF
         private void OnSimulationCompleted(object sender, EventArgs e)
         {
             Unapply();
-        }
-
-        /// <summary>Document the model.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            if (Command != null && Command.Any())
-            {
-                yield return new Paragraph($"{Name} overrides the following properties:");
-                foreach (string command in Command)
-                    yield return new Paragraph(command);
-            }
         }
     }
 }

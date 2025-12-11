@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using APSIM.Shared.Documentation;
-using APSIM.Shared.Extensions.Collections;
 using Models.Core;
 using Models.Core.Run;
+using Models.Optimisation;
+using APSIM.Core;
 
 namespace Models.Factorial
 {
@@ -17,9 +17,13 @@ namespace Models.Factorial
     [ViewName("UserInterface.Views.ExperimentView")]
     [PresenterName("UserInterface.Presenters.ExperimentPresenter")]
     [ValidParent(ParentType = typeof(Simulations))]
-    [ScopedModel]
-    public class Experiment : Model, ISimulationDescriptionGenerator
+    [ValidParent(ParentType = typeof(CroptimizR))]
+    public class Experiment : Model, ISimulationDescriptionGenerator, IScopedModel, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>
         /// List of names of the disabled simulations. Any simulation name not in this list is assumed to be enabled.
         /// </summary>
@@ -45,7 +49,7 @@ namespace Models.Factorial
             if (allCombinations != null)
             {
                 // Find base simulation.
-                var baseSimulation = this.FindChild<Simulation>();
+                var baseSimulation = Structure.FindChild<Simulation>();
 
                 // Loop through all combinations and add a simulation description to the
                 // list of simulations descriptions being returned to the caller.
@@ -53,7 +57,7 @@ namespace Models.Factorial
                 {
                     // Create a simulation.
                     var simulationName = GetName(combination);
-                    var simDescription = new SimulationDescription(baseSimulation, simulationName, true);
+                    var simDescription = new SimulationDescription(baseSimulation, simulationName);
 
                     // Add an experiment descriptor.
                     simDescription.Descriptors.Add(new SimulationDescription.Descriptor("Experiment", Name));
@@ -82,36 +86,13 @@ namespace Models.Factorial
         }
 
         /// <summary>
-        /// Document the model, and any child models which should be documented.
-        /// </summary>
-        /// <remarks>
-        /// It is a mistake to call this method without first resolving links.
-        /// </remarks>
-        public override IEnumerable<ITag> Document()
-        {
-            yield return new Section(Name, DocumentChildren());
-        }
-
-        /// <summary>
-        /// Document the appropriate children of the experiment (memos,
-        /// graphs, and folders).
-        /// </summary>
-        private IEnumerable<ITag> DocumentChildren()
-        {
-            IEnumerable<ITag> result = DocumentChildren<Memo>();
-            result = result.AppendMany(DocumentChildren<Models.Graph>());
-            result = result.AppendMany(DocumentChildren<Folder>());
-            return result;
-        }
-
-        /// <summary>
         /// Get a human-readable description of the experiment (e.g. "NRate x Water").
         /// </summary>
         public string GetDesign()
         {
-            Factors factors = FindChild<Factors>();
+            Factors factors = Structure.FindChild<Factors>();
             StringBuilder design = new StringBuilder(GetTreatmentDescription(factors));
-            foreach (Permutation permutation in factors.FindAllChildren<Permutation>())
+            foreach (Permutation permutation in Structure.FindChildren<Permutation>(relativeTo: factors))
                 design.Append(GetTreatmentDescription(permutation));
 
             var simulationNames = GenerateSimulationDescriptions().Select(s => s.Name);
@@ -121,7 +102,7 @@ namespace Models.Factorial
 
         private string GetTreatmentDescription(IModel factors)
         {
-            return string.Join(" x ", factors.FindAllChildren<Factor>().Select(f => f.Name));
+            return string.Join(" x ", Structure.FindChildren<Factor>(relativeTo: factors as INodeModel).Select(f => f.Name));
         }
 
         /// <summary>
@@ -129,13 +110,13 @@ namespace Models.Factorial
         /// </summary>
         private List<List<CompositeFactor>> CalculateAllCombinations()
         {
-            Factors Factors = this.FindChild<Factors>();
+            Factors Factors = Structure.FindChild<Factors>();
 
             // Create a list of list of factorValues so that we can do permutations of them.
             List<List<CompositeFactor>> allValues = new List<List<CompositeFactor>>();
             if (Factors != null)
             {
-                foreach (CompositeFactor compositeFactor in Factors.FindAllChildren<CompositeFactor>())
+                foreach (CompositeFactor compositeFactor in Structure.FindChildren<CompositeFactor>(relativeTo: Factors))
                 {
                     if (compositeFactor.Enabled)
                         allValues.Add(new List<CompositeFactor>() { compositeFactor });
@@ -146,7 +127,7 @@ namespace Models.Factorial
                         foreach (var compositeFactor in factor.GetCompositeFactors())
                             allValues.Add(new List<CompositeFactor>() { compositeFactor });
                 }
-                foreach (Permutation factor in Factors.FindAllChildren<Permutation>())
+                foreach (Permutation factor in Structure.FindChildren<Permutation>(relativeTo: Factors))
                 {
                     if (factor.Enabled)
                         allValues.AddRange(factor.GetPermutations());

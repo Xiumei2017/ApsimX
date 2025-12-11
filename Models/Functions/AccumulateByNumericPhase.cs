@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using APSIM.Core;
 using Models.Core;
+using Models.PMF;
 using Models.PMF.Phen;
 
 namespace Models.Functions
@@ -13,8 +15,12 @@ namespace Models.Functions
     [Description("Adds the value of all children functions to the previous day's accumulation between start and end phases")]
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
-    public class AccumulateByNumericPhase : Model, IFunction
+    public class AccumulateByNumericPhase : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         //Class members
         /// <summary>The accumulated value</summary>
         private double AccumulatedValue = 0;
@@ -70,7 +76,7 @@ namespace Models.Functions
         private void PostPhenology(object sender, EventArgs e)
         {
             if (ChildFunctions == null)
-                ChildFunctions = FindAllChildren<IFunction>().ToList();
+                ChildFunctions = Structure.FindChildren<IFunction>().ToList();
 
             if (Phenology.Stage >= StartStageName && Phenology.Stage <= EndStageName)
             {
@@ -113,8 +119,8 @@ namespace Models.Functions
         /// <summary>Called when [cut].</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        [EventSubscribe("Harvesting")]
-        private void OnHarvest(object sender, EventArgs e)
+        [EventSubscribe("PostHarvesting")]
+        private void OnPostHarvesting(object sender, HarvestingParameters e)
         {
             AccumulatedValue -= FractionRemovedOnHarvest * AccumulatedValue;
         }

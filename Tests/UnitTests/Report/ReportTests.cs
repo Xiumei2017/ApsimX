@@ -1,6 +1,8 @@
 ﻿namespace UnitTests.Report
 {
+    using APSIM.Core;
     using APSIM.Shared.Utilities;
+    using APSIM.Soils;
     using Models;
     using Models.Core;
     using Models.Core.ApsimFile;
@@ -20,11 +22,13 @@
     {
         private Simulations simulations;
         private Simulation simulation;
+        private Node simulationNode;
         private IClock clock;
         private Report report;
         private MockStorage storage;
         private MockSummary summary;
         private Runner runner;
+        private Node head;
 
         /// <summary>
         /// Creates a simulation and links to various models. Used by all tests.
@@ -51,19 +55,24 @@
                             {
                                 VariableNames = new string[] { },
                                 EventNames = new string[] { "[Clock].EndOfDay" },
+                            },
+                            new Models.Soils.Physical()
+                            {
+                                Thickness = [ 100, 100, 200 ]
                             }
                         }
                     }
                 }
             };
-
-            Utilities.InitialiseModel(simulations);
+            head = Node.Create(simulations);
             simulation = simulations.Children[0] as Simulation;
             runner = new Runner(simulation);
             storage = simulation.Children[0] as MockStorage;
             summary = simulation.Children[1] as MockSummary;
             clock = simulation.Children[2] as Clock;
             report = simulation.Children[3] as Report;
+
+            simulationNode = head.Walk().First(n => n.Model is Simulation);
         }
 
         /// <summary>
@@ -84,7 +93,23 @@
             double[] actual = storage.Get<double>("2n");
             double[] expected = new double[10] { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
 
-            Assert.AreEqual(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        /// <summary>
+        /// Ensure we catch an infinite recursion.
+        /// </summary>
+        [Test]
+        public void ReferenceAnotherReportVariableRecursion()
+        {
+            report.VariableNames = new string[]
+            {
+                "n + 1 as n"
+            };
+            Runner runner = new Runner(simulations);
+            List<Exception> errors = runner.Run();
+            Assert.That(errors.Count == 1);
+            Assert.That(errors[0].InnerException.Message, Does.Contain("Infinite recursion"));
         }
 
         /// <summary>
@@ -120,13 +145,11 @@
                 "[Clock].DoReport"
             };
             simulation.Children.AddRange(new[] { m1, m2 });
-            simulation.ParentAllDescendants();
-            m1.OnCreated();
-            m2.OnCreated();
+            var sims = Node.Create(simulations);
 
             var runners = new[]
             {
-                new Runner(simulation, runType: Runner.RunTypeEnum.MultiThreaded),
+                new Runner(sims.Model as Simulations, runType: Runner.RunTypeEnum.MultiThreaded),
             };
             foreach (Runner runner in runners)
             {
@@ -136,7 +159,7 @@
 
                 double[] actual = storage.Get<double>("M1A");
                 double[] expected = storage.Get<double>("M2A");
-                Assert.AreNotEqual(expected, actual);
+                Assert.That(actual, Is.Not.EqualTo(expected));
             }
         }
 
@@ -160,20 +183,20 @@
             };
 
             runner.Run();
-            Assert.AreEqual(storage.Get<double>("sum"),
-                            new double[] { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 });
-            Assert.AreEqual(storage.Get<double>("mean"),
-                            new double[] { 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5 });
-            Assert.AreEqual(storage.Get<double>("min"),
-                            new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
-            Assert.AreEqual(storage.Get<double>("max"),
-                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
-            Assert.AreEqual(storage.Get<double>("first"),
-                            new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
-            Assert.AreEqual(storage.Get<double>("last"),
-                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
-            Assert.AreEqual(storage.Get<double>("diff"),
-                            new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            Assert.That(storage.Get<double>("sum"), Is.EqualTo(
+                            new double[] { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 }));
+            Assert.That(storage.Get<double>("mean"), Is.EqualTo(
+                            new double[] { 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5 }));
+            Assert.That(storage.Get<double>("min"), Is.EqualTo(
+                            new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }));
+            Assert.That(storage.Get<double>("max"), Is.EqualTo(
+                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
+            Assert.That(storage.Get<double>("first"), Is.EqualTo(
+                            new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }));
+            Assert.That(storage.Get<double>("last"), Is.EqualTo(
+                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
+            Assert.That(storage.Get<double>("diff"), Is.EqualTo(
+                            new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }));
         }
 
         /// <summary>This test ensures weekly aggregation works with daily reporting frequency.</summary>
@@ -189,8 +212,8 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("weekly"),
-                            new double[] { 1, 3, 6, 10, 15, 21, 28, 8, 17, 27, 38, 50, 63, 77, 15 });
+            Assert.That(storage.Get<double>("weekly"), Is.EqualTo(
+                            new double[] { 1, 3, 6, 10, 15, 21, 28, 8, 17, 27, 38, 50, 63, 77, 15 }));
         }
 
         /// <summary>This test ensures the 'on' keyword works.</summary>
@@ -211,8 +234,8 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(new double[] { 496 }, storage.Get<double>("totalDoy1"));
-            Assert.AreEqual(new double[] { 70 }, storage.Get<double>("totalDoy2"));
+            Assert.That(storage.Get<double>("totalDoy1"), Is.EqualTo(new double[] { 496 }));
+            Assert.That(storage.Get<double>("totalDoy2"), Is.EqualTo(new double[] { 70 }));
         }
 
         /// <summary>This test ensures an expression with spaces works.</summary>
@@ -230,7 +253,7 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("totalDoy"), new double[] { 65 });
+            Assert.That(storage.Get<double>("totalDoy"), Is.EqualTo(new double[] { 65 }));
         }
 
         /// <summary>This test ensures weekly aggregation works with weekly reporting frequency.</summary>
@@ -250,7 +273,7 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("weekly"), new double[] { 28, 77 });
+            Assert.That(storage.Get<double>("weekly"), Is.EqualTo(new double[] { 28, 77 }));
         }
 
         /// <summary>This test ensures weekly aggregation works with monthly reporting frequency.</summary>
@@ -270,7 +293,7 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("weekly"), new double[] { 90, 174 });
+            Assert.That(storage.Get<double>("weekly"), Is.EqualTo(new double[] { 90, 174 }));
         }
 
         /// <summary>This test ensures weekly aggregation works with yearly reporting frequency.</summary>
@@ -290,7 +313,7 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("weekly"), new double[] { 365,  729});
+            Assert.That(storage.Get<double>("weekly"), Is.EqualTo(new double[] { 365, 729 }));
         }
 
         /// <summary>This test ensures DayAfterLastOutput aggregation works with daily reporting frequency.</summary>
@@ -306,8 +329,8 @@
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("values"),
-                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 });
+            Assert.That(storage.Get<double>("values"), Is.EqualTo(
+                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }));
         }
 
         /// <summary>This test ensures DayAfterLastOutput aggregation works with weekly reporting frequency.</summary>
@@ -328,7 +351,7 @@
             runner.Run();
 
             // Should be the same as test EnsureWeeklyAggregationWithWeeklyOutputWorks above
-            Assert.AreEqual(storage.Get<double>("weekly"), new double[] { 28, 77 });
+            Assert.That(storage.Get<double>("weekly"), Is.EqualTo(new double[] { 28, 77 }));
         }
 
         /// <summary>
@@ -350,7 +373,7 @@
 
             double[] expected = new double[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 0, 1, 2, 3, 4, 5, 6, -358, -357, -356, -355, -354, -354, -354, -354, -354, -354 };
 
-            Assert.AreEqual(storage.Get<double>("difference"), expected);
+            Assert.That(storage.Get<double>("difference"), Is.EqualTo(expected));
         }
 
         /// <summary>
@@ -371,7 +394,7 @@
             runner.Run();
 
             var values = storage.Get<double>("SigmaDay").ToList();
-            Assert.AreEqual(values.Last(), 1);
+            Assert.That(values.Last(), Is.EqualTo(1));
         }
 
         [Test]
@@ -401,21 +424,22 @@
             sims.Children.Add(sim);
             sims.Children.Add(new Summary());
             sims.Children.Add(storage);
-            sims.ParentAllDescendants();
+            Node.Create(sims);
 
             sim.Prepare();
 
             storage.Writer.WaitForIdle();
             storage.Reader.Refresh();
-            
-            Assert.IsNotNull(storage.Reader.GetData("_Factors"));
 
-            DataTable dtExpected = Utilities.CreateTable(new string[]                      { "CheckpointName", "CheckpointID", "SimulationName", "SimulationID", "ExperimentName", "FolderName", "FactorName", "FactorValue" },
+            Assert.That(storage.Reader.GetData("_Factors"), Is.Not.Null);
+
+            DataTable dtExpected = Utilities.CreateTable(new string[] { "CheckpointName", "CheckpointID", "SimulationName", "SimulationID", "ExperimentName", "FolderName", "FactorName", "FactorValue" },
                                                     new List<object[]> { new object[] {        "Current",             1,        "",          1,          "exp1",          "F",         "Cultivar",      "cult1"   },
                                                                          new object[] {        "Current",             1,        "",          1,          "exp1",          "F",             "N",            0      } });
             DataTable dtActual = storage.Reader.GetData("_Factors");
 
-            Assert.IsTrue(dtExpected.IsSame(dtActual));
+            Assert.That(dtExpected.IsSame(dtActual), Is.True);
+            database.CloseDatabase();
         }
 
         /// <summary>
@@ -429,11 +453,11 @@
         public static void TestReportingOnModelEvents()
         {
             string json = ReflectionUtilities.GetResourceAsString("UnitTests.Report.ReportOnEvents.apsimx");
-            Simulations file = FileFormat.ReadFromString<Simulations>(json, e => throw e, false).NewModel as Simulations;
+            Simulations file = FileFormat.ReadFromString<Simulations>(json).Model as Simulations;
 
             // This simulation needs a weather node, but using a legit
             // met component will just slow down the test.
-            IModel sim = file.FindInScope<Simulation>();
+            IModel sim = file.Node.Find<Simulation>();
             Model weather = new MockWeather();
             sim.Children.Add(weather);
             weather.Parent = sim;
@@ -443,19 +467,19 @@
             Runner.Run();
 
             // Check that the report reported on the correct dates.
-            var storage = file.FindInScope<IDataStore>();
+            var storage = file.Node.Find<IDataStore>();
             List<string> fieldNames = new List<string>() { "doy" };
 
             DataTable data = storage.Reader.GetData("ReportOnFertilisation", fieldNames: fieldNames);
             double[] values = DataTableUtilities.GetColumnAsDoubles(data, "doy", CultureInfo.InvariantCulture);
             double[] expected = new double[] { 1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 364 };
-            Assert.AreEqual(expected, values);
+            Assert.That(values, Is.EqualTo(expected));
 
             data = storage.Reader.GetData("ReportOnIrrigation", fieldNames: fieldNames);
             values = DataTableUtilities.GetColumnAsDoubles(data, "doy", CultureInfo.InvariantCulture);
             // There is one less irrigation event, as the manager script doesn't irrigate.
             expected = new double[] { 1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335 };
-            Assert.AreEqual(expected, values);
+            Assert.That(values, Is.EqualTo(expected));
         }
 
         /// <summary>
@@ -470,7 +494,7 @@
         {
             Simulations file = Utilities.GetRunnableSim();
 
-            Report report = file.FindInScope<Report>();
+            Report report = file.Node.Find<Report>();
             report.Name = "Report"; // Just to make sure
             report.VariableNames = new string[] { "[Clock].Today.DayOfYear as doy" };
             report.EventNames = new string[]
@@ -480,7 +504,7 @@
                 "//[Clock].EndOfWeek // entire line should be ignored"
             };
 
-            IClock clock = file.FindInScope<Clock>();
+            IClock clock = file.Node.Find<Clock>();
             clock.StartDate = new DateTime(2017, 1, 1);
             clock.EndDate = new DateTime(2017, 3, 1);
 
@@ -490,11 +514,11 @@
                 throw errors[0];
 
             List<string> fieldNames = new List<string>() { "doy" };
-            IDataStore storage = file.FindInScope<IDataStore>();
+            IDataStore storage = file.Node.Find<IDataStore>();
             DataTable data = storage.Reader.GetData("Report", fieldNames: fieldNames);
             double[] actual = DataTableUtilities.GetColumnAsDoubles(data, "doy", CultureInfo.InvariantCulture);
             double[] expected = new double[] { 1, 8, 15, 22, 29, 36, 43, 50, 57 };
-            Assert.AreEqual(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
 
@@ -505,19 +529,18 @@
         public void TestArraySpecification()
         {
             var model = new MockModel() { Z = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 } };
-            simulation.Children.Add(model);
-            Utilities.InitialiseModel(simulation);
+            simulationNode.AddChild(model);
 
             report.VariableNames = new string[] { "[MockModel].Z[3]", "[MockModel].Z[10]" };
 
             List<Exception> errors = runner.Run();
-            Assert.NotNull(errors);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
 
-            Assert.AreEqual(storage.Get<double>("MockModel.Z(3)"),
-                            new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 });
-            Assert.AreEqual(storage.Get<double>("MockModel.Z(10)"),
-                            new double[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 });
+            Assert.That(storage.Get<double>("MockModel.Z(3)"), Is.EqualTo(
+                            new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }));
+            Assert.That(storage.Get<double>("MockModel.Z(10)"), Is.EqualTo(
+                            new double[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 }));
         }
 
         /// <summary>
@@ -527,32 +550,31 @@
         public void TestArrayRangeWithStartSpecification()
         {
             var mod = new MockModel() { Z = new double[] { 1, 2, 3, 4 } };
-            simulation.Children.Add(mod);
-            simulation.Children.Remove(storage);
+            simulationNode.AddChild(mod);
             var datastore = new DataStore();
-            simulation.Children.Add(datastore);
-            Utilities.InitialiseModel(simulation);
+            simulationNode.ReplaceChild(storage, datastore);
+
 
             report.VariableNames = new string[] { "[MockModel].Z[3:]" };
 
             List<Exception> errors = runner.Run();
-            Assert.NotNull(errors);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
             datastore.Writer.Stop();
             datastore.Reader.Refresh();
 
             var data = datastore.Reader.GetData("Report");
             var columnNames = DataTableUtilities.GetColumnNames(data);
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(0)"));
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(1)"));
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(2)"));
-            Assert.IsTrue(columnNames.Contains("MockModel.Z(3)"));
-            Assert.IsTrue(columnNames.Contains("MockModel.Z(4)"));
+            Assert.That(columnNames.Contains("MockModel.Z(0)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(1)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(2)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(3)"), Is.True);
+            Assert.That(columnNames.Contains("MockModel.Z(4)"), Is.True);
 
-            Assert.AreEqual(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(3)", CultureInfo.InvariantCulture),
-                            new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 });
-            Assert.AreEqual(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(4)", CultureInfo.InvariantCulture),
-                            new double[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });
+            Assert.That(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(3)", CultureInfo.InvariantCulture), Is.EqualTo(
+                            new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }));
+            Assert.That(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(4)", CultureInfo.InvariantCulture), Is.EqualTo(
+                            new double[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }));
         }
 
         /// <summary>
@@ -562,31 +584,29 @@
         public void TestArrayRangeWithEndSpecification()
         {
             var mod = new MockModel() { Z = new double[] { 1, 2, 3 } };
-            simulation.Children.Add(mod);
-            simulation.Children.Remove(storage);
+            simulationNode.AddChild(mod);
             var datastore = new DataStore();
-            simulation.Children.Add(datastore);
-            Utilities.InitialiseModel(simulation);
+            simulationNode.ReplaceChild(storage, datastore);
 
             report.VariableNames = new string[] { "[MockModel].Z[:2]" };
 
             List<Exception> errors = runner.Run();
-            Assert.NotNull(errors);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
             datastore.Writer.Stop();
             datastore.Reader.Refresh();
 
             var data = datastore.Reader.GetData("Report");
             var columnNames = DataTableUtilities.GetColumnNames(data);
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(0)"));
-            Assert.IsTrue(columnNames.Contains("MockModel.Z(1)"));
-            Assert.IsTrue(columnNames.Contains("MockModel.Z(2)"));
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(3)"));
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(4)"));
-            Assert.AreEqual(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(1)", CultureInfo.InvariantCulture),
-                            new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
-            Assert.AreEqual(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(2)", CultureInfo.InvariantCulture),
-                            new double[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
+            Assert.That(columnNames.Contains("MockModel.Z(0)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(1)"), Is.True);
+            Assert.That(columnNames.Contains("MockModel.Z(2)"), Is.True);
+            Assert.That(columnNames.Contains("MockModel.Z(3)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(4)"), Is.False);
+            Assert.That(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(1)", CultureInfo.InvariantCulture), Is.EqualTo(
+                            new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }));
+            Assert.That(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(2)", CultureInfo.InvariantCulture), Is.EqualTo(
+                            new double[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }));
         }
 
         /// <summary>
@@ -596,33 +616,31 @@
         public void TestArrayRangeWithStartAndEndSpecification()
         {
             var mod = new MockModel() { Z = new double[] { 1, 2, 3 } };
-            simulation.Children.Add(mod);
-            simulation.Children.Remove(storage);
+            simulationNode.AddChild(mod);
             var datastore = new DataStore();
-            simulation.Children.Add(datastore);
-            Utilities.InitialiseModel(simulation);
+            simulationNode.ReplaceChild(storage, datastore);
 
             report.VariableNames = new string[] { "[MockModel].Z[2:3]" };
 
             List<Exception> errors = runner.Run();
-            Assert.NotNull(errors);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
             datastore.Writer.Stop();
             datastore.Reader.Refresh();
 
             var data = datastore.Reader.GetData("Report");
             var columnNames = DataTableUtilities.GetColumnNames(data);
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(0)"));
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(1)"));
-            Assert.IsTrue(columnNames.Contains("MockModel.Z(2)"));
-            Assert.IsTrue(columnNames.Contains("MockModel.Z(3)"));
-            Assert.IsFalse(columnNames.Contains("MockModel.Z(4)"));
+            Assert.That(columnNames.Contains("MockModel.Z(0)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(1)"), Is.False);
+            Assert.That(columnNames.Contains("MockModel.Z(2)"), Is.True);
+            Assert.That(columnNames.Contains("MockModel.Z(3)"), Is.True);
+            Assert.That(columnNames.Contains("MockModel.Z(4)"), Is.False);
 
-            Assert.AreEqual(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(2)", CultureInfo.InvariantCulture),
-                            new double[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 });
+            Assert.That(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(2)", CultureInfo.InvariantCulture), Is.EqualTo(
+                            new double[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }));
 
-            Assert.AreEqual(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(3)", CultureInfo.InvariantCulture),
-                            new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 });
+            Assert.That(DataTableUtilities.GetColumnAsDoubles(data, "MockModel.Z(3)", CultureInfo.InvariantCulture), Is.EqualTo(
+                            new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }));
         }
 
         /// <summary>
@@ -635,7 +653,7 @@
         {
             Simulations sims = Utilities.GetRunnableSim();
 
-            IModel paddock = sims.FindInScope<Zone>();
+            IModel paddock = sims.Node.Find<Zone>();
             Manager script = new Manager();
             script.Name = "Manager";
             script.Code = @"using System;
@@ -660,26 +678,26 @@ namespace Models
 
             paddock.Children.Add(script);
             script.Parent = paddock;
-            script.OnCreated();
-
-            Report report = sims.FindInScope<Report>();
+            Report report = sims.Node.Find<Report>();
             report.VariableNames = new string[]
             {
                 "[Manager].Script.Value as x"
             };
-            Runner runner = new Runner(sims);
+
+            var simulations = Node.Create(sims);
+            Runner runner = new Runner(simulations.Model as Simulations);
             List<Exception> errors = runner.Run();
             if (errors != null && errors.Count > 0)
                 throw new Exception("Errors while running sims", errors[0]);
 
             List<string> fieldNames = new List<string>() { "x" };
-            IDataStore storage = sims.FindInScope<IDataStore>();
+            IDataStore storage = sims.Node.Find<IDataStore>();
             DataTable data = storage.Reader.GetData("Report", fieldNames: fieldNames);
             string[] actual = DataTableUtilities.GetColumnAsStrings(data, "x", CultureInfo.InvariantCulture);
 
             // The enum values should have been cast to strings before being reported.
             string[] expected = Enumerable.Repeat("Red", actual.Length).ToArray();
-            Assert.AreEqual(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         /// <summary>
@@ -692,14 +710,13 @@ namespace Models
             report.GroupByVariableName = "[Mock].A";
 
             var model = new MockModelValuesChangeDaily
-                (aDailyValues: new double[] { 1, 1, 1, 2, 2, 2, 3, 3, 3,  3 },
+                (aDailyValues: new double[] { 1, 1, 1, 2, 2, 2, 3, 3, 3, 3 },
                  bDailyValues: new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })
             {
-                 Name = "Mock"
+                Name = "Mock"
             };
 
-            simulation.Children.Add(model);
-            Utilities.InitialiseModel(simulation);
+            simulationNode.AddChild(model);
 
             report.VariableNames = new string[]
             {
@@ -708,14 +725,14 @@ namespace Models
             };
 
             List<Exception> errors = runner.Run();
-            Assert.NotNull(errors);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
 
-            Assert.AreEqual(storage.Get<double>("SumA"),
-                            new double[] { 6, 15, 34 });
+            Assert.That(storage.Get<double>("SumA"), Is.EqualTo(
+                            new double[] { 6, 15, 34 }));
 
-            Assert.AreEqual(storage.Get<DateTime>("Clock.Today"),
-                            new DateTime[] { new DateTime(2017, 1, 3), new DateTime(2017, 1, 6), new DateTime(2017, 1, 10) });
+            Assert.That(storage.Get<DateTime>("Clock.Today"), Is.EqualTo(
+                            new DateTime[] { new DateTime(2017, 1, 3), new DateTime(2017, 1, 6), new DateTime(2017, 1, 10) }));
         }
 
         /// <summary>This test ensures that having lots of spacing is ok.</summary>
@@ -731,8 +748,8 @@ namespace Models
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("values"),
-                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 });
+            Assert.That(storage.Get<double>("values"), Is.EqualTo(
+                            new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }));
         }
 
         /// <summary>This test ensures that having a dot in the alias is ok.</summary>
@@ -751,7 +768,7 @@ namespace Models
             // Run the simulation.
             runner.Run();
 
-            Assert.AreEqual(storage.Get<double>("Total.DayOfYear"), new double[] { 55 });
+            Assert.That(storage.Get<double>("Total.DayOfYear"), Is.EqualTo(new double[] { 55 }));
         }
 
         [Test]
@@ -759,7 +776,7 @@ namespace Models
         {
             report.VariableNames = new[] { "[Clock].Today.DayOfYear[1]" };
             List<Exception> errors = runner.Run();
-            Assert.AreEqual(1, errors.Count);
+            Assert.That(errors.Count, Is.EqualTo(1));
         }
 
         /// <summary>
@@ -774,7 +791,7 @@ namespace Models
         {
             report.VariableNames = new[] { variableName };
             List<Exception> errors = runner.Run();
-            Assert.AreEqual(1, errors.Count);
+            Assert.That(errors.Count, Is.EqualTo(1));
         }
 
         /// <summary>
@@ -793,8 +810,128 @@ namespace Models
             Utilities.ResolveLinks(simulation);
             Utilities.CallEventAll(simulation, "SubscribeToEvents");
 
-            var summary = simulation.FindDescendant<MockSummary>();
-            Assert.AreEqual(summary.messages.First(), "WARNING: Report on StartOfFirstDay instead of StartOfSimulation. At StartOfSimulation, models may not be fully initialised.");
+            var summary = simulation.Node.FindChild<MockSummary>(recurse: true);
+            Assert.That(summary.messages.First(), Is.EqualTo("WARNING: Report on StartOfFirstDay instead of StartOfSimulation. At StartOfSimulation, models may not be fully initialised."));
+        }
+
+        /// <summary>
+        /// Ensure a MM array specification (e.g. soil.water[300mm]) works.
+        /// </summary>
+        [Test]
+        public void TestArraySpecificationAsMM()
+        {
+            var model = new MockModel() { Z = new double[] { 1, 2, 3, 4, 5 } };
+            simulationNode.AddChild(model);
+
+            report.VariableNames = ["[MockModel].Z[300mm]"];
+
+            List<Exception> errors = runner.Run();
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
+
+            Assert.That(storage.Get<double>("MockModel.Z(300mm)"), Is.EqualTo(
+                        new double[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }));
+        }
+
+        /// <summary>
+        /// Ensure a MM array specification works with a layer (e.g. soil.water[250mm:350mm]).
+        /// </summary>
+        [Test]
+        public void TestArraySpecificationAsMMRangeWithinLayer()
+        {
+
+            MockModel model = new()
+            {
+                // mass        depths      conc
+                Z = [ 10,        // 0-100       0.1
+                      20,        // 100-200     0.2
+                      30 ]       // 200-400     0.15
+            };
+            simulationNode.AddChild(model);
+
+            report.VariableNames = ["[MockModel].Z[250mm:350mm]"];
+
+            List<Exception> errors = runner.Run();
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
+
+            Assert.That(storage.Get<double>("MockModel.Z(250mm:350mm)"), Is.EqualTo(
+                        new double[] { 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 }));   // 100 * 0.15
+        }
+
+        /// <summary>
+        /// Ensure a MM array specification works between layers (e.g. soil.water[250mm:350mm]).
+        /// </summary>
+        [Test]
+        public void TestArraySpecificationAsMMRangeBetweenLayers()
+        {
+            MockModel model = new()
+            {
+                // mass        depths      conc
+                Z = [ 10,        // 0-100       0.1
+                      20,        // 100-200     0.2
+                      30 ]       // 200-400     0.15
+            };
+            simulationNode.AddChild(model);
+
+            report.VariableNames = ["[MockModel].Z[150mm:300mm]"];
+
+            List<Exception> errors = runner.Run();
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
+
+            Assert.That(storage.Get<double>("MockModel.Z(150mm:300mm)"), Is.EqualTo(
+                        new double[] { 25, 25, 25, 25, 25, 25, 25, 25, 25, 25 }));  // 50 * 0.2 + 100 * 0.15
+        }
+
+        /// <summary>
+        /// Ensure a MM array specification works between layers (e.g. soil.water[250mm:350mm]).
+        /// </summary>
+        [Test]
+        public void TestMultipleArraySpecifications()
+        {
+            MockModel model = new()
+            {
+                // mass        depths      conc
+                Z = [ 10,        // 0-100       0.1
+                      20,        // 100-200     0.2
+                      30 ]       // 200-400     0.15
+            };
+            simulationNode.AddChild(model);
+
+            report.VariableNames = ["[MockModel].Z[100mm:150mm]+[MockModel].Z[150mm:200mm]"];
+
+            List<Exception> errors = runner.Run();
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
+
+            Assert.That(storage.Get<double>("MockModel.Z(100mm:150mm)+MockModel.Z(150mm:200mm)"), Is.EqualTo(
+                        new double[] { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 }));  // 50 * 0.2 + 50 * 0.20
+        }
+
+        /// <summary>
+        /// Ensure using a range specified in an expression calculates the right column name.
+        /// </summary>
+        [Test]
+        public void TestExpressionWithArrayRangeSpecifications()
+        {
+            MockModel model = new()
+            {
+                    // mass        depths      conc
+                Z = [ 10,        // 0-100       0.1
+                      20,        // 100-200     0.2
+                      30 ]       // 200-400     0.15
+            };
+            simulationNode.AddChild(model);
+
+            report.VariableNames = ["sum([MockModel].Z[1:2])"];
+
+            List<Exception> errors = runner.Run();
+            Assert.That(errors, Is.Not.Null);
+            Assert.That(errors.Count, Is.EqualTo(0));
+
+            Assert.That(storage.Get<double>("sum(MockModel.Z(1:2))"), Is.EqualTo(
+                        new double[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 }));  // 10+20
         }
     }
 }

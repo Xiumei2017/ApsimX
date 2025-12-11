@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using APSIM.Core;
 using APSIM.Shared.Graphing;
 using APSIM.Shared.Utilities;
 using Models.Core;
@@ -28,8 +29,13 @@ namespace Models.Management
     [PresenterName("UserInterface.Presenters.BubbleChartPresenter")]
     [ValidParent(ParentType = typeof(Simulation))]
     [ValidParent(ParentType = typeof(Zone))]
-    public class RotationManager : Model, IBubbleChart, IPublisher
+    public class RotationManager : Model, IBubbleChart, IPublisher, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
+
         /// <summary>For logging</summary>
         [Link] private Summary summary = null;
 
@@ -48,7 +54,7 @@ namespace Models.Management
         /// <summary>
         /// The nodes of the graph. These represent states of the rotation.
         /// </summary>
-        public List<Node> Nodes { get; set; } = new List<Node>();
+        public List<APSIM.Shared.Graphing.Node> Nodes { get; set; } = new List<APSIM.Shared.Graphing.Node>();
 
         /// <summary>
         /// The arcs on the bubble chart which define transition
@@ -80,7 +86,32 @@ namespace Models.Management
         public bool Verbose { get; set; }
 
         /// <summary>
-        /// Current State of the rotation.
+        /// Next State ID of the rotation.
+        /// </summary>
+        [JsonIgnore]
+        public int NextStateId { get; set; }
+
+        /// <summary>
+        /// Next State of the rotation.
+        /// </summary>
+        [JsonIgnore]
+        public string NextState
+        {
+            get { return NextStateName; }
+            set { NextStateId = getStateIDByName(value); }
+        }
+
+        /// <summary>
+        /// Name of the Next State
+        /// </summary>
+        [JsonIgnore]
+        public string NextStateName
+        {
+            get { return getStateNameByID(NextStateId); }
+        }
+
+        /// <summary>
+        /// Current State ID of the rotation.
         /// </summary>
         [JsonIgnore]
         public int CurrentStateId { get; set; }
@@ -89,9 +120,10 @@ namespace Models.Management
         /// Current State of the rotation.
         /// </summary>
         [JsonIgnore]
-        public string CurrentState { 
-            get {return CurrentStateName; } 
-            set {CurrentStateId = getStateIDByName(value);} 
+        public string CurrentState
+        {
+            get { return CurrentStateName; }
+            set { CurrentStateId = getStateIDByName(value); }
         }
 
         /// <summary>
@@ -110,7 +142,7 @@ namespace Models.Management
         {
             get
             {
-                foreach (Node state in Nodes)
+                foreach (APSIM.Shared.Graphing.Node state in Nodes)
                 {
                     yield return $"TransitionFrom{state}";
                     yield return $"TransitionTo{state}";
@@ -130,7 +162,7 @@ namespace Models.Management
 
         private string getStateNameByID(int id)
         {
-            foreach (Node state in Nodes)
+            foreach (APSIM.Shared.Graphing.Node state in Nodes)
                 if (state.ID == id)
                     return state.Name;
             return "No State";
@@ -138,11 +170,12 @@ namespace Models.Management
 
         private int getStateIDByName(string name)
         {
-            foreach (Node state in Nodes)
+            foreach (APSIM.Shared.Graphing.Node state in Nodes)
                 if (state.Name == name)
                     return state.ID;
             return 0;
         }
+
 
         /// <summary>
         /// Called when a simulation commences. Performs one-time initialisation.
@@ -181,7 +214,7 @@ namespace Models.Management
         [EventSubscribe("DoManagement")]
         private void OnDoManagement(object sender, EventArgs e)
         {
-            if (! TopLevel) { return; }
+            if (!TopLevel) { return; }
 
             MadeAChange = false;
             bool more = true;
@@ -195,20 +228,23 @@ namespace Models.Management
                     double score = 1;
                     foreach (string testCondition in arc.Conditions)
                     {
-                        object value;
-                        try 
-                        { 
-                           value = FindByPath(testCondition)?.Value;
-                           if (value == null)
-                              throw new Exception("Test condition returned nothing");
-                        }
-                        catch (Exception ex) 
+                        if (testCondition.Length > 0)
                         {
-                            throw new AggregateException($"Error while evaluating transition from {getStateNameByID(arc.SourceID)} to {getStateNameByID(arc.DestinationID)} - rule '{testCondition}': " + ex.Message );
+                            object value;
+                            try
+                            {
+                                value = Structure.GetObject(testCondition)?.Value;
+                                if (value == null)
+                                    throw new Exception("Test condition returned nothing");
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new AggregateException($"Error while evaluating transition from {getStateNameByID(arc.SourceID)} to {getStateNameByID(arc.DestinationID)} - rule '{testCondition}': " + ex.Message);
+                            }
+                            double result = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                            detailedLogger?.DoRuleEvaluation(getStateNameByID(arc.DestinationID), testCondition, result);
+                            score *= result;
                         }
-                        double result = Convert.ToDouble(value, CultureInfo.InvariantCulture);
-                        detailedLogger?.DoRuleEvaluation(getStateNameByID(arc.DestinationID), testCondition, result);
-                        score *= result;
                     }
 
                     if (Verbose)
@@ -242,25 +278,25 @@ namespace Models.Management
                 }
             }
         }
-        
+
         private bool MadeAChange;
 
         /// <summary>
         /// Do our rule evaluation when asked by method call
         /// </summary>
-        public bool DoManagement() 
+        public bool DoManagement()
         {
             bool oldState = TopLevel; // I can't see why this method would called when it is a toplevel, but...
             TopLevel = true;
             OnDoManagement(null, new EventArgs());
             TopLevel = oldState;
-            return(MadeAChange);
+            return (MadeAChange);
         }
 
         /// <summary>
         /// Log the state of the system (usually beginning/end of simulation)
         /// </summary>
-        public void DoLogState() 
+        public void DoLogState()
         {
             detailedLogger?.DoTransition(CurrentStateName);
         }
@@ -294,8 +330,9 @@ namespace Models.Management
                     summary.WriteMessage(this, $"Transitioning from {getStateNameByID(transition.SourceID)} to {getStateNameByID(transition.DestinationID)} by {transition.Name}", MessageType.Diagnostic);
                 // Publish pre-transition events.
                 eventService.Publish($"TransitionFrom{CurrentStateName}", null);
-                Transition?.Invoke(this, EventArgs.Empty);
 
+                NextStateId = transition.DestinationID;
+                Transition?.Invoke(this, EventArgs.Empty);
                 CurrentStateId = transition.DestinationID;
 
                 foreach (string action in transition.Actions)
@@ -317,7 +354,7 @@ namespace Models.Management
                     else
                         CallMethod(thisAction);
                 }
-                eventService.Publish($"TransitionTo{CurrentStateName}", null);
+                eventService.Publish($"TransitionTo{NextStateName}", null);
                 if (Verbose)
                     summary.WriteMessage(this, $"Current state is now {CurrentStateName}", MessageType.Diagnostic);
             }
@@ -354,7 +391,7 @@ namespace Models.Management
             string methodName = invocation.Substring(posPeriod + 1).Replace(";", "").Trim();
 
             // Find the model to which the method belongs.
-            IModel model = FindByPath(modelName)?.Value as IModel;
+            IModel model = Structure.GetObject(modelName)?.Value as IModel;
             if (model == null)
                 throw new ApsimXException(this, $"Cannot find model: {modelName}");
 

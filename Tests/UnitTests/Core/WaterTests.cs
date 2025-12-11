@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using APSIM.Core;
 using APSIM.Shared.Utilities;
 using Models.Core;
 using Models.Soils;
@@ -11,7 +12,7 @@ namespace UnitTests.Core
     public class WaterTests
     {
         /// <summary>
-        /// Tests all values for fractionfull, filledfromtop, relativeto and paw mm which are all 
+        /// Tests all values for fractionfull, filledfromtop, relativeto and paw mm which are all
         /// based on intial values and edits that array to store their value.
         /// The value provided for each test should be the same value that can be fetched back if it is calculating correctly.
         /// If not, there is a mistake in the water distribution calculations.
@@ -19,7 +20,7 @@ namespace UnitTests.Core
         [Test]
         public void TestChangingWaterValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
 
             for (int i = 0; i < 2; i++)
             {
@@ -36,13 +37,13 @@ namespace UnitTests.Core
                         for (int k = -27; k <= 478; k++)
                         {
                             waterModel.InitialPAWmm = k;
-                            Assert.AreEqual(k, waterModel.InitialPAWmm, 0.5);
+                            Assert.That(k, Is.EqualTo(waterModel.InitialPAWmm).Within(0.5));
                         }
                         for (int k = -7; k <= 132; k++)
                         {
                             double percent = i / 100.0;
                             waterModel.FractionFull = percent;
-                            Assert.AreEqual(percent, waterModel.FractionFull, 0.001);
+                            Assert.That(waterModel.FractionFull, Is.EqualTo(percent).Within(0.001));
                         }
                     }
                     else
@@ -51,19 +52,19 @@ namespace UnitTests.Core
                         for (int k = -142; k <= 363; k++)
                         {
                             waterModel.InitialPAWmm = k;
-                            Assert.AreEqual(k, waterModel.InitialPAWmm, 0.5);
+                            Assert.That(waterModel.InitialPAWmm, Is.EqualTo(k).Within(0.5));
                         }
                         for (int k = -58; k <= 147; k++)
                         {
                             double percent = i / 100.0;
                             waterModel.FractionFull = percent;
-                            Assert.AreEqual(percent, waterModel.FractionFull, 0.001);
+                            Assert.That(waterModel.FractionFull, Is.EqualTo(percent).Within(0.001));
                         }
                     }
                     for (int k = 0; k <= 1800; k++)
                     {
                         waterModel.DepthWetSoil = k;
-                        Assert.AreEqual(k, waterModel.DepthWetSoil, 0.5);
+                        Assert.That(waterModel.DepthWetSoil, Is.EqualTo(k).Within(0.5));
                     }
                 }
             }
@@ -75,11 +76,11 @@ namespace UnitTests.Core
         [Test]
         public void TestChangingInitialValues_ChangesAllOtherValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
             waterModel.InitialValues[0] = 0.300;
-            Assert.AreEqual(waterModel.InitialPAWmm, 327.9207228741369, 1.0);
-            Assert.AreEqual(waterModel.FractionFull, 0.91, 0.1);
-            Assert.AreEqual(waterModel.DepthWetSoil, 1672.0, 1.0);
+            Assert.That(waterModel.InitialPAWmm, Is.EqualTo(327.9207228741369).Within(1.0));
+            Assert.That(waterModel.FractionFull, Is.EqualTo(0.91).Within(0.1));
+            Assert.That(waterModel.DepthWetSoil, Is.EqualTo(1672.0).Within(1.0));
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace UnitTests.Core
         [Test]
         public void TestChangingInitialPAWmm_ChangesAllOtherValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
             waterModel.InitialPAWmm = 160.0;
             double[] expectedInitialValues = new double[] {
                     0.376,
@@ -99,9 +100,9 @@ namespace UnitTests.Core
                     0.358,
                     0.356 };
             for (int i = 0; i < expectedInitialValues.Length; i++)
-                Assert.AreEqual(waterModel.InitialValues[i], expectedInitialValues[i], 0.001);
-            Assert.AreEqual(waterModel.FractionFull, 0.44, 0.01);
-            Assert.AreEqual(waterModel.DepthWetSoil, 797.24, 0.01);
+                Assert.That(waterModel.InitialValues[i], Is.EqualTo(expectedInitialValues[i]).Within(0.001));
+            Assert.That(waterModel.FractionFull, Is.EqualTo(0.44).Within(0.01));
+            Assert.That(waterModel.DepthWetSoil, Is.EqualTo(797.24).Within(0.01));
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace UnitTests.Core
         [Test]
         public void TestChangingFractionFull_ChangesAllOtherValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
             waterModel.FractionFull = 0.78;
             double[] expectedInitialValues = new double[] {
                 0.464,
@@ -121,9 +122,9 @@ namespace UnitTests.Core
                 0.418,
                 0.414};
             for (int i = 0; i < expectedInitialValues.Length; i++)
-                Assert.AreEqual(waterModel.InitialValues[i], expectedInitialValues[i], 0.001);
-            Assert.AreEqual(waterModel.InitialPAWmm, 281.771, 0.001);
-            Assert.AreEqual(waterModel.DepthWetSoil, 1404);
+                Assert.That(waterModel.InitialValues[i], Is.EqualTo(expectedInitialValues[i]).Within(0.001));
+            Assert.That(waterModel.InitialPAWmm, Is.EqualTo(281.771).Within(0.001));
+            Assert.That(waterModel.DepthWetSoil, Is.EqualTo(1404));
         }
 
 
@@ -133,7 +134,7 @@ namespace UnitTests.Core
         [Test]
         public void TestChangingDepthWetSoil_ChangesAllOtherValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
             waterModel.DepthWetSoil = 300;
             double[] expectedInitialValues = new double[]{
                 0.521,
@@ -145,9 +146,9 @@ namespace UnitTests.Core
                 0.28
             };
             for (int i = 0; i < expectedInitialValues.Length; i++)
-                Assert.AreEqual(waterModel.InitialValues[i], expectedInitialValues[i], 0.001);
-            Assert.AreEqual(waterModel.InitialPAWmm, 76.32927712586311);
-            Assert.AreEqual(waterModel.FractionFull, 0.21129479058703288);
+                Assert.That(waterModel.InitialValues[i], Is.EqualTo(expectedInitialValues[i]).Within(0.001));
+            Assert.That(waterModel.InitialPAWmm, Is.EqualTo(76.32927712586311).Within(0.001));
+            Assert.That(waterModel.FractionFull, Is.EqualTo(0.21129479058703288).Within(0.001));
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace UnitTests.Core
         [Test]
         public void TestChangingFilledFromTop_ChangesAllEffectedValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
             waterModel.FractionFull = 0.66;
             waterModel.FilledFromTop = true;
             double[] expectedInitialValues = new double[] {
@@ -169,15 +170,15 @@ namespace UnitTests.Core
                 0.28
             };
             for (int i = 0; i < expectedInitialValues.Length; i++)
-                Assert.AreEqual(waterModel.InitialValues[i], expectedInitialValues[i], 0.001);
-            Assert.AreEqual(waterModel.DepthWetSoil, 1106.0319, 0.001);
+                Assert.That(waterModel.InitialValues[i], Is.EqualTo(expectedInitialValues[i]).Within(0.001));
+            Assert.That(waterModel.DepthWetSoil, Is.EqualTo(1106.0319).Within(0.001));
         }
 
 
         [Test]
         public void TestChangingRelativeTo_ChangesAllEffectedValues()
         {
-            Water waterModel = GetSoilModel().FindChild<Water>();
+            Water waterModel = GetSoilModel().Node.FindChild<Water>();
             waterModel.RelativeTo = "Wheat";
             waterModel.FractionFull = 0.66;
             waterModel.FilledFromTop = true;
@@ -192,10 +193,10 @@ namespace UnitTests.Core
             };
             for (int i = 0; i < expectedInitialValues.Length; i++)
             {
-                Assert.AreEqual(waterModel.InitialValues[i], expectedInitialValues[i], 0.001);
+                Assert.That(waterModel.InitialValues[i], Is.EqualTo(expectedInitialValues[i]).Within(0.001));
             }
-            Assert.AreEqual(waterModel.InitialPAWmm, 162.376, 0.001);
-            Assert.AreEqual(waterModel.DepthWetSoil, 735.036, 0.001);
+            Assert.That(waterModel.InitialPAWmm, Is.EqualTo(162.376).Within(0.001));
+            Assert.That(waterModel.DepthWetSoil, Is.EqualTo(735.036).Within(0.001));
         }
 
         /// <summary>
@@ -205,7 +206,7 @@ namespace UnitTests.Core
         public Water GetWaterModel()
         {
 
-            // FractionFull is 1.0 
+            // FractionFull is 1.0
             Water waterModel = new Water()
             {
 
@@ -488,7 +489,7 @@ namespace UnitTests.Core
                     }
                 }
             };
-            soilModel.ParentAllDescendants();
+            Node.Create(soilModel);
             return soilModel;
         }
     }

@@ -22,7 +22,7 @@ namespace UnitTests
         public void TestDisabledSummary()
         {
             Simulations sims = Utilities.GetRunnableSim();
-            Summary summary = sims.FindInScope<Summary>();
+            Summary summary = sims.Node.Find<Summary>();
             summary.Verbosity = MessageType.Error;
 
             var runner = new Runner(sims);
@@ -33,14 +33,14 @@ namespace UnitTests
 
 
         /// <summary>
-        /// This test ensures that data is written immediately following calls to 
+        /// This test ensures that data is written immediately following calls to
         /// </summary>
         [Test]
         public void EnsureDataIsNotWrittenTwice()
         {
             Simulations sims = Utilities.GetRunnableSim();
-            Simulation sim = sims.FindChild<Simulation>();
-            Summary summary = sim.FindChild<Summary>();
+            Simulation sim = sims.Node.FindChild<Simulation>();
+            Summary summary = sim.Node.FindChild<Summary>();
 
             // Write 2 messages to the DB during StartOfSimulation.
             string message1 = "message 1";
@@ -58,26 +58,27 @@ namespace UnitTests
             if (errors != null && errors.Count > 0)
                 throw errors[0];
 
-            IDataStore storage = sims.FindChild<IDataStore>();
+            IDataStore storage = sims.Node.FindChild<IDataStore>();
             DataTable messages = storage.Reader.GetData("_Messages");
 
             // Clock will write its own "Simulation terminated normally" message.
-            Assert.AreEqual(5, messages.Rows.Count);
+            Assert.That(messages.Rows.Count, Is.EqualTo(5));
 
             // The first row will be a warning caused by the lack of a
             // microclimate model.
 
-            Assert.AreEqual(message1, messages.Rows[1][6]);
-            Assert.AreEqual(message2, messages.Rows[2][6]);
+            Assert.That(messages.Rows[1][6], Is.EqualTo(message1));
+            Assert.That(messages.Rows[2][6], Is.EqualTo(message2));
 
             // The fourth row should not be written by SummaryWriter.
-            Assert.AreNotEqual(writer.Name, messages.Rows[3]["ComponentName"]);
+            Assert.That(messages.Rows[3]["ComponentName"], Is.Not.EqualTo(writer.Name));
 
             // The fifth will be the "Simulation terminated normally" message.
-            Assert.AreEqual(message3, messages.Rows[4][6]);
+            Assert.That(messages.Rows[4][6], Is.EqualTo(message3));
         }
 
         [Serializable]
+        [ValidParent(ParentType = typeof(Simulation))]
         private class SummaryWriter : Model
         {
             [Link] private ISummary summary = null;

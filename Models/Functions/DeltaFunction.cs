@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.PMF.Phen;
-using Models.PMF;
 
 namespace Models.Functions
 {
@@ -82,13 +80,6 @@ namespace Models.Functions
         private void OnStageReset(object sender, StageSetType e)
         {
             YesterdaysValue = Integral.Value();
-        }
-        /// <summary>
-        /// Document the model.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            yield return new Paragraph($"*{Name}* is the daily differential of");
         }
     }
 }

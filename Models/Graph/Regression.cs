@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using APSIM.Core;
+using APSIM.Numerics;
 using APSIM.Shared.Documentation.Extensions;
 using APSIM.Shared.Graphing;
 using APSIM.Shared.Utilities;
@@ -23,8 +25,12 @@ namespace Models
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [ValidParent(ParentType = typeof(Series))]
     [ValidParent(ParentType = typeof(Graph))]
-    public class Regression : Model, ICachableGraphable
+    public class Regression : Model, ICachableGraphable, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>The stats from the regression</summary>
         private List<MathUtilities.RegrStats> stats = new List<MathUtilities.RegrStats>();
 
@@ -60,14 +66,14 @@ namespace Models
                                                                   List<SimulationDescription> simDescriptions,
                                                                   List<string> simulationsFilter = null)
         {
-            Series seriesAncestor = FindAncestor<Series>();
+            Series seriesAncestor = Structure.FindParent<Series>(recurse: true);
             IEnumerable<SeriesDefinition> definitions;
             if (seriesAncestor == null)
             {
-                Graph graph = FindAncestor<Graph>();
+                Graph graph = Structure.FindParent<Graph>(recurse: true);
                 if (graph == null)
                     throw new Exception("Regression model must be a descendant of a series");
-                definitions = graph.FindAllChildren<Series>().SelectMany(s => s.CreateSeriesDefinitions(storage, simDescriptions, simulationsFilter));
+                definitions = Structure.FindChildren<Series>(relativeTo: graph).SelectMany(s => s.CreateSeriesDefinitions(storage, simDescriptions, simulationsFilter));
             }
             else
                 definitions = seriesAncestor.CreateSeriesDefinitions(storage, simDescriptions, simulationsFilter);
@@ -86,8 +92,8 @@ namespace Models
 
             int checkpointNumber = 0;
             List<SeriesDefinition> regressionLines = new List<SeriesDefinition>();
-            
-            if(!Enabled)
+
+            if (!Enabled)
                 return regressionLines;
 
             foreach (var checkpointName in storage.CheckpointNames)
@@ -235,9 +241,9 @@ namespace Models
                     // Add an equation annotation.
                     TextAnnotation equation = new TextAnnotation();
                     StringBuilder text = new StringBuilder();
-                    text.AppendLine($"y = {stats[i].Slope:F2}x + {stats[i].Intercept:F2}, r\u00B2 = {stats[i].R2:F2}, n = {stats[i].n:F0}");
-                    text.AppendLine($"NSE = {stats[i].NSE:F2}, ME = {stats[i].ME:F2}, MAE = {stats[i].MAE:F2}");
-                    text.AppendLine($"RSR = {stats[i].RSR:F2}, RMSD = {stats[i].RMSE:F2}");
+                    text.AppendLine($"y={stats[i].Slope:F2}x{(stats[i].Intercept >= 0 ? "+" : "")}{stats[i].Intercept:F2}, r\u00B2={stats[i].R2:F2}, n={stats[i].n:F0}");
+                    text.AppendLine($"RMSE={stats[i].RMSE:F2}, MAE={stats[i].MAE:F2}, ME={stats[i].ME:F2}");
+                    text.AppendLine($"NSE={stats[i].NSE:F2}, RSR={stats[i].RSR:F2}, RMR={stats[i].RMR:F2}");
                     equation.Name = $"Regression{i}";
                     equation.text = text.ToString();
                     equation.colour = equationColours[i];
@@ -306,7 +312,7 @@ namespace Models
             return new List<List<double>> { cleanDefinitionXList, cleanDefinitionYList };
         }
 
-        
+
         private void CreateRegressionsSeriesAndLines(List<SeriesDefinition> regressionLines, IEnumerable xAxisList, IEnumerable yAxisList, Color seriesDefinitionColor, string regressionLineName)
         {
             SeriesDefinition regressionSeries = PutRegressionLineOnGraph(xAxisList, yAxisList, seriesDefinitionColor, regressionLineName);

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.Interfaces;
 
@@ -53,16 +52,6 @@ namespace Models.Functions
                 DayLength = MetData.CalculateDayLength(Twilight);
             else
                 DayLength = 0;
-        }
-
-        /// <summary>
-        /// Document the model.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            foreach (ITag tag in GetModelDescription())
-                yield return tag;
-            yield return new Paragraph($"*Twilight = {Twilight} (degrees)*");
         }
     }
 }

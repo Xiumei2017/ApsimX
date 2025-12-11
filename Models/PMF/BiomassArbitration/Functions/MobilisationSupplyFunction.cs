@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using APSIM.Core;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Models.Core;
 using Models.Functions;
 
@@ -14,8 +16,12 @@ namespace Models.PMF
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [ValidParent(ParentType = typeof(NutrientPoolFunctions))]
-    public class MobilisationSupplyFunction : Model, IFunction
+    public class MobilisationSupplyFunction : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         private Organ parentOrgan = null;
 
         // Declare a delegate type for calculating the IFunction return value:
@@ -39,7 +45,7 @@ namespace Models.PMF
         private void OnSimulationCommencing(object sender, EventArgs e)
         {
             parentOrgan = FindParentOrgan(this.Parent);
-            var childFunctions = FindAllChildren<IFunction>().ToList();
+            var childFunctions = Structure.FindChildren<IFunction>().ToList();
             var lookup = new Dictionary<string, Dictionary<string, Dictionary<string, DeficitCalculation>>>(StringComparer.InvariantCultureIgnoreCase);
 
             var carbonReAllocationFuntions = new Dictionary<string, DeficitCalculation>(StringComparer.InvariantCultureIgnoreCase)
@@ -109,31 +115,6 @@ namespace Models.PMF
         public double Value(int arrayIndex = -1)
         {
             return CalcValue();
-        }
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        /// <param name="tags">The list of tags to add to.</param>
-        /// <param name="headingLevel">The level (e.g. H2) of the headings.</param>
-        /// <param name="indent">The level of indentation 1, 2, 3 etc.</param>
-        public void Document(List<AutoDocumentation.ITag> tags, int headingLevel, int indent)
-        {
-            // add a heading
-            tags.Add(new AutoDocumentation.Heading(Name, headingLevel));
-
-            // get description of this class
-            AutoDocumentation.DocumentModelSummary(this, tags, headingLevel, indent, false);
-
-            // write memos
-            foreach (IModel memo in this.FindAllChildren<Memo>())
-                AutoDocumentation.DocumentModel(memo, tags, headingLevel + 1, indent);
-
-            parentOrgan = FindParentOrgan(this.Parent);
-
-            // add a description of the equation for this function
-            tags.Add(new AutoDocumentation.Paragraph("<i>" + Name + " = [" + parentOrgan.Name + "].maximumNconc × (["
-                + parentOrgan.Name + "].Live.Wt + potentialAllocationWt) - [" + parentOrgan.Name + "].Live.N</i>", indent));
-            tags.Add(new AutoDocumentation.Paragraph("The demand for storage N is further reduced by a factor specified by the ["
-                + parentOrgan.Name + "].NitrogenDemandSwitch.", indent));
         }
     }
 }

@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Models.CLEM.Groupings;
 using APSIM.Shared.Utilities;
 using System.IO;
+using APSIM.Numerics;
 
 namespace Models.CLEM.Activities
 {
@@ -99,7 +100,7 @@ namespace Models.CLEM.Activities
         private void OnCLEMInitialiseActivity(object sender, EventArgs e)
         {
             // get all ui tree herd filters that relate to this activity
-            this.InitialiseHerd(true, true);
+            this.InitialiseHerd(false, true);
             filterGroups = GetCompanionModelsByIdentifier<RuminantGroup>( false, true);
 
             // locate StoreType resource
@@ -115,7 +116,7 @@ namespace Models.CLEM.Activities
             numberToDo = 0;
             numberToSkip = 0;
             IEnumerable<Ruminant> herd = GetIndividuals<Ruminant>(GetRuminantHerdSelectionStyle.NotMarkedForSale).Where(a => a.Wool + a.Cashmere > 0);
-            uniqueIndividuals = GetUniqueIndividuals<Ruminant>(filterGroups, herd);
+            uniqueIndividuals = GetUniqueIndividuals<Ruminant>(filterGroups, herd, Structure);
             numberToDo = uniqueIndividuals?.Count() ?? 0;
 
             // provide updated measure for companion models

@@ -13,6 +13,7 @@ using Models.CLEM.Interfaces;
 using Models.CLEM.Reporting;
 using Models.CLEM.Groupings;
 using System.Xml;
+using APSIM.Numerics;
 
 namespace Models.CLEM.Activities
 {
@@ -45,7 +46,7 @@ namespace Models.CLEM.Activities
         /// <summary>
         /// Artificial insemination in use (defined by presence of add-on component)
         /// </summary>
-        private bool useControlledMating { get { return (controlledMating != null); }  }
+        private bool useControlledMating { get { return (controlledMating != null && controlledMating.ActivityEnabled); }  }
 
         private RuminantActivityControlledMating controlledMating = null;
         private ConceptionStatusChangedEventArgs conceptionArgs = new ConceptionStatusChangedEventArgs();
@@ -70,7 +71,7 @@ namespace Models.CLEM.Activities
         {
             this.AllocationStyle = ResourceAllocationStyle.Manual;
 
-            controlledMating = this.FindAllChildren<RuminantActivityControlledMating>().FirstOrDefault();
+            controlledMating = Structure.FindChildren<RuminantActivityControlledMating>().FirstOrDefault();
 
             // Assignment of mothers was moved to RuminantHerd resource to ensure this is done even if no breeding activity is included
             this.InitialiseHerd(false, true);
@@ -326,10 +327,10 @@ namespace Models.CLEM.Activities
 
                 for (int i = 0; i < female.CarryingCount; i++)
                 {
-                    preglost=true;
                     var rnd = RandomNumberGenerator.Generator.NextDouble();
                     if (MathUtilities.IsLessThan(rnd, female.BreedParams.PrenatalMortality / (female.BreedParams.GestationLength + 1)))
                     {
+                        preglost = true;
                         female.OneOffspringDies();
                         if (female.NumberOfOffspring == 0)
                         {
@@ -342,7 +343,7 @@ namespace Models.CLEM.Activities
 
                 if (female.BirthDue)
                 {
-                    birthoccurred=true;
+                    birthoccurred = true;
                     int numberOfNewborn = female.CarryingCount;
                     for (int i = 0; i < numberOfNewborn; i++)
                     {
@@ -695,7 +696,7 @@ namespace Models.CLEM.Activities
                     htmlWriter.Write("No pregnancy of breeders from matings prior to simulation start is inferred");
                     htmlWriter.Write("</div>");
                 }
-                controlledMating = this.FindAllChildren<RuminantActivityControlledMating>().FirstOrDefault();
+                controlledMating = Structure.FindChildren<RuminantActivityControlledMating>().FirstOrDefault();
                 if (controlledMating is null)
                 {
                     htmlWriter.Write("\r\n<div class=\"activityentry\">");

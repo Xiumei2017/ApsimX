@@ -1,4 +1,6 @@
-﻿using APSIM.Shared.Utilities;
+﻿using APSIM.Core;
+using APSIM.Numerics;
+using APSIM.Shared.Utilities;
 using Models;
 using Models.Core;
 using Models.Core.ApsimFile;
@@ -22,7 +24,7 @@ namespace UnitTests
             var events = new Events(zone);
             var args = new object[] { this, new EventArgs() };
             events.Publish("Commencing", args);
-            events.Publish("StartOfSimulation", args); 
+            events.Publish("StartOfSimulation", args);
             events.Publish("DoDailyInitialisation", args);
 
             var soilWater = zone.Children[1].Children[7] as Models.WaterModel.WaterBalance;
@@ -33,7 +35,7 @@ namespace UnitTests
             events.Publish("DoSoilWaterMovement", args);
             var amountSWHasIncreased = MathUtilities.Sum(soilWater.SWmm) - swBeforeIrrigation;
 
-            Assert.AreEqual(amountSWHasIncreased, 10);
+            Assert.That(amountSWHasIncreased, Is.EqualTo(10));
         }
 
         [Test]
@@ -55,7 +57,7 @@ namespace UnitTests
             events.Publish("DoSoilWaterMovement", args);
             var amountSWHasIncreased = MathUtilities.Sum(soilWater.SWmm) - swBeforeIrrigation;
 
-            Assert.AreEqual(amountSWHasIncreased, 5);
+            Assert.That(amountSWHasIncreased, Is.EqualTo(5));
         }
 
 
@@ -121,7 +123,7 @@ namespace UnitTests
                                 Thickness = new double[] { 100, 300, 300, 300, 300, 300 },
                                 InitialValues = new double[] { 0, 0, 0, 0, 0, 0 },
                                 InitialValuesUnits = Solute.UnitsEnum.kgha
-                            },                             
+                            },
                             new Water()
                             {
                                 Thickness = new double[] { 100, 300, 300, 300, 300, 300  },
@@ -181,19 +183,17 @@ namespace UnitTests
                     }
                 }
             };
-            Resource.Instance.Replace(zone);
-            FileFormat.InitialiseModel(zone, (e) => throw e);
+            Simulations sims = new();
+            sims.Children.Add(zone);
+            var tree = Node.Create(sims);
 
-            zone.ParentAllDescendants();
-            foreach (IModel model in zone.FindAllDescendants())
-                model.OnCreated();
             var links = new Links();
             links.Resolve(zone, true);
             var events = new Events(zone);
             events.ConnectEvents();
 
             var soil = zone.Children[1] as Soil;
-            soil.Standardise();
+            soil.Sanitise();
 
             return zone;
         }

@@ -12,6 +12,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using APSIM.Core;
+using Models.Core.ApsimFile;
 
 namespace Models.CLEM
 {
@@ -28,8 +30,7 @@ namespace Models.CLEM
     [Version(1, 0, 3, "Updated filtering logic to improve performance")]
     [Version(1, 0, 2, "New ResourceUnitConverter functionality added that changes some reporting.\r\nThis change will cause errors for all previous custom resource ledger reports created using the APSIM Report component.\r\nTo fix errors add \".Name\" to all LastTransaction.ResourceType and LastTransaction.Activity entries in custom ledgers (i.e. LastTransaction.ResourceType.Name as Resource). The CLEM ReportResourceLedger component has been updated to automatically handle the changes")]
     [Version(1, 0, 1, "")]
-    [ScopedModel]
-    public class ZoneCLEM : Zone, IValidatableObject, ICLEMUI, ICLEMDescriptiveSummary
+    public class ZoneCLEM : Zone, IValidatableObject, ICLEMUI, ICLEMDescriptiveSummary, IScopedModel
     {
         [Link]
         private readonly Summary summary = null;
@@ -122,6 +123,10 @@ namespace Models.CLEM
         [JsonIgnore]
         public new double Altitude { get; set; } = 50;
 
+        ///<summary>What kind of canopy</summary>
+        [JsonIgnore]
+        public new string CanopyType { get; set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -148,10 +153,10 @@ namespace Models.CLEM
         private void OnCompleted(object sender, EventArgs e)
         {
             // if auto create summary
-            if (AutoCreateDescriptiveSummary && !FindAllAncestors<Experiment>().Any())
+            if (AutoCreateDescriptiveSummary && !Structure.FindParents<Experiment>().Any())
             {
                 if (!File.Exists(wholeSimulationSummaryFile))
-                    File.WriteAllText(wholeSimulationSummaryFile, CLEMModel.CreateDescriptiveSummaryHTML(this, false, false, (sender as Simulation).FileName));
+                    File.WriteAllText(wholeSimulationSummaryFile, CLEMModel.CreateDescriptiveSummaryHTML(this, Structure, false, false, (sender as Simulation).FileName));
                 else
                 {
                     string html = File.ReadAllText(wholeSimulationSummaryFile);
@@ -160,9 +165,9 @@ namespace Models.CLEM
                         int index = html.IndexOf("<!-- CLEMZoneBody -->");
                         if (index > 0)
                         {
-                            htmlWriter.Write(html.Substring(0, index - 1));
-                            htmlWriter.Write(CLEMModel.CreateDescriptiveSummaryHTML(this, false, true));
-                            htmlWriter.Write(html.Substring(index));
+                            htmlWriter.Write(html[..(index - 1)]);
+                            htmlWriter.Write(CLEMModel.CreateDescriptiveSummaryHTML(this, Structure, false, true));
+                            htmlWriter.Write(html[index..]);
                             File.WriteAllText(wholeSimulationSummaryFile, htmlWriter.ToString());
                         }
                     }
@@ -216,7 +221,7 @@ namespace Models.CLEM
                 results.Add(new ValidationResult(String.Format("CLEM must commence on the first day of a month. Invalid start date {0}", clock.StartDate.ToShortDateString()), memberNames));
             }
             // check that one resources and on activities are present.
-            int holderCount = this.FindAllChildren<ResourcesHolder>().Count();
+            int holderCount = Structure.FindChildren<ResourcesHolder>().Count();
             if (holderCount == 0)
             {
                 string[] memberNames = new string[] { "CLEM.Resources" };
@@ -227,7 +232,7 @@ namespace Models.CLEM
                 string[] memberNames = new string[] { "CLEM.Resources" };
                 results.Add(new ValidationResult("CLEM must contain only one (1) Resources Holder to manage resources", memberNames));
             }
-            holderCount = this.FindAllChildren<ActivitiesHolder>().Count();
+            holderCount = Structure.FindChildren<ActivitiesHolder>().Count();
             if (holderCount == 0)
             {
                 string[] memberNames = new string[] { "CLEM.Activities" };
@@ -256,7 +261,7 @@ namespace Models.CLEM
 
             // not all errors will be reported in validation so perform in two steps
             Validate(this, "", this, summary);
-            ReportInvalidParameters(this);
+            ReportInvalidParameters(this, Structure);
 
             if (clock.StartDate.Year > 1) // avoid checking if clock not set.
             {
@@ -280,11 +285,16 @@ namespace Models.CLEM
         /// Reports any validation errors to exception
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="structure">Structure instance</param>
         /// <exception cref="ApsimXException"></exception>
-        public static void ReportInvalidParameters(IModel model)
+        public static void ReportInvalidParameters(IModel model, IStructure structure)
         {
-            IModel simulation = model.FindAncestor<Simulation>();
-            var summary = simulation.FindDescendant<Summary>();
+            var simulation = structure.FindParent<Simulation>(relativeTo: model as INodeModel, recurse: true);
+            var summary = structure.FindChild<Summary>(relativeTo: simulation, recurse: true);
+
+            // force summary to write messages
+            // if not included the messages table isn't propogated to exit model on errors detected.
+            summary.WriteMessagesToDataStore();
 
             // get all validations
             ReportErrors(model, summary.GetMessages(simulation.Name)?.Where(a => a.Severity == MessageType.Error && a.Text.StartsWith("Invalid parameter ")));
@@ -314,7 +324,6 @@ namespace Models.CLEM
                 throw new ApsimXException(model, $"{messages.Count()} error{(messages.Count() == 1 ? "" : "s")} occured during start up.{Environment.NewLine}See CLEM component [{model.GetType().Name}] Messages tab for details{Environment.NewLine}", innerException);
             }
         }
-
 
         /// <summary>
         /// Internal method to iterate through all children in CLEM and report any parameter setting errors
@@ -423,9 +432,9 @@ namespace Models.CLEM
                 CurrentAncestorList.Add(model.GetType().Name);
 
                 // get clock
-                IModel parentSim = FindAncestor<Simulation>();
+                var parentSim = Structure.FindParent<Simulation>(recurse: true);
 
-                htmlWriter.Write(CLEMModel.AddMemosToSummary(parentSim, markdown2Html));
+                htmlWriter.Write(CLEMModel.AddMemosToSummary(parentSim, Structure, markdown2Html));
 
                 // create the summary box with properties of this component
                 if (this is ICLEMDescriptiveSummary)
@@ -440,7 +449,7 @@ namespace Models.CLEM
                 }
 
                 // find random number generator
-                RandomNumberGenerator rnd = parentSim.FindDescendant<RandomNumberGenerator>();
+                RandomNumberGenerator rnd = Structure.FindChild<RandomNumberGenerator>(relativeTo: parentSim, recurse: true);
                 if (rnd != null)
                 {
                     htmlWriter.Write("\r\n<div class=\"clearfix defaultbanner\">");
@@ -455,12 +464,12 @@ namespace Models.CLEM
                         htmlWriter.Write("each run identical by using the seed <span class=\"setvalue\">" + rnd.Seed.ToString() + "</span>");
                     htmlWriter.Write("\r\n</div>");
 
-                    htmlWriter.Write(CLEMModel.AddMemosToSummary(rnd, markdown2Html));
+                    htmlWriter.Write(CLEMModel.AddMemosToSummary(rnd, Structure, markdown2Html));
 
                     htmlWriter.Write("\r\n</div>");
                 }
 
-                Clock clk = parentSim.FindChild<Clock>();
+                Clock clk = Structure.FindChild<Clock>(relativeTo: parentSim as INodeModel);
                 if (clk != null)
                 {
                     htmlWriter.Write("\r\n<div class=\"clearfix defaultbanner\">");
@@ -480,13 +489,13 @@ namespace Models.CLEM
                         htmlWriter.Write("<span class=\"setvalue\">" + clk.EndDate.ToShortDateString() + "</span>");
                     htmlWriter.Write("\r\n</div>");
 
-                    htmlWriter.Write(CLEMModel.AddMemosToSummary(clk, markdown2Html));
+                    htmlWriter.Write(CLEMModel.AddMemosToSummary(clk, Structure, markdown2Html));
 
                     htmlWriter.Write("\r\n</div>");
                     htmlWriter.Write("\r\n</div>");
                 }
 
-                foreach (CLEMModel cm in this.FindAllChildren<CLEMModel>())
+                foreach (CLEMModel cm in Structure.FindChildren<CLEMModel>())
                     htmlWriter.Write(cm.GetFullSummary(cm, CurrentAncestorList, "", markdown2Html));
 
                 CurrentAncestorList = null;
@@ -504,7 +513,7 @@ namespace Models.CLEM
                 htmlWriter.Write("This farm is identified as region ");
                 htmlWriter.Write($"<span class=\"setvalue\">{ClimateRegion}</span></div>");
 
-                ResourcesHolder resources = this.FindChild<ResourcesHolder>();
+                ResourcesHolder resources = Structure.FindChild<ResourcesHolder>();
                 if (resources != null)
                 {
                     if (resources.FoundMarket != null)
@@ -515,7 +524,7 @@ namespace Models.CLEM
                     }
                 }
 
-                if ((this.FindDescendant<RuminantActivityGrazeAll>() != null) || (this.FindDescendant<RuminantActivityGrazePasture>() != null) || (this.FindDescendant<RuminantActivityGrazePastureHerd>() != null))
+                if ((Structure.FindChild<RuminantActivityGrazeAll>(recurse: true) != null) || (Structure.FindChild<RuminantActivityGrazePasture>(recurse: true) != null) || (Structure.FindChild<RuminantActivityGrazePastureHerd>(recurse: true) != null))
                 {
                     htmlWriter.Write("\r\n<div class=\"activityentry\">");
                     htmlWriter.Write("Ecological indicators will be calculated every ");

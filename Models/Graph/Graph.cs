@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
+using APSIM.Numerics;
 using APSIM.Shared.Graphing;
 using Models.Core;
 using Models.Core.Run;
@@ -27,8 +28,12 @@ namespace Models
     [ValidParent(ParentType = typeof(Sobol))]
     [ValidParent(ParentType = typeof(Folder))]
     [ValidParent(ParentType = typeof(GraphPanel))]
-    public class Graph : Model
+    public class Graph : Model, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>The data tables on the graph.</summary>
         [NonSerialized]
         private Dictionary<string, DataTable> tables = new Dictionary<string, DataTable>();
@@ -47,7 +52,7 @@ namespace Models
         /// Gets or sets a list of all series
         /// </summary>
         [JsonIgnore]
-        public List<Series> Series { get { return FindAllChildren<Series>().ToList(); } }
+        public List<Series> Series { get { return Structure.FindChildren<Series>().ToList(); } }
 
         /// <summary>
         /// Gets or sets the location of the legend
@@ -78,6 +83,7 @@ namespace Models
         /// Descriptions of simulations that are in scope.
         /// </summary>
         [JsonIgnore]
+        [field: NonSerialized]
         public List<SimulationDescription> SimulationDescriptions { get; set; }
 
         /// <summary>Gets the definitions to graph.</summary>
@@ -88,7 +94,7 @@ namespace Models
         {
             EnsureAllAxesExist();
 
-            var series = FindAllChildren<Series>().Where(g => g.Enabled);
+            var series = Structure.FindChildren<Series>().Where(g => g.Enabled);
             var definitions = new List<SeriesDefinition>();
             foreach (var s in series)
             {
@@ -103,9 +109,30 @@ namespace Models
         /// <returns>A list of series annotations.</returns>
         public IEnumerable<IAnnotation> GetAnnotationsToGraph()
         {
-            return FindAllChildren<IGraphable>()
+            return Structure.FindChildren<IGraphable>()
                         .Where(g => g.Enabled)
                         .SelectMany(g => g.GetAnnotations());
+        }
+        
+        
+        /// <summary>
+        /// Get the axis for the position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        /// 
+
+        public Axis GetAxis(AxisPosition position)
+        {
+            foreach (Axis axis in Axis)
+            {
+                if (axis.Position == position)
+                    return axis;
+
+            }
+
+            throw new Exception("Axis position not valid");
         }
 
         /// <summary>
@@ -163,12 +190,12 @@ namespace Models
         /// Get all series definitions using the GraphPage API - which will
         /// load the series' data in parallel.
         /// </summary>
-        private IEnumerable<SeriesDefinition> GetSeriesDefinitions()
+        public IEnumerable<SeriesDefinition> GetSeriesDefinitions()
         {
             // Using the graphpage API - this will load each series' data in parallel.
             GraphPage page = new GraphPage();
             page.Graphs.Add(this);
-            return page.GetAllSeriesDefinitions(Parent, FindInScope<IDataStore>()?.Reader).FirstOrDefault()?.SeriesDefinitions;
+            return page.GetAllSeriesDefinitions(Parent, Structure.Find<IDataStore>()?.Reader).FirstOrDefault()?.SeriesDefinitions;
         }
 
         /// <summary>
@@ -366,7 +393,7 @@ namespace Models
                 // to find an appropriate y-value.
                 int index = -1;
                 if (xIsFloatingPoint)
-                    index = APSIM.Shared.Utilities.MathUtilities.SafeIndexOf(numericX, (double)xVal);
+                    index = MathUtilities.SafeIndexOf(numericX, (double)xVal);
                 else
                     index = Array.IndexOf(x1, xVal);
                 if (index < 0)
@@ -376,37 +403,10 @@ namespace Models
                 if (index >= 0)
                     yVal += y[i];
                 else if (xIsFloatingPoint)
-                    yVal += APSIM.Shared.Utilities.MathUtilities.LinearInterpReal((double)xVal, numericX, y, out bool didInterp);
+                    yVal += MathUtilities.LinearInterpReal((double)xVal, numericX, y, out bool didInterp);
                 y2.Add(yVal);
             }
             return y2;
-        }
-
-        /// <summary>
-        /// Document the model, and any child models which should be documented.
-        /// </summary>
-        /// <remarks>
-        /// It is a mistake to call this method without first resolving links.
-        /// </remarks>
-        public override IEnumerable<ITag> Document()
-        {
-            try
-            {
-                return new[] { ToGraph() };
-            }
-            catch (Exception err)
-            {
-                Console.Error.WriteLine(err);
-                return Enumerable.Empty<ITag>();
-            }
-        }
-
-        /// <summary>
-        /// Generated a 'standardised' graph.
-        /// </summary>
-        public APSIM.Shared.Documentation.Graph ToGraph()
-        {
-            return ToGraph(GetSeriesDefinitions());
         }
 
         /// <summary>
@@ -416,17 +416,10 @@ namespace Models
         /// </summary>
         public APSIM.Shared.Documentation.Graph ToGraph(IEnumerable<SeriesDefinition> definitions)
         {
-            try
-            {
-                LegendConfiguration legend = new LegendConfiguration(LegendOrientation, LegendPosition, !LegendOutsideGraph);
-                var xAxis = Axis.FirstOrDefault(a => a.Position == AxisPosition.Bottom || a.Position == AxisPosition.Top);
-                var yAxis = Axis.FirstOrDefault(a => a.Position == AxisPosition.Left || a.Position == AxisPosition.Right);
-                return new APSIM.Shared.Documentation.Graph(Name, FullPath, GetSeries(definitions), xAxis, yAxis, legend);
-            }
-            catch (Exception err)
-            {
-                throw new Exception($"Unable to draw graph {FullPath}", err);
-            }
+            LegendConfiguration legend = new LegendConfiguration(this.LegendOrientation, this.LegendPosition, !this.LegendOutsideGraph);
+            var xAxis = this.Axis.FirstOrDefault(a => a.Position == AxisPosition.Bottom || a.Position == AxisPosition.Top);
+            var yAxis = this.Axis.FirstOrDefault(a => a.Position == AxisPosition.Left || a.Position == AxisPosition.Right);
+            return new APSIM.Shared.Documentation.Graph(this.Name, this.FullPath, this.GetSeries(definitions), xAxis, yAxis, legend);
         }
     }
 }

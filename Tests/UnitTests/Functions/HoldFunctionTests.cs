@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using APSIM.Core;
+using Models;
 using Models.Core;
 using Models.Functions;
 using Models.PMF;
@@ -92,8 +93,7 @@ namespace UnitTests.Functions
                     }
                 }
             };
-            f.ParentAllDescendants();
-
+            Node.Create(f);
 
             var links = new Links();
             links.Resolve(f, true);
@@ -108,13 +108,13 @@ namespace UnitTests.Functions
             }
             catch
             {
-                Assert.AreEqual(f.Value(), 0);
+                Assert.That(f.Value(), Is.EqualTo(0));
             }
-            
+
 
             (f.Children[0] as MockFunctionThatThrows).DoThrow = false;
             Utilities.CallEvent(f, "DoUpdate", new object[] { this, new EventArgs() });
-            Assert.AreEqual(f.Value(), 1);
+            Assert.That(f.Value(), Is.EqualTo(1));
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using Gtk.Sheet;
 using Models.CLEM.Reporting;
 using Models.Storage;
 using System;
@@ -42,7 +43,7 @@ namespace UserInterface.Presenters
         /// <param name="explorerPresenter">The presenter to attach to</param>
         public void Attach(object model, object view, ExplorerPresenter explorerPresenter)
         {
-            // This code is not reached, the usual functionality is performed in            
+            // This code is not reached, the usual functionality is performed in
             // the CLEMPresenter.AttachExtraPresenters() method
         }
 
@@ -53,22 +54,19 @@ namespace UserInterface.Presenters
             {
                 // Create the grid to display data in
                 container = new ContainerView(clemPresenter.View as ViewBase);
-                grid = new SheetWidget();
-                grid.Sheet = new Sheet();
-                grid.Sheet.DataProvider = new DataTableProvider(new DataTable());
-                grid.Sheet.CellSelector = new MultiCellSelect(grid.Sheet, grid);
-                grid.Sheet.ScrollBars = new SheetScrollBars(grid.Sheet, grid);
-                grid.Sheet.CellPainter = new DefaultCellPainter(grid.Sheet, grid);
-                container.Add(grid.Sheet.ScrollBars.MainWidget);
+                grid = new SheetWidget(container.Widget,
+                                       dataProvider: new DataTableProvider(new DataTable()),
+                                       multiSelect: true,
+                                       onException: (err) => ViewBase.MasterView.ShowError(err));
 
                 clem = clemPresenter.View as CLEMView;
                 query = clemPresenter.ClemModel as ReportQuery;
 
-                var store = query.FindInScope<IDataStore>();
+                var store = query.Node.Find<IDataStore>();
 
                 // Attach the tab
                 clem.AddTabView("Data", container);
-                clemPresenter.PresenterList.Add("Data", this);                
+                clemPresenter.PresenterList.Add("Data", this);
             }
             catch (Exception err)
             {
@@ -82,7 +80,7 @@ namespace UserInterface.Presenters
 
         /// <inehritdoc/>
         public void Refresh() {
-            grid.Sheet.DataProvider = new DataTableProvider(query.RunQuery());
+            grid.SetDataProvider(new DataTableProvider(query.RunQuery()));
         }
     }
 }

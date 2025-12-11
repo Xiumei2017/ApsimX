@@ -1,7 +1,9 @@
-﻿namespace Models.Soils
+﻿using APSIM.Core;
+
+namespace Models.Soils
 {
     /// <summary>An interface for soil physical properties.</summary>
-    public interface IPhysical
+    public interface IPhysical : ILayerStructure
     {
         /// <summary>Air dry (mm/mm).</summary>
         double[] AirDry { get; set; }
@@ -45,9 +47,6 @@
         /// <summary>Texture.</summary>
         string[] Texture { get; }
 
-        /// <summary>Soil layer thickness (mm).</summary>
-        double[] Thickness { get; set; }
-
         /// <summary>Soil layer cumulative thicknesses (mm)</summary>
         double[] ThicknessCumulative { get; }
 
@@ -59,10 +58,5 @@
 
         /// <summary>Plant available water CAPACITY (DUL-LL15).</summary>
         double[] PAWCmm { get; }
-
-        /// <summary>Gets the model ready for running in a simulation.</summary>
-        /// <param name="targetThickness"></param>
-        void Standardise(double[] targetThickness);
-
     }
 }

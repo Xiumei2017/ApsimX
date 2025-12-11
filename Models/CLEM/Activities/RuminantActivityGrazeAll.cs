@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using Models.Core.Attributes;
 using System.IO;
 using Models.Core.ApsimFile;
+using Models.CLEM.Groupings;
+using System.Linq.Expressions;
 
 namespace Models.CLEM.Activities
 {
@@ -45,7 +47,7 @@ namespace Models.CLEM.Activities
         [EventSubscribe("CLEMInitialiseActivity")]
         private void OnCLEMInitialiseActivity(object sender, EventArgs e)
         {
-            bool buildTransactionFromTree = FindAncestor<ZoneCLEM>().BuildTransactionCategoryFromTree;
+            bool buildTransactionFromTree = Structure.FindParent<ZoneCLEM>(recurse: true).BuildTransactionCategoryFromTree;
 
             GrazeFoodStore grazeFoodStore = Resources.FindResourceGroup<GrazeFoodStore>();
             if (grazeFoodStore != null)
@@ -78,9 +80,10 @@ namespace Models.CLEM.Activities
                     grazePasture.UniqueID = currentUid;
                     grazePasture.SetLinkedModels(Resources);
                     grazePasture.InitialiseHerd(true, true);
+                    Structure.AddChild(grazePasture);
 
                     Guid currentHerdUid = currentUid;
-                    foreach (RuminantType herdType in HerdResource.FindAllChildren<RuminantType>())
+                    foreach (RuminantType herdType in Structure.FindChildren<RuminantType>(relativeTo: HerdResource))
                     {
                         RuminantActivityGrazePastureHerd grazePastureHerd = new RuminantActivityGrazePastureHerd
                         {
@@ -103,12 +106,36 @@ namespace Models.CLEM.Activities
                         if (grazePastureHerd.Clock == null)
                             grazePastureHerd.Clock = this.clock;
 
-                        grazePastureHerd.InitialiseHerd(true, true);
-                        grazePasture.Children.Add(grazePastureHerd);
+                        // add ruminant activity filter group to ensure correct individuals are selected
+                        RuminantActivityGroup herdGroup = new ()
+                        {
+                            Name = "Filter_" + grazePastureHerd.Name,
+                            Parent = this
+                        };
+                        herdGroup.Children.Add(
+                            new FilterByProperty()
+                            {
+                                PropertyOfIndividual = "HerdName",
+                                Operator = ExpressionType.Equal,
+                                Value = herdType.Name,
+                                Parent = herdGroup
+                            }
+                        );
+
+                        grazePasture.Structure.AddChild(grazePastureHerd);
+                        grazePastureHerd.Structure.AddChild(herdGroup);
                     }
-                    Structure.Add(grazePasture, this);
+
+                    foreach (var activityGroup in Structure.FindChildren<RuminantActivityGroup>(relativeTo: grazePasture, recurse: true))
+                        activityGroup.InitialiseFilters();
+                    foreach (var herd in Structure.FindChildren<RuminantActivityGrazePastureHerd>(relativeTo: grazePasture))
+                        herd.InitialiseHerd(false, false);
+
                 }
-                this.FindAllDescendants<RuminantActivityGrazePastureHerd>().LastOrDefault().IsHidden = true;
+                Structure.FindChildren<RuminantActivityGrazePastureHerd>(recurse: true).LastOrDefault().IsHidden = true;
+
+                Events events = new Events(Structure.FindParent<Simulation>(recurse: true));
+                events.ReconnectEvents("Models.Clock");
             }
             else
                 Summary.WriteMessage(this, $"No GrazeFoodStore is available for the ruminant grazing activity [a={this.Name}]!", MessageType.Warning);
@@ -133,7 +160,7 @@ namespace Models.CLEM.Activities
             var results = new List<ValidationResult>();
 
             // single grazeall
-            if(ActivitiesHolder.FindAllDescendants<RuminantActivityGrazeAll>().Count() > 1)
+            if(Structure.FindChildren<RuminantActivityGrazeAll>(relativeTo: ActivitiesHolder, recurse: true).Count() > 1)
             {
                 string[] memberNames = new string[] { "Ruminant graze all activity" };
                 results.Add(new ValidationResult($"Only one [a=RuminantActivityGrazeAll] is permitted per [CLEM] component{Environment.NewLine}The GrazeAll activity will manage all possible grazing on the farm", memberNames));

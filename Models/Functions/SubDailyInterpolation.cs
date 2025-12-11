@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.Interfaces;
 using Newtonsoft.Json;
@@ -14,7 +14,7 @@ namespace Models.Functions
     /// </summary>
 
     [Serializable]
-    [Description("Uses the specified InterpolationMethod to determine sub daily values then calcualtes a value for the Response at each of these time steps and returns either the sum or average depending on the AgrevationMethod selected")]
+    [Description("Uses the specified InterpolationMethod to determine sub daily values then calculates a value for the Response at each of these time steps and returns either the sum or average depending on the AggregationMethod selected")]
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     public class SubDailyInterpolation : Model, IFunction
@@ -32,11 +32,11 @@ namespace Models.Functions
         [Link(Type = LinkType.Child, ByName = true)]
         private IIndexedFunction Response = null;
 
-        /// <summary>Method used to agreagate sub daily values</summary>
-        [Description("Method used to agregate sub daily temperature function")]
+        /// <summary>Method used to aggregate sub daily values</summary>
+        [Description("Method used to aggregate sub daily temperature function")]
         public AgregationMethod agregationMethod { get; set; }
 
-        /// <summary>Method used to agreagate sub daily values</summary>
+        /// <summary>Method used to aggregate sub daily values</summary>
         public enum AgregationMethod
         {
             /// <summary>Return average of sub daily values</summary>
@@ -64,7 +64,7 @@ namespace Models.Functions
                 if (agregationMethod == AgregationMethod.Sum)
                     return SubDailyResponse.Sum();
                 else
-                    throw new Exception("invalid agregation method selected in " + this.Name + "temperature interpolation");
+                    throw new Exception("invalid aggregation method selected in " + this.Name + "temperature interpolation");
             }
             else
                 return 0.0;
@@ -81,26 +81,5 @@ namespace Models.Functions
             foreach (double sdt in SubDailyInput)
                 SubDailyResponse.Add(Response.ValueIndexed(sdt));
         }
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            yield return new Paragraph($"{Name} is the {agregationMethod.ToString().ToLower()} of sub-daily values from a {Response.GetType().Name}.");
-
-            // Write memos.
-            foreach (var tag in DocumentChildren<Memo>())
-                yield return tag;
-
-            foreach (var tag in (InterpolationMethod as IModel).Document())
-                yield return tag;
-
-            yield return new Paragraph($"Each of the interpolated {InterpolationMethod.OutputValueType}s are then passed into the following Response and the {agregationMethod} taken to give daily {Name}");
-
-            var xyPairs = Response as XYPairs;
-            xyPairs.XVariableName ??= "Air temperature (oC)";
-            foreach (var tag in (Response as IModel).Document())
-                yield return tag;
-        }
     }
-
 }

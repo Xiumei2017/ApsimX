@@ -1,5 +1,7 @@
 ﻿using System;
+using APSIM.Core;
 using Models.Core;
+using Models.ForageDigestibility;
 using Models.Soils;
 using Models.Surface;
 
@@ -16,7 +18,8 @@ namespace Models.GrazPlan
         /// Create the PaddockInfo
         /// </summary>
         /// <param name="zone">Optional zone.</param>
-        public PaddockInfo(Zone zone = null)
+        /// <param name="structure">Structure instance</param>
+        public PaddockInfo(IStructure structure, Zone zone = null)
         {
             this.Forages = new ForageList(false);
             this.SuppInPadd = new SupplementRation();
@@ -24,10 +27,11 @@ namespace Models.GrazPlan
             // locate surfaceOM and soil nutrient model
             if (zone != null)
             {
-                AddFaecesObj = (SurfaceOrganicMatter)zone.FindInScope<SurfaceOrganicMatter>();
-                var soilPhysical = zone.FindInScope<IPhysical>();
+                AddFaecesObj = (SurfaceOrganicMatter)structure.Find<SurfaceOrganicMatter>(relativeTo: zone);
+                ForagesModel = (Forages)structure.Find<Forages>(relativeTo: zone);
+                var soilPhysical = structure.Find<IPhysical>(relativeTo: zone);
                 SoilLayerThickness = soilPhysical.Thickness;
-                AddUrineObj = (ISolute)zone.FindInScope("Urea");
+                AddUrineObj = structure.Find<ISolute>("Urea", relativeTo: zone);
             }
         }
 
@@ -54,6 +58,13 @@ namespace Models.GrazPlan
         /// </summary>
         [NonSerialized]
         public SurfaceOrganicMatter AddFaecesObj;
+
+
+        /// <summary>
+        /// Gets or sets the faeces destination
+        /// </summary>
+        [NonSerialized]
+        public Forages ForagesModel;
 
         /// <summary>
         /// Gets or sets the urine destination
@@ -148,9 +159,9 @@ namespace Models.GrazPlan
         }
 
         /// <summary>
-        /// Aggregates the initial forage availability of each species in the list       
-        /// * If FForages.Count=0, then the aggregate forage availability is taken to    
-        ///   have been passed at the paddock level using setGrazingInputs()             
+        /// Aggregates the initial forage availability of each species in the list
+        /// * If FForages.Count=0, then the aggregate forage availability is taken to
+        ///   have been passed at the paddock level using setGrazingInputs()
         /// </summary>
         public void ComputeTotals()
         {

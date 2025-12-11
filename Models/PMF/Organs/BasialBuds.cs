@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.Functions;
 
@@ -20,11 +19,11 @@ namespace Models.PMF.Organs
         public string ResetStageName { get; set; }
         /// <summary>
         /// NodeNumber for basial buds
-        /// </summary> 
+        /// </summary>
         public double NodeNumber { get; set; }
         /// <summary>
         /// Leaf Area for basial buds
-        /// </summary> 
+        /// </summary>
         public double LAI { get; set; }
         /// <summary>
         /// Nodenumber Function
@@ -34,18 +33,6 @@ namespace Models.PMF.Organs
         /// Leaf Area Index Function
         /// </summary>
         [Link(Type = LinkType.Child, ByName = true)] private IFunction Deltalai = null;
-
-
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            foreach (var tag in GetModelDescription())
-                yield return tag;
-
-            // Document everything else.
-            foreach (var child in Children)
-                yield return new Section(child.Name, child.Document());
-        }
 
         /// <summary>Called when [simulation commencing].</summary>
         /// <param name="sender">The sender.</param>

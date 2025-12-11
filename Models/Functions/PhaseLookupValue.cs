@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.PMF.Phen;
 
@@ -14,8 +14,12 @@ namespace Models.Functions
     [ViewName("UserInterface.Views.PropertyView")]
     [PresenterName("UserInterface.Presenters.PropertyPresenter")]
     [Description("Returns the value of it child function to the PhaseLookup parent function if current phenology is between Start and end stages specified.")]
-    public class PhaseLookupValue : Model, IFunction
+    public class PhaseLookupValue : Model, IFunction, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         /// <summary>The phenology</summary>
         [Link]
         Phenology Phenology = null;
@@ -47,7 +51,7 @@ namespace Models.Functions
         public double Value(int arrayIndex = -1)
         {
             if (ChildFunctions == null)
-                ChildFunctions = FindAllChildren<IFunction>().ToList();
+                ChildFunctions = Structure.FindChildren<IFunction>().ToList();
 
             if (Start == "")
                 throw new Exception("Phase start name not set:" + Name);
@@ -71,23 +75,6 @@ namespace Models.Functions
             {
                 return Phenology.Between(startStageIndex, endStageIndex);
             }
-        }
-
-
-        /// <summary>
-        /// Document the model.
-        /// </summary>
-        public override IEnumerable<ITag> Document()
-        {
-            // Write memos.
-            foreach (var tag in DocumentChildren<Memo>())
-                yield return tag;
-
-            yield return new Paragraph($"{Name} has a value between {Start} and {End} calculated as:");
-
-            // Write memos.
-            foreach (var tag in DocumentChildren<IModel>())
-                yield return tag;
         }
 
         /// <summary>Called when [simulation commencing].</summary>

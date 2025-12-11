@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using APSIM.Shared.Documentation;
-using APSIM.Shared.Utilities;
+using APSIM.Core;
+using APSIM.Numerics;
 using Models.Core;
-using Models.Functions;
-using Models.PMF.Struct;
 
 namespace Models.PMF.Phen
 {
     /// <summary>
-    /// This model calculates a Zadok growth stage value based upon the current phenological growth stage within the model. 
+    /// This model calculates a Zadok growth stage value based upon the current phenological growth stage within the model.
     /// The model uses information regarding germination, emergence, leaf appearance and tiller appearance for early growth stages (Zadok stages 0 to 30).
     /// The model then uses simulated phenological growth stages for Zadok stages 30 to 100.
     /// </summary>
@@ -23,12 +19,28 @@ namespace Models.PMF.Phen
         [Link]
         Phenology Phenology = null;
 
-        /// <summary>Haun stage is used for zadok stages 10 to 30</summary>
-        [Link(Type = LinkType.Path, Path = "[Phenology].HaunStage")]
-        IFunction haunStage = null;
-
         [Link]
-        private IPlant plant = null;
+        private Plant plant = null;
+
+        /// <summary>The thermal time</summary>
+        [Link(Type = LinkType.Child, ByName = true)]
+        public IFunction TillerNumber = null;
+
+        /// <summary>The thermal time</summary>
+        [Link(Type = LinkType.Child, ByName = true)]
+        public IFunction haunStage = null;
+
+        /// <summary>
+        /// Zadok stage numbers for wheat
+        /// </summary>
+        public static readonly double[] ZADOK_STAGE_NUMBERS = [30.0, 34, 39.0, 55.0, 65.0, 71.0, 87.0, 90.0];
+
+        /// <summary>
+        /// Growth stage numbers for wheat
+        /// </summary>
+        public static readonly double[] GROWTH_STAGE_NUMBERS = [5.0, 5.99, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0];
+
+        private double[] zadokDays = new double[91]; // Use 1 based index (position zero is before sowing). The Zadoks range is 1 to 90.
 
         /// <summary>Gets the stage.</summary>
         /// <value>The stage.</value>
@@ -51,11 +63,9 @@ namespace Models.PMF.Phen
                 }
                 else if (!Phenology.InPhase("ReadyForHarvesting"))
                 {
-                    double[] zadok_code_y = { 30.0, 34, 39.0, 55.0, 65.0, 71.0, 87.0, 90.0 };
-                    double[] zadok_code_x = { 5.0, 5.99, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0 };
                     bool DidInterpolate;
                     zadok_stage = MathUtilities.LinearInterpReal(Phenology.Stage,
-                                                               zadok_code_x, zadok_code_y,
+                                                               GROWTH_STAGE_NUMBERS, ZADOK_STAGE_NUMBERS,
                                                                out DidInterpolate);
                 }
                 else if (Phenology.InPhase("ReadyForHarvesting"))
@@ -67,88 +77,57 @@ namespace Models.PMF.Phen
             }
         }
 
-        /// <summary>Writes documentation for this function by adding to the list of documentation tags.</summary>
-        public override IEnumerable<ITag> Document()
+        // Track the last Zadoks stage that has been recorded
+        private int lastRecordedStage = 0;
+        /// <summary>
+        /// Records the day after sowing when each Zadoks stage (1–99) is first reached.
+        /// Uses a progressive approach to avoid redundant looping,
+        /// since Zadoks stage increases monotonically.
+        /// </summary>
+        [EventSubscribe("DoPhenology")]
+        private void OnDoPhenology(object sender, EventArgs e)
         {
-            foreach (var tag in this.GetModelDescription())
-                yield return tag;
+            int currentStage = (int)Math.Floor(Stage);
 
-            // Write memos.
-            foreach (var tag in DocumentChildren<Memo>())
-                yield return tag;
+            // Progressively check from the last recorded stage onward until the current stage
+            // Avoid the long loop from 1 to 99 each time.
 
-            // Write a table containing growth phases and descriptions.
-            yield return new Paragraph("**List of growth phases**");
-
-            DataTable table = new DataTable();
-            table.Columns.Add("Growth Phase", typeof(string));
-            table.Columns.Add("Descriptipon", typeof(string));
-            DataRow row = table.NewRow();
-            row[0] = "Germinating";
-            row[1] = "ZadokStage = 5 x FractionThroughPhase";
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = "Emerging";
-            row[1] = "ZadokStage = 5 + 5 x FractionThroughPhase";
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = "Vegetative";
-            row[1] = "ZadokStage = 10 + Structure.LeafTipsAppeared";
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = "Reproductive";
-            row[1] = "ZadokStage is interpolated from values of stage number using the following table";
-            table.Rows.Add(row);
-            yield return new Table(table);
-
-            // Write a table containing growth stages
-            yield return new Paragraph("**List of growth stages**");
-            table = new DataTable();
-            table.Columns.Add("Growth Stage", typeof(double));
-            table.Columns.Add("Stage Name", typeof(string));
-            table.Columns.Add("ZadokStage", typeof(int));
-
-            row = table.NewRow();
-            row[0] = 4.3;
-            row[1] = "Pseudostem";
-            row[2] = 30;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 4.9;
-            row[1] = "Third node detectable";
-            row[2] = 33;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 5.0;
-            row[1] = "Flag leaf ligule just visible";
-            row[2] = 39;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 6.0;
-            row[1] = "Heading (Ear half emerged)";
-            row[2] = 55;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 7.0;
-            row[1] = "Flowering (Anthesis half-way)";
-            row[2] = 65;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 8.0;
-            row[1] = "Kernel water ripe";
-            row[2] = 71;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 9.0;
-            row[1] = "Hard dough";
-            row[2] = 87;
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row[0] = 10.0;
-            row[1] = "Ripening";
-            row[2] = 90;
-            table.Rows.Add(row);
-            yield return new Table(table);
+            // An example to assign values to zadokDays:
+            // if currentStage (Today) = 10, lastRecordedStage (Yesterday) = 5, and DAS = 8
+            // zadoksDays[6] = zadoksDays[7] = zadoksDays[8] = zadoksDays[9] = zadoksDays[10] = 8
+            // Will skip loop if lastRecordedStage = currentStage
+            for (int i = lastRecordedStage + 1; i <= currentStage && i < zadokDays.Length; i++)
+            {
+                // skip the current one if already recorded for this Zadoks.
+                if (zadokDays[i] == 0) 
+                {
+                    zadokDays[i] = plant.DaysAfterSowing;
+                    lastRecordedStage = i;
+                }
+            }
         }
+
+        /// <summary>
+        /// Gets the day (days after sowing) on which a specified Zadoks stage was first reached.
+        /// </summary>
+        /// <param name="index">
+        /// Zadoks stage index (1–99).  
+        /// For example, <c>Z(65)</c> returns the day after sowing when stage 65 occurred.
+        /// </param>
+        /// <returns>
+        /// Days after sowing corresponding to the given Zadoks stage,  
+        /// or 0 if that stage has not yet been reached.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="index"/> is outside the range 1–99.
+        /// </exception>
+        public double StageDAS(int index)
+        {
+            if (index < 1 || index > zadokDays.Length - 1)
+                throw new ArgumentOutOfRangeException(nameof(index), "Valid Zadoks stage range is 1–90.");
+
+            return zadokDays[index]; // Use 1 based index (position zero is before sowing)
+        }
+
     }
 }

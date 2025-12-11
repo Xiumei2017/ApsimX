@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using APSIM.Interop.Documentation;
 using Models.Core;
 using APSIM.Shared.Documentation;
-using APSIM.Interop.Documentation.Formats;
 using System.Linq;
 using MigraDocCore.DocumentObjectModel;
+using APSIM.Core;
 
 namespace APSIM.Documentation.Models
 {
@@ -23,9 +22,8 @@ namespace APSIM.Documentation.Models
         /// </summary>
         /// <param name="input">The input file.</param>
         /// <param name="output">Name of the file which will be generated.</param>
-        /// <param name="options">Pdf generation options.</param>
         /// <param name="path">(Optional) path to model to be documented.</param>
-        public ParamsDocsFromFile(string input, string output, PdfOptions options, string path = null) : base("Interface", input, output, options)
+        public ParamsDocsFromFile(string input, string output, string path = null) : base("Interface", input, output)
         {
             this.path = path;
         }
@@ -34,22 +32,21 @@ namespace APSIM.Documentation.Models
         {
             if (!string.IsNullOrEmpty(path))
             {
-                IVariable variable = model.FindByPath(path);
+                var variable = model.Node.GetObject(path);
                 if (variable != null && variable.Value is IModel value)
                     model = value;
                 else
-                    model = model.FindDescendant(path);
+                    model = model.Node.FindChild<IModel>(path, recurse: true);
             }
             else if (model is Simulations && model.Children.Any())
                 model = model.Children[0];
 
-            ParamsInputsOutputs doco = new ParamsInputsOutputs(model);
-            return doco.Document();
+            return InterfaceDocumentation.Document(model);
         }
 
         protected override Document CreateDocument()
         {
-            return PdfWriter.CreateStandardDocument(false);
+            return null;
         }
     }
 }

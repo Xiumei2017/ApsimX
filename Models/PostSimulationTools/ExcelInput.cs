@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using APSIM.Core;
 using APSIM.Shared.Utilities;
 using ExcelDataReader;
 using Models.Core;
@@ -14,7 +15,7 @@ namespace Models.PostSimulationTools
 {
 
     /// <summary>
-    /// Reads the contents of a specific sheet from an EXCEL file and stores into the DataStore. 
+    /// Reads the contents of a specific sheet from an EXCEL file and stores into the DataStore.
     /// </summary>
     [Serializable]
     [ViewName("UserInterface.Views.PropertyView")]
@@ -22,8 +23,12 @@ namespace Models.PostSimulationTools
     [ValidParent(ParentType = typeof(DataStore))]
     [ValidParent(ParentType = typeof(ParallelPostSimulationTool))]
     [ValidParent(ParentType = typeof(SerialPostSimulationTool))]
-    public class ExcelInput : Model, IPostSimulationTool, IReferenceExternalFiles
+    public class ExcelInput : Model, IPostSimulationTool, IReferenceExternalFiles, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
         private string[] filenames;
 
         /// <summary>
@@ -36,7 +41,7 @@ namespace Models.PostSimulationTools
         /// Gets or sets the file name to read from.
         /// </summary>
         [Description("EXCEL file names")]
-        [Tooltip("Can contain more than one file name, separated by commas.")]
+        [Tooltip("Can contain more than one file name, each on a new line")]
         [Display(Type = DisplayType.FileNames)]
         public string[] FileNames
         {
@@ -46,11 +51,7 @@ namespace Models.PostSimulationTools
             }
             set
             {
-                Simulations simulations = FindAncestor<Simulations>();
-                if (simulations != null && simulations.FileName != null && value != null)
-                    this.filenames = value.Select(v => PathUtilities.GetRelativePath(v, simulations.FileName)).ToArray();
-                else
-                    this.filenames = value;
+                filenames = value;
             }
         }
 
@@ -63,6 +64,7 @@ namespace Models.PostSimulationTools
         /// Gets or sets the list of EXCEL sheet names to read from.
         /// </summary>
         [Description("EXCEL sheet names (csv)")]
+        [Display(Type = DisplayType.MultiLineText)]
         public string[] SheetNames
         {
             get
@@ -74,7 +76,15 @@ namespace Models.PostSimulationTools
                 if (value == null)
                     sheetNames = Array.Empty<string>();
                 else
-                    sheetNames = value;
+                {
+                    //remove any null or blank sheet names that could be passed in
+                    List<string> filtered = new List<string>();
+                    foreach(string line in value)
+                        if (line != null && line.Length > 0)
+                            filtered.Add(line);
+
+                    sheetNames = filtered.ToArray();
+                }
             }
         }
 
@@ -96,6 +106,18 @@ namespace Models.PostSimulationTools
         /// </summary>
         public void Run()
         {
+            //remove any null or blank filenames that could be passed in
+            List<string> filtered = new List<string>();
+            foreach(string line in filenames)
+                if (!string.IsNullOrEmpty(line))
+                    filtered.Add(line);
+
+            Simulations simulations = Structure.FindParent<Simulations>(recurse: true);
+            if (simulations != null && simulations.FileName != null)
+                this.filenames = filtered.Select(v => PathUtilities.GetRelativePath(v, simulations.FileName)).ToArray();
+            else
+                this.filenames = filtered.ToArray();
+
             foreach (string sheet in SheetNames)
                 if (storage.Reader.TableNames.Contains(sheet))
                     storage.Writer.DeleteTable(sheet);
@@ -132,7 +154,7 @@ namespace Models.PostSimulationTools
                             {
                                 //Check if any columns that only contain dates are being read in as strings (and won't graph properly because of it)
                                 List<string> replaceColumns = new List<string>();
-                                foreach (DataColumn column in table.Columns) 
+                                foreach (DataColumn column in table.Columns)
                                 {
                                     if (column.DataType == typeof(string)) {
                                         bool isDate = true;
@@ -148,7 +170,7 @@ namespace Models.PostSimulationTools
                                         }
                                     }
                                 }
-                                foreach (string name in replaceColumns) 
+                                foreach (string name in replaceColumns)
                                 {
                                     DataColumn column = table.Columns[name];
                                     int ordinal = column.Ordinal;
@@ -181,7 +203,7 @@ namespace Models.PostSimulationTools
         /// If the data table contains DateTime fields, convert them to hold
         /// only the "Date" portion, and not the "Time" within the day.
         /// We do this because in estatablishing PredictedObserved connections,
-        /// we commonly use the DateTime fields, but are (currently) only 
+        /// we commonly use the DateTime fields, but are (currently) only
         /// interested in the Date.
         /// WARNING: This could potentially cause issues in the future, especially
         /// if we begin to make use of sub-day model steps.

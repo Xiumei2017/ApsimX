@@ -1,8 +1,11 @@
 namespace UnitTests.APSIMShared
 {
+    using APSIM.Core;
     using APSIM.Shared.Utilities;
+    using Models;
     using Models.Core;
     using NUnit.Framework;
+    using NUnit.Framework.Constraints;
     using System;
     using System.IO;
 
@@ -13,24 +16,24 @@ namespace UnitTests.APSIMShared
         [Test]
         public void TestStringToObjectArray()
         {
-            Assert.AreEqual(new string[3] { "a", "b", "c" }, 
-                            ReflectionUtilities.StringToObject(typeof(string[]), "a,b,c"));
+            Assert.That(ReflectionUtilities.StringToObject(typeof(string[]), "a,b,c"),
+                Is.EqualTo(new string[3] { "a", "b", "c" }));
         }
 
         /// <summary>Test yyyy-mm-dd string to DateTime conversion.</summary>
         [Test]
         public void TestYYYYMMDDStringToDate()
         {
-            Assert.AreEqual(new DateTime(2000, 1, 1), 
-                            ReflectionUtilities.StringToObject(typeof(DateTime), "2000-01-01"));
+            Assert.That(ReflectionUtilities.StringToObject(typeof(DateTime), "2000-01-01"),
+                Is.EqualTo(new DateTime(2000, 1, 1)));
         }
 
         /// <summary>Test full date string to DateTime conversion.</summary>
         [Test]
         public void TestFullDateStringToDate()
         {
-            Assert.AreEqual(new DateTime(2000, 1, 10),
-                            ReflectionUtilities.StringToObject(typeof(DateTime), "2000-01-10T00:00:00"));
+            Assert.That(ReflectionUtilities.StringToObject(typeof(DateTime), "2000-01-10T00:00:00"),
+                Is.EqualTo(new DateTime(2000, 1, 10)));
         }
 
         /// <summary>
@@ -42,8 +45,8 @@ namespace UnitTests.APSIMShared
             string input = "a, b , c";
             object output = ReflectionUtilities.StringToObject(typeof(string[]), input);
             string[] expectedOutput = new string[3] { "a", "b ", "c" };
-            
-            Assert.AreEqual(expectedOutput, output);
+
+            Assert.That(output, Is.EqualTo(expectedOutput));
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace UnitTests.APSIMShared
             string[] input = new[] { "a", "b", " c", "d " };
             string output = ReflectionUtilities.ObjectToString(input);
             string expectedOutput = "a, b,  c, d ";
-            Assert.AreEqual(expectedOutput, output);
+            Assert.That(output, Is.EqualTo(expectedOutput));
         }
 
         /// <summary>
@@ -70,10 +73,51 @@ namespace UnitTests.APSIMShared
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 SimulationException cloned = (SimulationException)ReflectionUtilities.JsonDeserialise(stream);
-                Assert.AreEqual(exception.Message, cloned.Message);
-                Assert.AreEqual(exception.SimulationName, cloned.SimulationName);
-                Assert.AreEqual(exception.FileName, cloned.FileName);
+                Assert.That(cloned.Message, Is.EqualTo(exception.Message));
+                Assert.That(cloned.SimulationName, Is.EqualTo(exception.SimulationName));
+                Assert.That(cloned.FileName, Is.EqualTo(exception.FileName));
             }
         }
+
+        class ModelWithNode
+        {
+            public Node Node;
+        }
+
+        /// <summary>
+        /// Ensure clone doesn't clone Node instances
+        /// </summary>
+        [Test]
+        public void TestNodeDoesntClone()
+        {
+            ModelWithNode modelA = new()
+            {
+                Node = Node.Create(new Clock())
+            };
+
+            var newModelA = ReflectionUtilities.Clone(modelA) as ModelWithNode;
+            Assert.That(newModelA.Node, Is.Null);
+        }
+
+        class ModelWithStructure
+        {
+            public IStructure Structure;
+        }
+
+        /// <summary>
+        /// Ensure clone doesn't clone Structure instances
+        /// </summary>
+        [Test]
+        public void TestStructureDoesntClone()
+        {
+            ModelWithStructure modelB = new()
+            {
+                Structure = Node.Create(new Clock())
+            };
+
+            var newModelB = ReflectionUtilities.Clone(modelB) as ModelWithStructure;
+            Assert.That(newModelB.Structure, Is.Null);
+        }
+
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using APSIM.Shared.Documentation;
+using APSIM.Core;
 using Models.Core;
 using Models.Interfaces;
 
@@ -8,19 +7,19 @@ namespace Models.Functions.SupplyFunctions
 {
     /// <summary>
     /// This model calculates the CO~2~ impact on RUE using the approach of [Reyenga1999].
-    /// 
+    ///
     /// For C3 plants,
-    /// 
+    ///
     ///     _F~CO2~ = (CO~2~ - CP) x (350 + 2 x CP)/(CO~2~ + 2 x CP) x (350 - CP)_
-    ///     
+    ///
     /// where CP, is the compensation point calculated from daily average temperature (T) as
-    /// 
+    ///
     ///     _CP = (163.0 - T) / (5.0 - 0.1 * T)_
-    /// 
+    ///
     /// For C4 plants,
-    /// 
+    ///
     ///     _F~CO2~ = 0.000143 * CO~2~ + 0.95_
-    /// 
+    ///
     /// </summary>
     [Serializable]
     [ViewName("UserInterface.Views.PropertyView")]
@@ -76,17 +75,6 @@ namespace Models.Functions.SupplyFunctions
             }
             else
                 throw new Exception("Unknown photosynthetic pathway in RUECO2Function");
-        }
-
-        /// <summary>Document the model.</summary>
-        public override IEnumerable<ITag> Document()
-        {
-            // Write description of this class from summary and remarks XML documentation.
-            foreach (var tag in GetModelDescription())
-                yield return tag;
-
-            foreach (var tag in DocumentChildren<IModel>())
-                yield return tag;
         }
     }
 }

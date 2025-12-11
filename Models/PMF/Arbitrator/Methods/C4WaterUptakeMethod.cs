@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using APSIM.Core;
+using APSIM.Numerics;
 using APSIM.Shared.Utilities;
 using Models.Core;
 using Models.Interfaces;
@@ -15,8 +17,13 @@ namespace Models.PMF.Arbitrator
     /// <summary>The method used to do WaterUptake</summary>
     [Serializable]
     [ValidParent(ParentType = typeof(IArbitrator))]
-    public class C4WaterUptakeMethod : Model, IUptakeMethod
+    public class C4WaterUptakeMethod : Model, IUptakeMethod, IStructureDependency
     {
+        /// <summary>Structure instance supplied by APSIM.core.</summary>
+        [field: NonSerialized]
+        public IStructure Structure { private get; set; }
+
+
         /// <summary>Reference to Plant to find WaterDemands</summary>
         [Link(Type = LinkType.Ancestor)]
         protected Plant plant = null;
@@ -31,6 +38,9 @@ namespace Models.PMF.Arbitrator
         ///<summary>The soil</summary> needed to get KL values
         [Link]
         public Soils.Soil Soil = null;
+
+        //Used to access the soil properties for this crop
+        private SoilCrop soilCrop = null;
 
         /// <summary>A list of organs or suborgans that have watardemands</summary>
         protected List<IHasWaterDemand> WaterDemands = new List<IHasWaterDemand>();
@@ -65,8 +75,11 @@ namespace Models.PMF.Arbitrator
         virtual protected void OnSimulationCommencing(object sender, EventArgs e)
         {
             List<IHasWaterDemand> Waterdemands = new List<IHasWaterDemand>();
+            soilCrop = Structure.FindChild<SoilCrop>(plant.Name + "Soil", relativeTo: Soil, recurse: true);
+            if (soilCrop == null)
+                throw new Exception($"Cannot find a soil crop parameterisation called {plant.Name + "Soil"} under Soil.Physical");
 
-            foreach (Model Can in plant.FindAllInScope<IHasWaterDemand>())
+            foreach (Model Can in Structure.FindAll<IHasWaterDemand>(relativeTo: plant))
                 Waterdemands.Add(Can as IHasWaterDemand);
 
             WaterDemands = Waterdemands;
@@ -160,8 +173,8 @@ namespace Models.PMF.Arbitrator
             ZoneState myZone = root.Zones.Find(z => z.Name == zoneWater.Zone.Name);
             if (myZone != null)
             {
-                var soilPhysical = myZone.Soil.FindChild<Soils.IPhysical>();
-                var waterBalance = myZone.Soil.FindChild<ISoilWater>();
+                var soilPhysical = Structure.FindChild<IPhysical>(relativeTo: myZone.Soil);
+                var waterBalance = Structure.FindChild<ISoilWater>(relativeTo: myZone.Soil);
 
                 //store Water variables for N Uptake calculation
                 //Old sorghum doesn't do actualUptake of Water until end of day
@@ -169,10 +182,6 @@ namespace Models.PMF.Arbitrator
                 myZone.AvailableSW = new double[soilPhysical.Thickness.Length];
                 myZone.PotentialAvailableSW = new double[soilPhysical.Thickness.Length];
                 myZone.Supply = new double[soilPhysical.Thickness.Length];
-
-                var soilCrop = Soil.FindDescendant<SoilCrop>(plant.Name + "Soil");
-                if (soilCrop == null)
-                    throw new Exception($"Cannot find a soil crop parameterisation called {plant.Name + "Soil"} under Soil.Physical");
 
                 double[] kl = soilCrop.KL;
 
@@ -194,7 +203,8 @@ namespace Models.PMF.Arbitrator
                 WatSupply = totalSupply;
 
                 //used for SWDef ExpansionStress table lookup
-                SDRatio = MathUtilities.Bound(MathUtilities.Divide(totalSupply, WDemand, 1.0), 0.0, 10);
+                // TODO - COME BACK TO THIS.
+                SDRatio = MathUtilities.Bound(MathUtilities.Divide(totalSupply, WDemand, 1.1), 0.0, 1000);
             }
         }
     }

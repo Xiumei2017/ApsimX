@@ -49,7 +49,7 @@ namespace Utility
         private ExplorerView owningView;
         private ExplorerPresenter explorerPresenter;
         private ScrolledWindow scroller;
-        private VBox vbox1;
+        private Box vbox1;
         Box dialogVBox;
         private bool singleInstance = false;
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -57,7 +57,7 @@ namespace Utility
         /// <summary>
         /// URI for accessing the Google geocoding API. I know the key shouldn't be placed on Github, but I'm not overly concerned.
         /// </summary>
-        private static string googleGeocodingApi = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyC6OF6s7DwSHwibtQqAKC9GtOQEwTkCpkw&";
+        private static string googleGeocodingApi = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyA4QRojYT4wqhZMiXrFklkWwC_pkg4qJJ8&";
 
         /// <summary>
         /// Class constructor
@@ -66,7 +66,7 @@ namespace Utility
         {
             Builder builder = ViewBase.BuilderFromResource("ApsimNG.Resources.Glade.WeatherDownload.glade");
             dialog1 = (Dialog)builder.GetObject("dialog1");
-            vbox1 = (VBox)builder.GetObject("vbox1");
+            vbox1 = (Box)builder.GetObject("vbox1");
             dialogVBox = (Box)builder.GetObject("dialog-vbox1");
             scroller = (ScrolledWindow)builder.GetObject("scrolledwindow1");
             radioAus = (RadioButton)builder.GetObject("radioAus");
@@ -182,7 +182,7 @@ namespace Utility
                     if (String.IsNullOrWhiteSpace(entryFilePath.Text))
                         proceed = false;
                 }
-                
+
                 if (proceed)
                 {
                     string newWeatherPath = null;
@@ -254,7 +254,7 @@ namespace Utility
                             else if (dest is Simulation)
                             {
                                 Weather newWeather = new Weather();
-                                newWeather.FullFileName = newWeatherPath;
+                                newWeather.FileName = newWeatherPath;
                                 var command = new AddModelCommand(replaceNode, newWeather, explorerPresenter.GetNodeDescription);
                                 explorerPresenter.CommandHistory.Add(command, true);
                             }
@@ -263,7 +263,7 @@ namespace Utility
                 }
                 if (validEntries || !proceed)
                     dialog1.Dispose();
-                
+
             }
             catch (Exception err)
             {
@@ -444,7 +444,7 @@ namespace Utility
             dialog1.Parent = view.MainWidget.Toplevel;
             dialog1.WindowPosition = WindowPosition.CenterOnParent;
             // Attempt to find an initial latitude and longitude from a Weather model
-            IModel weather = dest.FindInScope<Models.Interfaces.IWeather>() as IModel;
+            IModel weather = dest.Node.Find<Models.Interfaces.IWeather>() as IModel;
             double latitude, longitude;
             if (weather != null && weather is Weather)
             {
@@ -507,7 +507,7 @@ namespace Utility
         {
             bool proceed = true;
             DateTime startDate = calendarStart.Date;
-            DateTime endDate = calendarEnd.Date; 
+            DateTime endDate = calendarEnd.Date;
             if (startDate.Year < 1889)
             {
                 ShowMessage(MessageType.Warning, "SILO data is not available before 1889", "Invalid start date");
@@ -541,7 +541,7 @@ namespace Utility
             string dest = PathUtilities.GetAbsolutePath(entryFilePath.Text, this.explorerPresenter.ApsimXFile.FileName);
             DateTime startDate = calendarStart.Date;
             DateTime endDate = calendarEnd.Date;
-            
+
             string url = String.Format("https://www.longpaddock.qld.gov.au/cgi-bin/silo/DataDrillDataset.php?start={0:yyyyMMdd}&finish={1:yyyyMMdd}&lat={2}&lon={3}&format=apsim&username={4}&password=silo",
                             startDate, endDate, entryLatitude.Text, entryLongitude.Text, System.Net.WebUtility.UrlEncode(entryEmail.Text));
 
@@ -588,7 +588,7 @@ namespace Utility
         {
             bool proceed = true;
             DateTime startDate = calendarStart.Date;
-            DateTime endDate = calendarEnd.Date; 
+            DateTime endDate = calendarEnd.Date;
             if (startDate.Year < 1889)
             {
                 ShowMessage(MessageType.Warning, "SILO data is not available before 1889", "Invalid start date");
@@ -859,7 +859,7 @@ namespace Utility
             string dest = PathUtilities.GetAbsolutePath(entryFilePath.Text, this.explorerPresenter.ApsimXFile.FileName);
             DateTime startDate = calendarStart.Date;
             DateTime endDate = calendarEnd.Date;
-            
+
             double latitude = double.Parse(entryLatitude.Text, CultureInfo.CurrentCulture);
             double longitude = double.Parse(entryLongitude.Text, CultureInfo.CurrentCulture);
 
@@ -909,7 +909,7 @@ namespace Utility
             {
                 if (dialog1.Toplevel.Window != null)
                 {
-                    dialog1.Toplevel.Window.Cursor = value ? new Gdk.Cursor(Gdk.CursorType.Watch) : null;
+                    dialog1.Toplevel.Window.Cursor = value ? new Gdk.Cursor(Gdk.Display.Default, Gdk.CursorType.Watch) : null;
                     waiting = value;
                 }
             }

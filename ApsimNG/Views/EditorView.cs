@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -259,7 +258,7 @@ namespace UserInterface.Views
                                                                 scroller.Hadjustment.PageIncrement,
                                                                 scroller.Hadjustment.PageSize);
                 location.ScrollV = new ScrollerAdjustmentValues(scroller.Vadjustment.Value,
-                                                                scroller.Vadjustment.Lower, 
+                                                                scroller.Vadjustment.Lower,
                                                                 scroller.Vadjustment.Upper,
                                                                 scroller.Vadjustment.StepIncrement,
                                                                 scroller.Vadjustment.PageIncrement,
@@ -269,7 +268,7 @@ namespace UserInterface.Views
 
             set
             {
-                textEditor.GrabFocus();
+            //    textEditor.GrabFocus();
 
                 if (value.ScrollH.Valid)
                     scroller.Hadjustment.Configure(value.ScrollH.Value, value.ScrollH.Lower, value.ScrollH.Upper, value.ScrollH.StepIncrement, value.ScrollH.PageIncrement, value.ScrollH.PageSize);
@@ -338,9 +337,11 @@ namespace UserInterface.Views
         public EditorView(ViewBase owner) : base(owner)
         {
             scroller = new ScrolledWindow();
-            
+
             textEditor = new SourceView();
             textEditor.DragDataReceived += TextEditorDragDataReceived;
+            textEditor.AutoIndent = true;
+            textEditor.InsertSpacesInsteadOfTabs = true;
             searchSettings = new SearchSettings();
             searchContext = new SearchContext(textEditor.Buffer, searchSettings);
 
@@ -395,7 +396,10 @@ namespace UserInterface.Views
             StyleScheme style = StyleSchemeManager.Default.GetScheme(Configuration.Settings.EditorStyleName);
             if (style == null)
             {
-                string defaultStyle = Configuration.Settings.DarkTheme ? defaultDarkStyle : defaultLightStyle;
+                string defaultStyle = "";
+                if (!Configuration.Settings.ThemeRestartRequired)
+                    defaultStyle = Configuration.Settings.DarkTheme ? defaultDarkStyle : defaultLightStyle;
+                else defaultStyle = Configuration.Settings.DarkTheme ? defaultLightStyle : defaultDarkStyle;
                 style = StyleSchemeManager.Default.GetScheme(defaultStyle);
             }
             if (style != null)
@@ -461,7 +465,7 @@ namespace UserInterface.Views
                 mainWidget.Destroyed -= _mainWidget_Destroyed;
 
                 // It's good practice to disconnect all event handlers, as it makes memory leaks
-                // less likely. However, we may not "own" the event handlers, so how do we 
+                // less likely. However, we may not "own" the event handlers, so how do we
                 // know what to disconnect?
                 // We can do this via reflection. Here's how it currently can be done in Gtk#.
                 // Windows.Forms would do it differently.
@@ -690,7 +694,6 @@ namespace UserInterface.Views
         {
             try
             {
-                //textEditor.Document.ReadOnly = false;
                 textEditor.GrabFocus();
             }
             catch (Exception err)
@@ -871,7 +874,7 @@ namespace UserInterface.Views
             {
                 if (args.Popup is Menu menu)
                 {
-                    ImageMenuItem item = new ImageMenuItem(menuItemText);
+                    MenuItem item = new MenuItem(menuItemText);
                     if (!string.IsNullOrEmpty(shortcut))
                     {
                         string keyName = string.Empty;
@@ -909,6 +912,22 @@ namespace UserInterface.Views
         }
 
         /// <summary>
+        /// Hide the Text Editor
+        /// </summary>
+        public void Hide()
+        {
+            textEditor.Visible = false;
+        }
+
+        /// <summary>
+        /// Show the Text Editor
+        /// </summary>
+        public void Show()
+        {
+            textEditor.Visible = true;
+        }
+
+        /// <summary>
         /// The cut menu handler
         /// </summary>
         /// <param name="sender">The sending object</param>
@@ -927,7 +946,7 @@ namespace UserInterface.Views
         }
 
         /// <summary>
-        /// The Copy menu handler 
+        /// The Copy menu handler
         /// </summary>
         /// <param name="sender">The sending object</param>
         /// <param name="e">The event arguments</param>
@@ -1067,7 +1086,7 @@ namespace UserInterface.Views
         }
 
         /// <summary>
-        /// Handle other changes to editor options. All we're really interested in 
+        /// Handle other changes to editor options. All we're really interested in
         /// here at present is keeping track of the editor zoom level.
         /// </summary>
         /// <param name="sender">Sender of the event</param>
