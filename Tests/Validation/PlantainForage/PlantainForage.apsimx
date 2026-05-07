@@ -106277,24 +106277,24 @@
                         },
                         {
                           "$type": "Models.Soils.Soil, Models",
-                          "RecordNumber": 1237,
+                          "RecordNumber": 0,
                           "ASCOrder": null,
                           "ASCSubOrder": null,
-                          "SoilType": "Silt loam",
+                          "SoilType": "Mottled Immature Pallic",
                           "LocalName": "Manawatu",
-                          "Site": "Karere Rd",
+                          "Site": "2919a Cheltenham-Hunterville road ",
                           "NearestTown": "Longburn",
                           "Region": "Manawatu",
                           "State": null,
                           "Country": "New Zealand",
                           "NaturalVegetation": "long term grass",
-                          "ApsoilNumber": "1325",
+                          "ApsoilNumber": "",
                           "Latitude": -40.406,
                           "Longitude": 175.536,
                           "LocationAccuracy": "+/-50 m",
-                          "YearOfSampling": "1985",
-                          "DataSource": "The database of New Zealand soils was compiled by AgResearch (www.agresearch.co.nz) and based on soil properties gathered, mainly from publications, in the course of conducting several simulation-based research projects but particularly from the Pastoral 21 Environment program which was funded by the New Zealand Ministry for Business, Innovation and Employment,  Dairy NZ, Fonterra and Meat & Wool NZ.",
-                          "Comments": "The data is a combination of published or supplied measurements, pedotransfer functions, and expert opinion. See Cichota et al. (2013; Soil Research 51: 92-111, http://dx.doi.org/10.1071/SR12338) for a description of the pedotransfer functions. The soil carbon and fresh organic matter settings have been set as those broadly appropriate for permanent productive pastoral systems, see Cichota el al. (2012; Soil Research 50: 694-707, http://dx.doi.org/10.1071/SR12208). Users should take care to adapt these to local conditions before using the data in simulations. FOM values estimated to be 900 kg/ha of FOM in top 600mm of soil and another 100 kg/ha below.",
+                          "YearOfSampling": "2021",
+                          "DataSource": "",
+                          "Comments": "",
                           "Name": "Soil",
                           "ResourceName": null,
                           "Children": [
@@ -106302,15 +106302,11 @@
                               "$type": "Models.Soils.Physical, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "ParticleSizeSand": [
                                 13.735,
@@ -106318,11 +106314,7 @@
                                 2.554,
                                 6.973,
                                 24.063,
-                                42.878,
-                                45.032,
-                                18.248,
-                                3.303,
-                                21.63
+                                42.878
                               ],
                               "ParticleSizeSilt": [
                                 74.265,
@@ -106330,11 +106322,7 @@
                                 78.446,
                                 75.027,
                                 58.467,
-                                43.552,
-                                41.968,
-                                68.492,
-                                74.697,
-                                62.37
+                                43.552
                               ],
                               "ParticleSizeClay": [
                                 12.0,
@@ -106342,17 +106330,9 @@
                                 19.0,
                                 18.0,
                                 17.47,
-                                13.57,
-                                13.0,
-                                13.26,
-                                22.0,
-                                16.0
+                                13.57
                               ],
                               "Rocks": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -106362,64 +106342,44 @@
                               ],
                               "Texture": null,
                               "BD": [
-                                1.171,
-                                1.248,
-                                1.306,
-                                1.344,
-                                1.421,
-                                1.433,
-                                1.411,
-                                1.439,
-                                1.362,
-                                1.375
+                                1.16,
+                                1.19,
+                                1.34,
+                                1.55,
+                                1.56,
+                                1.56
                               ],
                               "AirDry": [
-                                0.054,
-                                0.053,
-                                0.057,
-                                0.06,
-                                0.052,
-                                0.033,
-                                0.028,
-                                0.039,
-                                0.059,
-                                0.039
+                                0.163,
+                                0.156,
+                                0.15,
+                                0.15,
+                                0.15,
+                                0.1
                               ],
                               "LL15": [
                                 0.163,
-                                0.159,
-                                0.171,
-                                0.181,
+                                0.16,
                                 0.158,
-                                0.101,
-                                0.085,
-                                0.118,
-                                0.179,
-                                0.118
+                                0.158,
+                                0.164,
+                                0.17
                               ],
                               "DUL": [
-                                0.432,
-                                0.373,
-                                0.354,
-                                0.348,
-                                0.327,
-                                0.288,
-                                0.302,
-                                0.345,
-                                0.408,
-                                0.344
+                                0.427,
+                                0.38,
+                                0.37,
+                                0.353,
+                                0.311,
+                                0.337
                               ],
                               "SAT": [
+                                0.535,
+                                0.521,
                                 0.494,
-                                0.483,
-                                0.475,
-                                0.464,
-                                0.438,
-                                0.43,
-                                0.436,
-                                0.424,
-                                0.45,
-                                0.451
+                                0.415,
+                                0.411,
+                                0.411
                               ],
                               "KS": [
                                 1996.371,
@@ -106427,73 +106387,80 @@
                                 311.124,
                                 268.836,
                                 656.485,
-                                1184.37,
-                                1423.197,
-                                324.548,
-                                150.715,
-                                386.542
+                                1184.37
                               ],
                               "BDMetadata": [
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "AirDryMetadata": [
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "LL15Metadata": [
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "DULMetadata": [
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "SATMetadata": [
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
-                              "KSMetadata": null,
+                              "KSMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "RocksMetadata": [
                                 null,
                                 null,
@@ -106554,11 +106521,7 @@
                                     0.171,
                                     0.181,
                                     0.158,
-                                    0.101,
-                                    0.085,
-                                    0.118,
-                                    0.179,
-                                    0.118
+                                    0.101
                                   ],
                                   "KL": [
                                     0.1,
@@ -106566,11 +106529,7 @@
                                     0.08,
                                     0.05,
                                     0.02,
-                                    0.015,
-                                    0.01,
-                                    0.01,
-                                    0.0,
-                                    0.0
+                                    0.015
                                   ],
                                   "XF": [
                                     1.0,
@@ -106578,23 +106537,19 @@
                                     1.0,
                                     1.0,
                                     1.0,
-                                    1.0,
-                                    1.0,
-                                    1.0,
-                                    0.0,
-                                    0.0
+                                    1.0
                                   ],
                                   "LLMetadata": [
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge"
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
                                   ],
                                   "KLMetadata": [
                                     null,
@@ -106649,15 +106604,11 @@
                               "PSIDul": -100.0,
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "SWCON": [
                                 0.638,
@@ -106665,11 +106616,7 @@
                                 0.547,
                                 0.45,
                                 0.558,
-                                0.614,
-                                0.546,
-                                0.525,
-                                0.569,
-                                0.507
+                                0.614
                               ],
                               "KLAT": null,
                               "Name": "SoilWater",
@@ -106683,40 +106630,28 @@
                               "FOMCNRatio": 40.0,
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "Carbon": [
-                                3.1,
-                                1.9,
-                                1.1,
-                                0.3,
-                                0.2,
-                                0.2,
-                                0.2,
-                                0.15,
-                                0.15,
-                                0.1
+                                3.3,
+                                2.6,
+                                1.6,
+                                0.6,
+                                0.5,
+                                0.4
                               ],
                               "CarbonUnits": 0,
                               "SoilCNRatio": [
-                                11.5,
-                                11.5,
-                                12.0,
-                                12.3,
-                                12.5,
-                                12.8,
-                                13.0,
-                                13.0,
-                                13.0,
-                                13.0
+                                10.5,
+                                10.2,
+                                10.2,
+                                8.7,
+                                8.9,
+                                8.2
                               ],
                               "FBiom": [
                                 0.08,
@@ -106724,11 +106659,7 @@
                                 0.035,
                                 0.025,
                                 0.018,
-                                0.013,
-                                0.01,
-                                0.01,
-                                0.01,
-                                0.01
+                                0.013
                               ],
                               "FInert": [
                                 0.329,
@@ -106736,11 +106667,7 @@
                                 0.702,
                                 0.876,
                                 0.943,
-                                0.96,
-                                0.969,
-                                0.99,
-                                0.993,
-                                0.993
+                                0.96
                               ],
                               "FOM": [
                                 450.0,
@@ -106748,11 +106675,7 @@
                                 180.0,
                                 170.0,
                                 30.0,
-                                10.0,
-                                6.0,
-                                4.0,
-                                0.0,
-                                0.0
+                                10.0
                               ],
                               "CarbonMetadata": [
                                 null,
@@ -106788,58 +106711,53 @@
                               "$type": "Models.Soils.Chemical, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "PH": [
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5
+                                6.3,
+                                6.4,
+                                6.4,
+                                6.4,
+                                6.2,
+                                5.7
                               ],
                               "PHUnits": 0,
                               "EC": null,
                               "ESP": null,
                               "CEC": [
-                                12.2,
+                                17.4,
+                                15.1,
                                 10.9,
-                                10.7,
-                                10.7,
-                                8.7,
-                                6.3,
-                                6.0,
-                                8.4,
-                                11.3,
-                                7.8
+                                8.2,
+                                9.5,
+                                10.4
                               ],
                               "ECMetadata": null,
                               "CLMetadata": null,
-                              "CECMetadata": null,
+                              "CECMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "ESPMetadata": null,
                               "PHMetadata": [
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "Name": "Chemical",
                               "ResourceName": null,
@@ -106859,15 +106777,11 @@
                               "$type": "Models.Soils.Water, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
                                 0.432,
@@ -106875,11 +106789,7 @@
                                 0.354,
                                 0.348,
                                 0.327,
-                                0.288,
-                                0.302,
-                                0.345,
-                                0.408,
-                                0.344
+                                0.288
                               ],
                               "FilledFromTop": false,
                               "Name": "Water",
@@ -106892,15 +106802,17 @@
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
-                                370.0,
-                                570.0,
-                                330.0
+                                100.0,
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
                                 10.0,
                                 7.0,
                                 3.0,
+                                1.0,
                                 1.0,
                                 1.0
                               ],
@@ -106924,17 +106836,19 @@
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
-                                370.0,
-                                570.0,
-                                330.0
+                                100.0,
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
                                 2.0,
                                 1.0,
                                 0.5,
                                 0.3,
-                                0.2
+                                0.2,
+                                0.1
                               ],
                               "InitialValuesUnits": 0,
                               "WaterTableConcentration": 0.0,
@@ -106956,12 +106870,14 @@
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
-                                370.0,
-                                570.0,
-                                330.0
+                                100.0,
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -123244,8 +123160,8 @@
                           "Country": "New Zealand",
                           "NaturalVegetation": null,
                           "ApsoilNumber": null,
-                          "Latitude": 0.0,
-                          "Longitude": 0.0,
+                          "Latitude": -43.61241331,
+                          "Longitude": 172.46888931,
                           "LocationAccuracy": null,
                           "YearOfSampling": null,
                           "DataSource": "Adapted based on data from the NZ National Soils Database",
@@ -123256,30 +123172,51 @@
                             {
                               "$type": "Models.Soils.Chemical, Models",
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "PH": [
                                 6.0,
-                                6.0,
-                                6.0,
-                                6.0,
-                                6.0,
-                                6.0
+                                6.1,
+                                6.1,
+                                6.4,
+                                6.8,
+                                6.9
                               ],
                               "PHUnits": 0,
                               "EC": null,
                               "ESP": null,
-                              "CEC": null,
+                              "CEC": [
+                                0.189,
+                                0.254,
+                                0.269,
+                                0.24,
+                                0.366,
+                                0.288
+                              ],
                               "ECMetadata": null,
                               "CLMetadata": null,
-                              "CECMetadata": null,
+                              "CECMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "ESPMetadata": null,
-                              "PHMetadata": null,
+                              "PHMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "Name": "Chemical",
                               "ResourceName": null,
                               "Children": [],
@@ -123289,12 +123226,12 @@
                             {
                               "$type": "Models.Soils.Physical, Models",
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "ParticleSizeSand": [
                                 17.4,
@@ -123330,44 +123267,44 @@
                               ],
                               "Texture": null,
                               "BD": [
-                                1.35,
-                                1.43,
-                                1.54,
-                                1.54,
-                                1.48,
-                                1.41
+                                1.26,
+                                1.3,
+                                1.53,
+                                1.57,
+                                1.66,
+                                1.6
                               ],
                               "AirDry": [
-                                0.057,
-                                0.159,
-                                0.186,
-                                0.132,
-                                0.116,
-                                0.138
+                                0.12,
+                                0.14,
+                                0.12,
+                                0.11,
+                                0.14,
+                                0.1
                               ],
                               "LL15": [
-                                0.17,
-                                0.177,
-                                0.186,
-                                0.132,
-                                0.116,
-                                0.138
+                                0.126,
+                                0.148,
+                                0.14,
+                                0.127,
+                                0.175,
+                                0.119
                               ],
                               "DUL": [
-                                0.34,
-                                0.325,
-                                0.327,
-                                0.251,
-                                0.24,
-                                0.273
+                                0.355,
+                                0.328,
+                                0.33,
+                                0.339,
+                                0.324,
+                                0.316
                               ],
                               "SAT": [
-                                0.439,
-                                0.409,
-                                0.362,
-                                0.358,
-                                0.365,
-                                0.39
+                                0.524,
+                                0.468,
+                                0.422,
+                                0.407,
+                                0.373,
+                                0.395
                               ],
                               "KS": [
                                 2913.761,
@@ -123377,7 +123314,14 @@
                                 1767.199,
                                 586.553
                               ],
-                              "BDMetadata": null,
+                              "BDMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "AirDryMetadata": [
                                 null,
                                 null,
@@ -123386,9 +123330,30 @@
                                 null,
                                 null
                               ],
-                              "LL15Metadata": null,
-                              "DULMetadata": null,
-                              "SATMetadata": null,
+                              "LL15Metadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
+                              "DULMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
+                              "SATMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "KSMetadata": null,
                               "RocksMetadata": [
                                 null,
@@ -123433,7 +123398,7 @@
                                     0.177,
                                     0.186,
                                     0.132,
-                                    0.116,
+                                    0.141,
                                     0.138
                                   ],
                                   "KL": [
@@ -123504,12 +123469,12 @@
                               "CatchmentArea": "NaN",
                               "PSIDul": -100.0,
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "SWCON": [
                                 0.5,
@@ -123530,29 +123495,29 @@
                               "$type": "Models.Soils.Organic, Models",
                               "FOMCNRatio": 40.0,
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "Carbon": [
-                                2.6,
-                                1.51,
-                                0.4,
-                                0.19,
-                                0.22,
-                                0.18
+                                2.5,
+                                2.1,
+                                1.1,
+                                0.5,
+                                0.3,
+                                0.3
                               ],
                               "CarbonUnits": 0,
                               "SoilCNRatio": [
-                                11.3,
-                                11.5,
-                                12.0,
-                                13.0,
-                                14.0,
-                                14.0
+                                11.1,
+                                11.2,
+                                10.5,
+                                9.0,
+                                7.6,
+                                6.8
                               ],
                               "FBiom": [
                                 0.08,
@@ -123603,12 +123568,12 @@
                             {
                               "$type": "Models.Soils.Water, Models",
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "InitialValues": [
                                 0.34,
@@ -123636,12 +123601,12 @@
                             {
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "InitialValues": [
                                 4.0,
@@ -123670,12 +123635,12 @@
                             {
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "InitialValues": [
                                 0.4938271604938272,
@@ -123704,12 +123669,12 @@
                             {
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
-                                150.0,
-                                150.0,
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
-                                250.0,
-                                250.0,
-                                500.0
+                                200.0
                               ],
                               "InitialValues": [
                                 0.0,
@@ -139718,21 +139683,21 @@
                           "RecordNumber": 1237,
                           "ASCOrder": null,
                           "ASCSubOrder": null,
-                          "SoilType": "Silt loam",
-                          "LocalName": "Manawatu",
-                          "Site": "Karere Rd",
-                          "NearestTown": "Longburn",
-                          "Region": "Manawatu",
+                          "SoilType": "Typic Orthic Brown",
+                          "LocalName": "Southland",
+                          "Site": "273 Edendale-Seaward Downs Rd",
+                          "NearestTown": "Edendale ",
+                          "Region": "Southland",
                           "State": null,
                           "Country": "New Zealand",
                           "NaturalVegetation": "long term grass",
-                          "ApsoilNumber": "1325",
-                          "Latitude": -40.406,
-                          "Longitude": 175.536,
+                          "ApsoilNumber": "",
+                          "Latitude": -46.34154004,
+                          "Longitude": 168.78066643,
                           "LocationAccuracy": "+/-50 m",
-                          "YearOfSampling": "1985",
-                          "DataSource": "The database of New Zealand soils was compiled by AgResearch (www.agresearch.co.nz) and based on soil properties gathered, mainly from publications, in the course of conducting several simulation-based research projects but particularly from the Pastoral 21 Environment program which was funded by the New Zealand Ministry for Business, Innovation and Employment,  Dairy NZ, Fonterra and Meat & Wool NZ.",
-                          "Comments": "The data is a combination of published or supplied measurements, pedotransfer functions, and expert opinion. See Cichota et al. (2013; Soil Research 51: 92-111, http://dx.doi.org/10.1071/SR12338) for a description of the pedotransfer functions. The soil carbon and fresh organic matter settings have been set as those broadly appropriate for permanent productive pastoral systems, see Cichota el al. (2012; Soil Research 50: 694-707, http://dx.doi.org/10.1071/SR12208). Users should take care to adapt these to local conditions before using the data in simulations. FOM values estimated to be 900 kg/ha of FOM in top 600mm of soil and another 100 kg/ha below.",
+                          "YearOfSampling": "2022",
+                          "DataSource": "Plantain Potency and Practice SFFF Dairy NZ",
+                          "Comments": "",
                           "Name": "Soil",
                           "ResourceName": null,
                           "Children": [
@@ -139740,15 +139705,12 @@
                               "$type": "Models.Soils.Physical, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "ParticleSizeSand": [
                                 13.735,
@@ -139757,10 +139719,7 @@
                                 6.973,
                                 24.063,
                                 42.878,
-                                45.032,
-                                18.248,
-                                3.303,
-                                21.63
+                                45.032
                               ],
                               "ParticleSizeSilt": [
                                 74.265,
@@ -139769,10 +139728,7 @@
                                 75.027,
                                 58.467,
                                 43.552,
-                                41.968,
-                                68.492,
-                                74.697,
-                                62.37
+                                41.968
                               ],
                               "ParticleSizeClay": [
                                 12.0,
@@ -139781,15 +139737,9 @@
                                 18.0,
                                 17.47,
                                 13.57,
-                                13.0,
-                                13.26,
-                                22.0,
-                                16.0
+                                13.0
                               ],
                               "Rocks": [
-                                0.0,
-                                0.0,
-                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -139800,64 +139750,49 @@
                               ],
                               "Texture": null,
                               "BD": [
-                                1.171,
-                                1.248,
-                                1.306,
-                                1.344,
-                                1.421,
-                                1.433,
-                                1.411,
-                                1.439,
-                                1.362,
-                                1.375
+                                0.94,
+                                1.13,
+                                1.11,
+                                1.23,
+                                1.29,
+                                1.32,
+                                1.45
                               ],
                               "AirDry": [
-                                0.054,
-                                0.053,
-                                0.057,
-                                0.06,
-                                0.052,
-                                0.033,
+                                0.032,
                                 0.028,
-                                0.039,
-                                0.059,
-                                0.039
+                                0.025,
+                                0.023,
+                                0.023,
+                                0.023,
+                                0.019
                               ],
                               "LL15": [
-                                0.163,
-                                0.159,
-                                0.171,
-                                0.181,
-                                0.158,
-                                0.101,
-                                0.085,
-                                0.118,
-                                0.179,
-                                0.118
+                                0.19,
+                                0.207,
+                                0.185,
+                                0.21,
+                                0.219,
+                                0.228,
+                                0.208
                               ],
                               "DUL": [
-                                0.432,
-                                0.373,
-                                0.354,
-                                0.348,
-                                0.327,
-                                0.288,
-                                0.302,
-                                0.345,
-                                0.408,
-                                0.344
+                                0.534,
+                                0.477,
+                                0.43,
+                                0.448,
+                                0.444,
+                                0.44,
+                                0.446
                               ],
                               "SAT": [
-                                0.494,
-                                0.483,
-                                0.475,
-                                0.464,
-                                0.438,
-                                0.43,
-                                0.436,
-                                0.424,
-                                0.45,
-                                0.451
+                                0.627,
+                                0.568,
+                                0.58,
+                                0.535,
+                                0.512,
+                                0.501,
+                                0.452
                               ],
                               "KS": [
                                 1996.371,
@@ -139866,72 +139801,80 @@
                                 268.836,
                                 656.485,
                                 1184.37,
-                                1423.197,
-                                324.548,
-                                150.715,
-                                386.542
+                                1423.197
                               ],
                               "BDMetadata": [
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility",
-                                "Field measured and checked for sensibility"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "AirDryMetadata": [
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "LL15Metadata": [
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "DULMetadata": [
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured",
-                                "Laboratory measured"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "SATMetadata": [
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD",
-                                "Calculated from measured, estimated or calculated BD"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
-                              "KSMetadata": null,
+                              "KSMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "RocksMetadata": [
                                 null,
                                 null,
@@ -139993,10 +139936,7 @@
                                     0.181,
                                     0.158,
                                     0.101,
-                                    0.085,
-                                    0.118,
-                                    0.179,
-                                    0.118
+                                    0.085
                                   ],
                                   "KL": [
                                     0.1,
@@ -140005,10 +139945,7 @@
                                     0.05,
                                     0.02,
                                     0.015,
-                                    0.01,
-                                    0.01,
-                                    0.0,
-                                    0.0
+                                    0.01
                                   ],
                                   "XF": [
                                     1.0,
@@ -140017,22 +139954,19 @@
                                     1.0,
                                     1.0,
                                     1.0,
-                                    1.0,
-                                    1.0,
-                                    0.0,
-                                    0.0
+                                    1.0
                                   ],
                                   "LLMetadata": [
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge",
-                                    "Estimated based on local knowledge"
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
                                   ],
                                   "KLMetadata": [
                                     null,
@@ -140087,15 +140021,12 @@
                               "PSIDul": -100.0,
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "SWCON": [
                                 0.638,
@@ -140104,10 +140035,7 @@
                                 0.45,
                                 0.558,
                                 0.614,
-                                0.546,
-                                0.525,
-                                0.569,
-                                0.507
+                                0.546
                               ],
                               "KLAT": null,
                               "Name": "SoilWater",
@@ -140121,40 +140049,31 @@
                               "FOMCNRatio": 40.0,
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "Carbon": [
-                                3.1,
-                                1.9,
-                                1.1,
-                                0.3,
-                                0.2,
-                                0.2,
-                                0.2,
-                                0.15,
-                                0.15,
-                                0.1
+                                6.7,
+                                4.4,
+                                3.2,
+                                2.2,
+                                1.7,
+                                1.2,
+                                0.9
                               ],
                               "CarbonUnits": 0,
                               "SoilCNRatio": [
-                                11.5,
-                                11.5,
-                                12.0,
-                                12.3,
-                                12.5,
-                                12.8,
-                                13.0,
-                                13.0,
-                                13.0,
-                                13.0
+                                10.5,
+                                10.4,
+                                10.7,
+                                10.2,
+                                10.1,
+                                9.7,
+                                9.0
                               ],
                               "FBiom": [
                                 0.08,
@@ -140163,9 +140082,6 @@
                                 0.025,
                                 0.018,
                                 0.013,
-                                0.01,
-                                0.01,
-                                0.01,
                                 0.01
                               ],
                               "FInert": [
@@ -140175,10 +140091,7 @@
                                 0.876,
                                 0.943,
                                 0.96,
-                                0.969,
-                                0.99,
-                                0.993,
-                                0.993
+                                0.969
                               ],
                               "FOM": [
                                 450.0,
@@ -140187,10 +140100,7 @@
                                 170.0,
                                 30.0,
                                 10.0,
-                                6.0,
-                                4.0,
-                                0.0,
-                                0.0
+                                6.0
                               ],
                               "CarbonMetadata": [
                                 null,
@@ -140226,58 +140136,60 @@
                               "$type": "Models.Soils.Chemical, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "PH": [
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5,
-                                6.5
+                                6.0,
+                                5.8,
+                                5.9,
+                                5.6,
+                                5.6,
+                                5.8,
+                                5.9
                               ],
                               "PHUnits": 0,
                               "EC": null,
                               "ESP": null,
                               "CEC": [
-                                12.2,
-                                10.9,
-                                10.7,
-                                10.7,
-                                8.7,
-                                6.3,
-                                6.0,
-                                8.4,
-                                11.3,
-                                7.8
+                                26.0,
+                                20.8,
+                                17.4,
+                                13.1,
+                                11.6,
+                                10.2,
+                                9.8
                               ],
                               "ECMetadata": null,
                               "CLMetadata": null,
-                              "CECMetadata": null,
+                              "CECMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "ESPMetadata": null,
                               "PHMetadata": [
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge",
-                                "Estimated based on local knowledge"
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                               ],
                               "Name": "Chemical",
                               "ResourceName": null,
@@ -140297,29 +140209,23 @@
                               "$type": "Models.Soils.Water, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
                                 100.0,
-                                270.0,
-                                130.0,
-                                70.0,
-                                190.0,
-                                180.0,
-                                140.0,
-                                190.0
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
-                                0.432,
-                                0.373,
-                                0.354,
-                                0.348,
-                                0.327,
-                                0.288,
-                                0.302,
-                                0.345,
-                                0.408,
-                                0.344
+                                0.534,
+                                0.477,
+                                0.43,
+                                0.448,
+                                0.444,
+                                0.4332999999999999,
+                                0.208
                               ],
-                              "FilledFromTop": false,
+                              "FilledFromTop": true,
                               "Name": "Water",
                               "ResourceName": null,
                               "Children": [],
@@ -140330,15 +140236,19 @@
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
-                                370.0,
-                                570.0,
-                                330.0
+                                100.0,
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
                                 10.0,
                                 7.0,
                                 3.0,
+                                1.0,
+                                1.0,
                                 1.0,
                                 1.0
                               ],
@@ -140362,16 +140272,20 @@
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
-                                370.0,
-                                570.0,
-                                330.0
+                                100.0,
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
                                 2.0,
                                 1.0,
                                 0.5,
                                 0.3,
+                                0.2,
+                                0.2,
                                 0.2
                               ],
                               "InitialValuesUnits": 0,
@@ -140394,12 +140308,16 @@
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
                                 100.0,
-                                130.0,
-                                370.0,
-                                570.0,
-                                330.0
+                                100.0,
+                                100.0,
+                                100.0,
+                                200.0,
+                                200.0,
+                                200.0
                               ],
                               "InitialValues": [
+                                0.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
