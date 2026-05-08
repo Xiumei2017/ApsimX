@@ -89710,8 +89710,8 @@
                           "RecordNumber": 0,
                           "ASCOrder": null,
                           "ASCSubOrder": null,
-                          "SoilType": "Typic Udivitrand (US), Typic Orthic, Allophanic Soil (NZ)",
-                          "LocalName": "Horotiu silt loam\r",
+                          "SoilType": "Typic Orthic Gley",
+                          "LocalName": "Silty clay loam",
                           "Site": "Ruakura\r",
                           "NearestTown": "Hamilton\r",
                           "Region": "Waikato",
@@ -89719,11 +89719,11 @@
                           "Country": "New Zealand",
                           "NaturalVegetation": null,
                           "ApsoilNumber": null,
-                          "Latitude": 0.0,
-                          "Longitude": 0.0,
+                          "Latitude": -37.915722,
+                          "Longitude": 175.19266528,
                           "LocationAccuracy": null,
                           "YearOfSampling": null,
-                          "DataSource": "Adapted based on data from the NZ National Soils Database and Close et al, 2003",
+                          "DataSource": "Plantain Potency and Practice SFFF Dairy NZ",
                           "Comments": null,
                           "Name": "HorotiuSoil",
                           "ResourceName": null,
@@ -89731,32 +89731,56 @@
                             {
                               "$type": "Models.Soils.Chemical, Models",
                               "Thickness": [
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
                                 200.0,
-                                130.0,
-                                140.0,
-                                380.0,
-                                230.0,
-                                220.0
+                                200.0
                               ],
                               "PH": [
-                                6.0,
-                                6.0,
-                                6.0,
-                                6.0,
-                                6.0,
-                                6.0,
-                                6.0
+                                5.6,
+                                5.4,
+                                5.9,
+                                5.8,
+                                5.8,
+                                5.4,
+                                5.4
                               ],
                               "PHUnits": 0,
                               "EC": null,
                               "ESP": null,
-                              "CEC": null,
+                              "CEC": [
+                                21.3,
+                                23.8,
+                                15.4,
+                                13.9,
+                                16.0,
+                                3.5,
+                                3.3
+                              ],
                               "ECMetadata": null,
                               "CLMetadata": null,
-                              "CECMetadata": null,
+                              "CECMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "ESPMetadata": null,
-                              "PHMetadata": null,
+                              "PHMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "Name": "Chemical",
                               "ResourceName": null,
                               "Children": [],
@@ -89766,13 +89790,13 @@
                             {
                               "$type": "Models.Soils.Physical, Models",
                               "Thickness": [
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
                                 200.0,
-                                130.0,
-                                140.0,
-                                380.0,
-                                230.0,
-                                220.0
+                                200.0
                               ],
                               "ParticleSizeSand": [
                                 47.0,
@@ -89812,13 +89836,13 @@
                               ],
                               "Texture": null,
                               "BD": [
-                                0.88,
-                                0.85,
-                                1.03,
-                                1.11,
-                                1.11,
-                                1.03,
-                                1.03
+                                0.99,
+                                0.92,
+                                1.16,
+                                1.13,
+                                1.08,
+                                1.26,
+                                1.28
                               ],
                               "AirDry": [
                                 0.114,
@@ -89827,25 +89851,25 @@
                                 0.15,
                                 0.142,
                                 0.103,
-                                0.08
+                                0.07
                               ],
                               "LL15": [
-                                0.228,
                                 0.22,
-                                0.182,
-                                0.15,
-                                0.142,
-                                0.103,
-                                0.08
+                                0.229,
+                                0.267,
+                                0.291,
+                                0.199,
+                                0.128,
+                                0.077
                               ],
                               "DUL": [
-                                0.373,
-                                0.34,
-                                0.323,
-                                0.282,
-                                0.2,
-                                0.16,
-                                0.13
+                                0.484,
+                                0.446,
+                                0.444,
+                                0.441,
+                                0.391,
+                                0.249,
+                                0.275
                               ],
                               "SAT": [
                                 0.581,
@@ -89865,7 +89889,15 @@
                                 45280.0,
                                 53606.0
                               ],
-                              "BDMetadata": null,
+                              "BDMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "AirDryMetadata": [
                                 null,
                                 null,
@@ -89875,8 +89907,24 @@
                                 null,
                                 null
                               ],
-                              "LL15Metadata": null,
-                              "DULMetadata": null,
+                              "LL15Metadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
+                              "DULMetadata": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                              ],
                               "SATMetadata": null,
                               "KSMetadata": null,
                               "RocksMetadata": [
@@ -90003,13 +90051,13 @@
                               "CatchmentArea": "NaN",
                               "PSIDul": -100.0,
                               "Thickness": [
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
                                 200.0,
-                                130.0,
-                                140.0,
-                                380.0,
-                                230.0,
-                                220.0
+                                200.0
                               ],
                               "SWCON": [
                                 0.55,
@@ -90031,32 +90079,32 @@
                               "$type": "Models.Soils.Organic, Models",
                               "FOMCNRatio": 40.0,
                               "Thickness": [
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
                                 200.0,
-                                130.0,
-                                140.0,
-                                380.0,
-                                230.0,
-                                220.0
+                                200.0
                               ],
                               "Carbon": [
-                                8.0,
-                                2.0,
-                                0.93,
-                                0.43,
-                                0.13,
-                                0.1,
-                                0.07
+                                3.8,
+                                5.1,
+                                1.5,
+                                1.0,
+                                1.1,
+                                0.2,
+                                0.1
                               ],
                               "CarbonUnits": 0,
                               "SoilCNRatio": [
-                                12.0,
-                                12.2,
-                                12.5,
-                                12.6,
-                                13.0,
-                                13.0,
-                                13.0
+                                11.5,
+                                10.7,
+                                11.4,
+                                9.7,
+                                11.4,
+                                7.9,
+                                5.7
                               ],
                               "FBiom": [
                                 0.07,
@@ -90112,24 +90160,24 @@
                             {
                               "$type": "Models.Soils.Water, Models",
                               "Thickness": [
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
                                 200.0,
-                                130.0,
-                                140.0,
-                                380.0,
-                                230.0,
-                                220.0
+                                200.0
                               ],
                               "InitialValues": [
-                                0.373,
-                                0.34,
-                                0.323,
-                                0.282,
-                                0.2,
-                                0.16,
-                                0.13
+                                0.484,
+                                0.446,
+                                0.444,
+                                0.441,
+                                0.391,
+                                0.15699999999999995,
+                                0.077
                               ],
-                              "FilledFromTop": false,
+                              "FilledFromTop": true,
                               "Name": "Water",
                               "ResourceName": null,
                               "Children": [],
@@ -90147,12 +90195,12 @@
                             {
                               "$type": "Models.Soils.Solute, Models",
                               "Thickness": [
+                                100.0,
+                                100.0,
+                                100.0,
+                                100.0,
                                 200.0,
                                 200.0,
-                                130.0,
-                                140.0,
-                                380.0,
-                                230.0,
                                 220.0
                               ],
                               "InitialValues": [
@@ -106293,7 +106341,7 @@
                           "Longitude": 175.536,
                           "LocationAccuracy": "+/-50 m",
                           "YearOfSampling": "2021",
-                          "DataSource": "",
+                          "DataSource": "Plantain Potency and Practice SFFF Dairy NZ",
                           "Comments": "",
                           "Name": "Soil",
                           "ResourceName": null,
@@ -123164,7 +123212,7 @@
                           "Longitude": 172.46888931,
                           "LocationAccuracy": null,
                           "YearOfSampling": null,
-                          "DataSource": "Adapted based on data from the NZ National Soils Database",
+                          "DataSource": "Plantain Potency and Practice SFFF Dairy NZ",
                           "Comments": "Different references name the soil at the site as either Templeton or Paparua (very similar soils)",
                           "Name": "TempletonPaparua",
                           "ResourceName": null,
