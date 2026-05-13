@@ -424,6 +424,22 @@
           "Children": [],
           "Enabled": true,
           "ReadOnly": false
+        },
+        {
+          "$type": "Models.Report, Models",
+          "VariableNames": [
+            "[Clock].Today as Date",
+            "mean of (([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)) from [Clock].StartOfMonth to [Clock].EndOfMonth as MonthlyMeanNetGrowth"
+          ],
+          "EventNames": [
+            "[Clock].EndOfMonth"
+          ],
+          "GroupByVariableName": null,
+          "Name": "MonthReport",
+          "ResourceName": null,
+          "Children": [],
+          "Enabled": true,
+          "ReadOnly": false
         }
       ],
       "Enabled": true,
@@ -91894,6 +91910,22 @@
                           "Children": [],
                           "Enabled": true,
                           "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.Report, Models",
+                          "VariableNames": [
+                            "[Clock].Today as Date",
+                            "mean of (([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)) from [Clock].StartOfMonth to [Clock].EndOfMonth as MonthlyMeanNetGrowth"
+                          ],
+                          "EventNames": [
+                            "[Clock].EndOfMonth"
+                          ],
+                          "GroupByVariableName": null,
+                          "Name": "MonthReport",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
                         }
                       ],
                       "Enabled": true,
@@ -104847,7 +104879,7 @@
                                   "MarkerSize": 2,
                                   "Line": 0,
                                   "LineThickness": 0,
-                                  "TableName": "CropReport",
+                                  "TableName": "MonthReport",
                                   "XFieldName": "Date",
                                   "YFieldName": "MonthlyMeanNetGrowth",
                                   "X2FieldName": null,
@@ -104861,6 +104893,35 @@
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
+                                  "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -11094807,
+                                  "FactorToVaryColours": null,
+                                  "FactorToVaryMarkers": null,
+                                  "FactorToVaryLines": null,
+                                  "Marker": 11,
+                                  "MarkerSize": 2,
+                                  "Line": 0,
+                                  "LineThickness": 0,
+                                  "TableName": "CropReport",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "SumMonthlyMeanNetGrowth",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": false,
+                                  "IncludeSeriesNameInLegend": false,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Predicted1",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
