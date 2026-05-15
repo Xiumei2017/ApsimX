@@ -1,6 +1,6 @@
 {
   "$type": "Models.Core.Simulations, Models",
-  "Version": 210,
+  "Version": 216,
   "Name": "Simulations",
   "ResourceName": null,
   "Children": [
@@ -1611,7 +1611,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "FRNLLincoln",
                   "ResourceName": null,
                   "Children": [
@@ -4879,6 +4878,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -20974,7 +20974,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "FRNLRuakura",
                   "ResourceName": null,
                   "Children": [
@@ -23183,6 +23182,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -39040,7 +39040,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "FD902",
                   "ResourceName": null,
                   "Children": [
@@ -41306,6 +41305,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -55523,7 +55523,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "LincolnRDF",
                   "ResourceName": null,
                   "Children": [
@@ -58412,6 +58411,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -71832,8 +71832,7 @@
                             "[DefoliationSchedule]",
                             "[DungAndUrine].Script.UrineNToAdd = 15"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "2wks",
                           "ResourceName": null,
                           "Children": [
@@ -72067,8 +72066,7 @@
                             "[DefoliationSchedule]",
                             "[DungAndUrine].Script.UrineNToAdd = 20"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "4wks",
                           "ResourceName": null,
                           "Children": [
@@ -72222,7 +72220,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "MasseyRDF1",
                   "ResourceName": null,
                   "Children": [
@@ -74857,6 +74854,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -88503,8 +88501,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "One",
                           "ResourceName": null,
                           "Children": [
@@ -88534,8 +88531,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Two",
                           "ResourceName": null,
                           "Children": [
@@ -88565,8 +88561,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Three",
                           "ResourceName": null,
                           "Children": [
@@ -88596,8 +88591,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Four",
                           "ResourceName": null,
                           "Children": [
@@ -88627,8 +88621,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Five",
                           "ResourceName": null,
                           "Children": [
@@ -88658,8 +88651,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Six",
                           "ResourceName": null,
                           "Children": [
@@ -88689,8 +88681,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Seven",
                           "ResourceName": null,
                           "Children": [
@@ -88720,8 +88711,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eight",
                           "ResourceName": null,
                           "Children": [
@@ -88751,8 +88741,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Nine",
                           "ResourceName": null,
                           "Children": [
@@ -88782,8 +88771,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Ten",
                           "ResourceName": null,
                           "Children": [
@@ -88813,8 +88801,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eleven",
                           "ResourceName": null,
                           "Children": [
@@ -88844,8 +88831,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Twelve",
                           "ResourceName": null,
                           "Children": [
@@ -88875,8 +88861,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Thirteen",
                           "ResourceName": null,
                           "Children": [
@@ -88906,8 +88891,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Fourteen",
                           "ResourceName": null,
                           "Children": [
@@ -88937,8 +88921,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Fifteen",
                           "ResourceName": null,
                           "Children": [
@@ -88968,8 +88951,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Sixteen",
                           "ResourceName": null,
                           "Children": [
@@ -88999,8 +88981,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Seventeen",
                           "ResourceName": null,
                           "Children": [
@@ -89030,8 +89011,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eightteen",
                           "ResourceName": null,
                           "Children": [
@@ -89061,8 +89041,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Nineteen",
                           "ResourceName": null,
                           "Children": [
@@ -89092,8 +89071,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Twenty",
                           "ResourceName": null,
                           "Children": [
@@ -89128,7 +89106,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "SFFFWaikato",
                   "ResourceName": null,
                   "Children": [
@@ -91804,6 +91781,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -104901,16 +104879,16 @@
                                   "XAxis": 3,
                                   "YAxis": 0,
                                   "ColourArgb": -11094807,
-                                  "FactorToVaryColours": null,
+                                  "FactorToVaryColours": "SimulationName",
                                   "FactorToVaryMarkers": null,
                                   "FactorToVaryLines": null,
-                                  "Marker": 11,
+                                  "Marker": 4,
                                   "MarkerSize": 2,
-                                  "Line": 0,
+                                  "Line": 4,
                                   "LineThickness": 0,
-                                  "TableName": "CropReport",
+                                  "TableName": "Observed",
                                   "XFieldName": "Date",
-                                  "YFieldName": "SumMonthlyMeanNetGrowth",
+                                  "YFieldName": "GrowthRate",
                                   "X2FieldName": null,
                                   "Y2FieldName": null,
                                   "ShowInLegend": false,
@@ -104918,10 +104896,10 @@
                                   "Cumulative": false,
                                   "CumulativeX": false,
                                   "Filter": null,
-                                  "Name": "Predicted1",
+                                  "Name": "Observed",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": false,
+                                  "Enabled": true,
                                   "ReadOnly": false
                                 }
                               ],
@@ -106234,8 +106212,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "One",
                           "ResourceName": null,
                           "Children": [
@@ -106265,8 +106242,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Two",
                           "ResourceName": null,
                           "Children": [
@@ -106296,8 +106272,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Three",
                           "ResourceName": null,
                           "Children": [
@@ -106327,8 +106302,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Four",
                           "ResourceName": null,
                           "Children": [
@@ -106358,8 +106332,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Five",
                           "ResourceName": null,
                           "Children": [
@@ -106389,8 +106362,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Six",
                           "ResourceName": null,
                           "Children": [
@@ -106420,8 +106392,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Seven",
                           "ResourceName": null,
                           "Children": [
@@ -106451,8 +106422,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eight",
                           "ResourceName": null,
                           "Children": [
@@ -106482,8 +106452,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Nine",
                           "ResourceName": null,
                           "Children": [
@@ -106513,8 +106482,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Ten",
                           "ResourceName": null,
                           "Children": [
@@ -106549,7 +106517,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "SFFFManawatu",
                   "ResourceName": null,
                   "Children": [
@@ -109234,6 +109201,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -123539,8 +123507,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "One",
                           "ResourceName": null,
                           "Children": [
@@ -123570,8 +123537,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Two",
                           "ResourceName": null,
                           "Children": [
@@ -123601,8 +123567,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Three",
                           "ResourceName": null,
                           "Children": [
@@ -123632,8 +123597,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Four",
                           "ResourceName": null,
                           "Children": [
@@ -123663,8 +123627,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Five",
                           "ResourceName": null,
                           "Children": [
@@ -123694,8 +123657,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Six",
                           "ResourceName": null,
                           "Children": [
@@ -123725,8 +123687,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Seven",
                           "ResourceName": null,
                           "Children": [
@@ -123756,8 +123717,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eight",
                           "ResourceName": null,
                           "Children": [
@@ -123787,8 +123747,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Nine",
                           "ResourceName": null,
                           "Children": [
@@ -123818,8 +123777,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Ten",
                           "ResourceName": null,
                           "Children": [
@@ -123849,8 +123807,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eleven",
                           "ResourceName": null,
                           "Children": [
@@ -123880,8 +123837,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Twelve",
                           "ResourceName": null,
                           "Children": [
@@ -123911,8 +123867,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Thirteen",
                           "ResourceName": null,
                           "Children": [
@@ -123942,8 +123897,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Fourteen",
                           "ResourceName": null,
                           "Children": [
@@ -123973,8 +123927,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Fifteen",
                           "ResourceName": null,
                           "Children": [
@@ -124004,8 +123957,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Sixteen",
                           "ResourceName": null,
                           "Children": [
@@ -124035,8 +123987,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Seventeen",
                           "ResourceName": null,
                           "Children": [
@@ -124066,8 +124017,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eightteen",
                           "ResourceName": null,
                           "Children": [
@@ -124097,8 +124047,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Nineteen",
                           "ResourceName": null,
                           "Children": [
@@ -124128,8 +124077,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Twenty",
                           "ResourceName": null,
                           "Children": [
@@ -124164,7 +124112,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "SFFFCanterbury",
                   "ResourceName": null,
                   "Children": [
@@ -126960,6 +126907,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -141265,8 +141213,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "One",
                           "ResourceName": null,
                           "Children": [
@@ -141296,8 +141243,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Two",
                           "ResourceName": null,
                           "Children": [
@@ -141327,8 +141273,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Three",
                           "ResourceName": null,
                           "Children": [
@@ -141358,8 +141303,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Four",
                           "ResourceName": null,
                           "Children": [
@@ -141389,8 +141333,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Five",
                           "ResourceName": null,
                           "Children": [
@@ -141420,8 +141363,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Six",
                           "ResourceName": null,
                           "Children": [
@@ -141451,8 +141393,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Seven",
                           "ResourceName": null,
                           "Children": [
@@ -141482,8 +141423,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Eight",
                           "ResourceName": null,
                           "Children": [
@@ -141513,8 +141453,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Nine",
                           "ResourceName": null,
                           "Children": [
@@ -141544,8 +141483,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Ten",
                           "ResourceName": null,
                           "Children": [
@@ -141580,7 +141518,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "SFFFSouthland",
                   "ResourceName": null,
                   "Children": [
@@ -144337,6 +144274,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -159146,8 +159084,7 @@
                               "Specifications": [
                                 "[Sowing]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "Lancelot",
                               "ResourceName": null,
                               "Children": [
@@ -159177,8 +159114,7 @@
                               "Specifications": [
                                 "[Sowing]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "Tonic",
                               "ResourceName": null,
                               "Children": [
@@ -159415,7 +159351,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "RELARC_01",
                   "ResourceName": null,
                   "Children": [
@@ -161517,6 +161452,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
@@ -174270,8 +174206,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Lancelot",
                           "ResourceName": null,
                           "Children": [
@@ -174301,8 +174236,7 @@
                           "Specifications": [
                             "[Sowing]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Tonic",
                           "ResourceName": null,
                           "Children": [
@@ -174337,7 +174271,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "RELARC_02",
                   "ResourceName": null,
                   "Children": [
@@ -176472,6 +176405,7 @@
                               "$type": "Models.Soils.SoilTemp.SoilTemperature, Models",
                               "Thickness": null,
                               "InitialValues": null,
+                              "InteractionsPerDay": 8,
                               "Name": "Temperature",
                               "ResourceName": null,
                               "Children": [],
