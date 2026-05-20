@@ -124335,6 +124335,13 @@
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
+                                  "Date": "2022-12-23",
+                                  "Action": "[Irrigation].Apply(amount: 25)",
+                                  "Line": "2022-12-23 [Irrigation].Apply(amount: 25)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
                                   "Date": "2023-01-01",
                                   "Action": "[Irrigation].Apply(amount: 25)",
                                   "Line": "2023-01-01 [Irrigation].Apply(amount: 25)"
@@ -126812,8 +126819,8 @@
                                 200.0
                               ],
                               "InitialValues": [
-                                4.0,
-                                3.0,
+                                10.0,
+                                8.0,
                                 1.5,
                                 1.5,
                                 1.5,
@@ -126846,12 +126853,12 @@
                                 200.0
                               ],
                               "InitialValues": [
-                                0.4938271604938272,
-                                0.3496503496503497,
-                                0.20000000000000015,
+                                3.0,
+                                0.5,
                                 0.2,
-                                0.13513513513513511,
-                                0.0709219858156028
+                                0.2,
+                                0.135,
+                                0.071
                               ],
                               "InitialValuesUnits": 0,
                               "WaterTableConcentration": 0.0,
