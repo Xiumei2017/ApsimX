@@ -59,6 +59,9 @@
             "sum([Soil].Nutrient.Humic.N) as TotalHumicN",
             "sum([Soil].Nutrient.Microbial.N) as TotalMicrobialN",
             "",
+            "Sum of ([DefoliationManager].Script.HarvestedWt) from 1-Jul to [Clock].Today as DefoliatedWtCum",
+            "Sum of ([DefoliationManager].Script.HarvestedN) from 1-Jul to [Clock].Today as DefoliatedNCum",
+            "",
             "// Crop outputs",
             "[PlantainForage].Total.Wt as TotalPlantWt",
             "[PlantainForage].Total.N as TotalPlantN",
@@ -91127,7 +91130,7 @@
                               "Name": "AuxReport",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
@@ -91876,8 +91879,8 @@
                             "[DefoliationManager].Script.HarvestedWt as HarvestedWt",
                             "[DefoliationManager].Script.HarvestedN as HarvestedN",
                             "",
-                            "Sum of ([DefoliationManager].Script.RemovedWt) from 1-Jul to [Clock].Today as CumulativeHarvestedWt",
-                            "Sum of ([DefoliationManager].Script.RemovedN) from 1-Jul to [Clock].Today as CumulativeHarvestedN"
+                            "Sum of ([DefoliationManager].Script.HarvestedWt) from 1-Jul to [Clock].Today as CumulativeHarvestedWt",
+                            "Sum of ([DefoliationManager].Script.HarvestedN) from 1-Jul to [Clock].Today as CumulativeHarvestedN"
                           ],
                           "EventNames": [
                             "[Clock].DoReport"
@@ -104826,12 +104829,12 @@
                                 },
                                 {
                                   "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                                  "Title": null,
+                                  "Title": "MonthlyMeanNetGrowthRate(g/m2/day)",
                                   "Position": 0,
                                   "Inverted": false,
                                   "CrossesAtZero": false,
                                   "LabelOnOneLine": false,
-                                  "Minimum": null,
+                                  "Minimum": "NaN",
                                   "Maximum": null,
                                   "Interval": null
                                 }
@@ -104850,7 +104853,7 @@
                                   "XAxis": 3,
                                   "YAxis": 0,
                                   "ColourArgb": -16736653,
-                                  "FactorToVaryColours": "SimulationName",
+                                  "FactorToVaryColours": "Cultivar",
                                   "FactorToVaryMarkers": null,
                                   "FactorToVaryLines": null,
                                   "Marker": 11,
@@ -104862,7 +104865,7 @@
                                   "YFieldName": "MonthlyMeanNetGrowth",
                                   "X2FieldName": null,
                                   "Y2FieldName": null,
-                                  "ShowInLegend": false,
+                                  "ShowInLegend": true,
                                   "IncludeSeriesNameInLegend": false,
                                   "Cumulative": false,
                                   "CumulativeX": false,
@@ -104879,7 +104882,7 @@
                                   "XAxis": 3,
                                   "YAxis": 0,
                                   "ColourArgb": -11094807,
-                                  "FactorToVaryColours": "SimulationName",
+                                  "FactorToVaryColours": "Cultivar",
                                   "FactorToVaryMarkers": null,
                                   "FactorToVaryLines": null,
                                   "Marker": 4,
@@ -104891,7 +104894,7 @@
                                   "YFieldName": "GrowthRate",
                                   "X2FieldName": null,
                                   "Y2FieldName": null,
-                                  "ShowInLegend": false,
+                                  "ShowInLegend": true,
                                   "IncludeSeriesNameInLegend": false,
                                   "Cumulative": false,
                                   "CumulativeX": false,
@@ -104924,6 +104927,103 @@
                   "Name": "ObservedResults",
                   "ResourceName": null,
                   "Children": [
+                    {
+                      "$type": "Models.Graph, Models",
+                      "Caption": null,
+                      "Axis": [
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 3,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        },
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 0,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        }
+                      ],
+                      "LegendPosition": 0,
+                      "LegendOrientation": 0,
+                      "AnnotationLocation": 0,
+                      "DisabledSeries": [],
+                      "LegendOutsideGraph": false,
+                      "Name": "AboveGroundWt",
+                      "ResourceName": null,
+                      "Children": [
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -16747854,
+                          "FactorToVaryColours": "SimulationName",
+                          "FactorToVaryMarkers": null,
+                          "FactorToVaryLines": null,
+                          "Marker": 11,
+                          "MarkerSize": 1,
+                          "Line": 0,
+                          "LineThickness": 0,
+                          "TableName": "ValidationReport",
+                          "XFieldName": "Date",
+                          "YFieldName": "AboveGround.Wt",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": true,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "Predicted",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -16777216,
+                          "FactorToVaryColours": "SimulationName",
+                          "FactorToVaryMarkers": null,
+                          "FactorToVaryLines": null,
+                          "Marker": 0,
+                          "MarkerSize": 1,
+                          "Line": 4,
+                          "LineThickness": 0,
+                          "TableName": "Observed",
+                          "XFieldName": "Date",
+                          "YFieldName": "HarvestedWt",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": true,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "Observed",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        }
+                      ],
+                      "Enabled": true,
+                      "ReadOnly": false
+                    },
                     {
                       "$type": "Models.Graph, Models",
                       "Caption": null,
@@ -105112,9 +105212,9 @@
                           "Inverted": false,
                           "CrossesAtZero": false,
                           "LabelOnOneLine": false,
-                          "Minimum": null,
-                          "Maximum": null,
-                          "Interval": null
+                          "Minimum": "NaN",
+                          "Maximum": "NaN",
+                          "Interval": "NaN"
                         },
                         {
                           "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
@@ -105147,7 +105247,7 @@
                           "FactorToVaryLines": null,
                           "Marker": 11,
                           "MarkerSize": 1,
-                          "Line": 2,
+                          "Line": 1,
                           "LineThickness": 0,
                           "TableName": "ValidationReport",
                           "XFieldName": "Date",
@@ -105171,7 +105271,7 @@
                           "XAxis": 3,
                           "YAxis": 0,
                           "ColourArgb": -16777216,
-                          "FactorToVaryColours": "SimulationName",
+                          "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
                           "FactorToVaryLines": null,
                           "Marker": 0,
@@ -106522,7 +106622,7 @@
                   "Children": [
                     {
                       "$type": "Models.Clock, Models",
-                      "Start": "2022-10-01T00:00:00",
+                      "Start": "2022-07-01T00:00:00",
                       "End": "2024-06-30T00:00:00",
                       "Name": "clock",
                       "ResourceName": null,
@@ -109296,8 +109396,8 @@
                             "[DefoliationManager].Script.HarvestedWt as HarvestedWt",
                             "[DefoliationManager].Script.HarvestedN as HarvestedN",
                             "",
-                            "Sum of ([DefoliationManager].Script.RemovedWt) from 1-Jul to [Clock].Today as CumulativeHarvestedWt",
-                            "Sum of ([DefoliationManager].Script.RemovedN) from 1-Jul to [Clock].Today as CumulativeHarvestedN"
+                            "Sum of ([DefoliationManager].Script.HarvestedWt) from 1-Jul to [Clock].Today as CumulativeHarvestedWt",
+                            "Sum of ([DefoliationManager].Script.HarvestedN) from 1-Jul to [Clock].Today as CumulativeHarvestedN"
                           ],
                           "EventNames": [
                             "[Clock].DoReport"
@@ -122482,13 +122582,13 @@
                       "Axis": [
                         {
                           "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                          "Title": null,
+                          "Title": "",
                           "Position": 3,
                           "Inverted": false,
-                          "CrossesAtZero": false,
-                          "LabelOnOneLine": false,
-                          "Minimum": null,
-                          "Maximum": null,
+                          "CrossesAtZero": true,
+                          "LabelOnOneLine": true,
+                          "Minimum": "NaN",
+                          "Maximum": "NaN",
                           "Interval": null
                         },
                         {
@@ -122546,7 +122646,7 @@
                           "XAxis": 3,
                           "YAxis": 0,
                           "ColourArgb": -16777216,
-                          "FactorToVaryColours": "GrazeFrequency",
+                          "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
                           "FactorToVaryLines": null,
                           "Marker": 0,
@@ -141530,7 +141630,7 @@
                   "Children": [
                     {
                       "$type": "Models.Clock, Models",
-                      "Start": "2022-11-01T00:00:00",
+                      "Start": "2022-07-01T00:00:00",
                       "End": "2024-06-30T00:00:00",
                       "Name": "clock",
                       "ResourceName": null,
