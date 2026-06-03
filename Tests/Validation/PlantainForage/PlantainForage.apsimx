@@ -362,15 +362,15 @@
             "[PlantainForage].Taproot.Removed.Wt",
             "[PlantainForage].Root.Removed.Wt",
             "",
-            "(([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt) + ([AGPRyegrass].Leaf.DMGrowth * 0.1)) as LeafNetGrowthRatePerDay",
-            "(([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([AGPRyegrass].Stem.DMGrowth)*0.1)) as  StemNetGrowthRatePerDay ",
-            "([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt) as InflorescenceNetGrowthRatePerDay",
-            "([AGPRyegrass].Stolon.DMGrowth * 0.1) as StolonNetGrowthRatePerDay",
-            "(([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)+ ([AGPRyegrass].Leaf.DMGrowth * 0.1)+ ([AGPRyegrass].Stem.DMGrowth * 0.1)+ ([AGPRyegrass].Stolon.DMGrowth * 0.1)) as TotalNetGrowthRate",
+            "//(([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt) + ([AGPRyegrass].Leaf.DMGrowth * 0.1)) as LeafNetGrowthRatePerDay",
+            "//(([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([AGPRyegrass].Stem.DMGrowth)*0.1)) as  StemNetGrowthRatePerDay ",
+            "//([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt) as InflorescenceNetGrowthRatePerDay",
+            "//([AGPRyegrass].Stolon.DMGrowth * 0.1) as StolonNetGrowthRatePerDay",
+            "//(([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)+ ([AGPRyegrass].Leaf.DMGrowth * 0.1)+ ([AGPRyegrass].Stem.DMGrowth * 0.1)+ ([AGPRyegrass].Stolon.DMGrowth * 0.1)) as TotalNetGrowthRate",
             "",
-            "mean of (([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)+ ([AGPRyegrass].Leaf.DMGrowth * 0.1)+ ([AGPRyegrass].Stem.DMGrowth * 0.1)+ ([AGPRyegrass].Stolon.DMGrowth * 0.1)) from [Clock].StartOfMonth to [Clock].EndOfMonth as MonthlyMeanNetGrowth",
+            "//mean of (([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)+ ([AGPRyegrass].Leaf.DMGrowth * 0.1)+ ([AGPRyegrass].Stem.DMGrowth * 0.1)+ ([AGPRyegrass].Stolon.DMGrowth * 0.1)) from [Clock].StartOfMonth to [Clock].EndOfMonth as MonthlyMeanNetGrowth",
             "",
-            "sum of (([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)+ ([AGPRyegrass].Leaf.DMGrowth * 0.1)+ ([AGPRyegrass].Stem.DMGrowth * 0.1)+ ([AGPRyegrass].Stolon.DMGrowth * 0.1)) from [Clock].StartOfMonth to [Clock].EndOfMonth as SumMonthlyNetGrowth",
+            "//sum of (([PlantainForage].Leaf.Allocated.Wt - [PlantainForage].Leaf.Senesced.Wt)+ ([PlantainForage].Stem.Allocated.Wt - [PlantainForage].Stem.Senesced.Wt)+ ([PlantainForage].Inflorescence.Allocated.Wt - [PlantainForage].Inflorescence.Senesced.Wt)+ ([AGPRyegrass].Leaf.DMGrowth * 0.1)+ ([AGPRyegrass].Stem.DMGrowth * 0.1)+ ([AGPRyegrass].Stolon.DMGrowth * 0.1)) from [Clock].StartOfMonth to [Clock].EndOfMonth as SumMonthlyNetGrowth",
             "",
             "",
             "//([PlantainForage].Root.LayerLive+[PlantainForage].Root.LayerDead) as RootWtByLayer",
@@ -88786,9 +88786,16 @@
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
+                                  "Date": "2022-10-17",
+                                  "Action": "[AGPRyegrass].EndCrop()",
+                                  "Line": "2022-10-17 [AGPRyegrass].EndCrop()"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
                                   "Date": "2022-10-18",
-                                  "Action": "[PlantainForage].Sow(population: 350, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)",
-                                  "Line": "2022-10-18 [PlantainForage].Sow(population: 350, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)"
+                                  "Action": "[AGPRyegrass].Sow(population: 0, cultivar: \"R\", depth: 0, rowSpacing: 0)",
+                                  "Line": "2022-10-18 [AGPRyegrass].Sow(population: 0, cultivar: \"R\", depth: 0, rowSpacing: 0)"
                                 }
                               ],
                               "Name": "Sowing",
@@ -89116,7 +89123,7 @@
                   "Children": [
                     {
                       "$type": "Models.Clock, Models",
-                      "Start": "2022-10-01T00:00:00",
+                      "Start": "2022-07-01T00:00:00",
                       "End": "2024-06-30T00:00:00",
                       "Name": "clock",
                       "ResourceName": null,
@@ -89212,6 +89219,36 @@
                           "DeadDigestibility": "0.3",
                           "LiveFractionConsumable": 0.0,
                           "DeadFractionConsumable": 0.0,
+                          "LiveMinimumBiomass": 0.0,
+                          "DeadMinimumBiomass": 0.0
+                        },
+                        {
+                          "$type": "Models.ForageDigestibility.ForageMaterialParameters, Models",
+                          "Name": "AGPRyegrass.Leaf",
+                          "LiveDigestibility": "0.7",
+                          "DeadDigestibility": "0.3",
+                          "LiveFractionConsumable": 1.0,
+                          "DeadFractionConsumable": 1.0,
+                          "LiveMinimumBiomass": 0.0,
+                          "DeadMinimumBiomass": 0.0
+                        },
+                        {
+                          "$type": "Models.ForageDigestibility.ForageMaterialParameters, Models",
+                          "Name": "AGPRyegrass.Stem",
+                          "LiveDigestibility": "0.7",
+                          "DeadDigestibility": "0.3",
+                          "LiveFractionConsumable": 1.0,
+                          "DeadFractionConsumable": 1.0,
+                          "LiveMinimumBiomass": 0.0,
+                          "DeadMinimumBiomass": 0.0
+                        },
+                        {
+                          "$type": "Models.ForageDigestibility.ForageMaterialParameters, Models",
+                          "Name": "AGPRyegrass.Stolon",
+                          "LiveDigestibility": "0.7",
+                          "DeadDigestibility": "0.3",
+                          "LiveFractionConsumable": 1.0,
+                          "DeadFractionConsumable": 1.0,
                           "LiveMinimumBiomass": 0.0,
                           "DeadMinimumBiomass": 0.0
                         }
@@ -91506,6 +91543,68 @@
                                     null
                                   ],
                                   "Name": "PlantainForageSoil",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Soils.SoilCrop, Models",
+                                  "LL": [
+                                    0.22,
+                                    0.219,
+                                    0.182,
+                                    0.15,
+                                    0.15,
+                                    0.12,
+                                    "NaN"
+                                  ],
+                                  "KL": [
+                                    0.1,
+                                    0.085,
+                                    0.055,
+                                    0.02,
+                                    0.005,
+                                    0.0,
+                                    "NaN"
+                                  ],
+                                  "XF": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    "NaN"
+                                  ],
+                                  "LLMetadata": [
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                  ],
+                                  "KLMetadata": [
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                  ],
+                                  "XFMetadata": [
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                  ],
+                                  "Name": "AGPRyegrassSoil",
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
@@ -105330,7 +105429,7 @@
                           "ColourArgb": -16747854,
                           "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
-                          "FactorToVaryLines": null,
+                          "FactorToVaryLines": "Cultivar",
                           "Marker": 11,
                           "MarkerSize": 1,
                           "Line": 1,
@@ -105358,7 +105457,7 @@
                           "YAxis": 0,
                           "ColourArgb": -16777216,
                           "FactorToVaryColours": "Cultivar",
-                          "FactorToVaryMarkers": null,
+                          "FactorToVaryMarkers": "Cultivar",
                           "FactorToVaryLines": null,
                           "Marker": 0,
                           "MarkerSize": 1,
@@ -122621,8 +122720,8 @@
                                   "CrossesAtZero": false,
                                   "LabelOnOneLine": false,
                                   "Minimum": "NaN",
-                                  "Maximum": 20.0,
-                                  "Interval": null
+                                  "Maximum": 18.0,
+                                  "Interval": "NaN"
                                 }
                               ],
                               "LegendPosition": 0,
@@ -122641,7 +122740,7 @@
                                   "ColourArgb": -16736653,
                                   "FactorToVaryColours": "Cultivar",
                                   "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": null,
+                                  "FactorToVaryLines": "Cultivar",
                                   "Marker": 11,
                                   "MarkerSize": 2,
                                   "Line": 0,
@@ -122672,7 +122771,7 @@
                                   "FactorToVaryMarkers": null,
                                   "FactorToVaryLines": null,
                                   "Marker": 4,
-                                  "MarkerSize": 1,
+                                  "MarkerSize": 2,
                                   "Line": 4,
                                   "LineThickness": 0,
                                   "TableName": "Observed",
@@ -122756,7 +122855,7 @@
                           "ColourArgb": -16747854,
                           "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
-                          "FactorToVaryLines": null,
+                          "FactorToVaryLines": "Cultivar",
                           "Marker": 11,
                           "MarkerSize": 1,
                           "Line": 0,
@@ -122784,7 +122883,7 @@
                           "YAxis": 0,
                           "ColourArgb": -16777216,
                           "FactorToVaryColours": "Cultivar",
-                          "FactorToVaryMarkers": null,
+                          "FactorToVaryMarkers": "Cultivar",
                           "FactorToVaryLines": null,
                           "Marker": 0,
                           "MarkerSize": 1,
@@ -122907,7 +123006,7 @@
                         },
                         {
                           "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                          "Title": null,
+                          "Title": "CumHarvestWt (g/m2)",
                           "Position": 0,
                           "Inverted": false,
                           "CrossesAtZero": false,
@@ -122933,7 +123032,7 @@
                           "ColourArgb": -16747854,
                           "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
-                          "FactorToVaryLines": null,
+                          "FactorToVaryLines": "Cultivar",
                           "Marker": 11,
                           "MarkerSize": 1,
                           "Line": 2,
@@ -124201,9 +124300,16 @@
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
-                                  "Date": "2022-12-23",
-                                  "Action": "[PlantainForage].Sow(population: 350, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)",
-                                  "Line": "2022-12-23 [PlantainForage].Sow(population: 350, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)"
+                                  "Date": "2022-11-05",
+                                  "Action": "[AGPRyegrass].EndCrop()",
+                                  "Line": "2022-11-05 [AGPRyegrass].EndCrop()"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2022-11-08",
+                                  "Action": "[AGPRyegrass].Sow(population: 0, cultivar: \"R\", depth: 0, rowSpacing: 0)",
+                                  "Line": "2022-11-08 [AGPRyegrass].Sow(population: 0, cultivar: \"R\", depth: 0, rowSpacing: 0)"
                                 }
                               ],
                               "Name": "Sowing",
@@ -124531,7 +124637,7 @@
                   "Children": [
                     {
                       "$type": "Models.Clock, Models",
-                      "Start": "2022-10-01T00:00:00",
+                      "Start": "2022-07-01T00:00:00",
                       "End": "2024-06-29T00:00:00",
                       "Name": "clock",
                       "ResourceName": null,
@@ -124627,6 +124733,36 @@
                           "DeadDigestibility": "0.3",
                           "LiveFractionConsumable": 0.0,
                           "DeadFractionConsumable": 0.0,
+                          "LiveMinimumBiomass": 0.0,
+                          "DeadMinimumBiomass": 0.0
+                        },
+                        {
+                          "$type": "Models.ForageDigestibility.ForageMaterialParameters, Models",
+                          "Name": "AGPRyegrass.Leaf",
+                          "LiveDigestibility": "0.7",
+                          "DeadDigestibility": "0.3",
+                          "LiveFractionConsumable": 1.0,
+                          "DeadFractionConsumable": 1.0,
+                          "LiveMinimumBiomass": 0.0,
+                          "DeadMinimumBiomass": 0.0
+                        },
+                        {
+                          "$type": "Models.ForageDigestibility.ForageMaterialParameters, Models",
+                          "Name": "AGPRyegrass.Stem",
+                          "LiveDigestibility": "0.7",
+                          "DeadDigestibility": "0.3",
+                          "LiveFractionConsumable": 1.0,
+                          "DeadFractionConsumable": 1.0,
+                          "LiveMinimumBiomass": 0.0,
+                          "DeadMinimumBiomass": 0.0
+                        },
+                        {
+                          "$type": "Models.ForageDigestibility.ForageMaterialParameters, Models",
+                          "Name": "AGPRyegrass.Stolon",
+                          "LiveDigestibility": "0.7",
+                          "DeadDigestibility": "0.3",
+                          "LiveFractionConsumable": 1.0,
+                          "DeadFractionConsumable": 1.0,
                           "LiveMinimumBiomass": 0.0,
                           "DeadMinimumBiomass": 0.0
                         }
@@ -127070,6 +127206,68 @@
                                   "Children": [],
                                   "Enabled": true,
                                   "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Soils.SoilCrop, Models",
+                                  "LL": [
+                                    0.22,
+                                    0.219,
+                                    0.177,
+                                    0.15,
+                                    0.15,
+                                    0.12,
+                                    "NaN"
+                                  ],
+                                  "KL": [
+                                    0.1,
+                                    0.085,
+                                    0.055,
+                                    0.02,
+                                    0.005,
+                                    0.0,
+                                    "NaN"
+                                  ],
+                                  "XF": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    "NaN"
+                                  ],
+                                  "LLMetadata": [
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                  ],
+                                  "KLMetadata": [
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                  ],
+                                  "XFMetadata": [
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                  ],
+                                  "Name": "AGPRyegrassSoil",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
                                 }
                               ],
                               "Enabled": true,
@@ -127343,6 +127541,90 @@
                           "$type": "Models.PMF.Plant, Models",
                           "Name": "PlantainForage",
                           "ResourceName": "PlantainForage",
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.AgPasture.PastureSpecies, Models",
+                          "doyGermination": 275,
+                          "daysEmergenceToAnthesis": 120,
+                          "daysAnthesisToMaturity": 85,
+                          "degreesDayForAnthesis": 1100.0,
+                          "degreesDayForMaturity": 900.0,
+                          "daysAnnualsFactor": 45,
+                          "FVPDFunction": {
+                            "$type": "Models.Functions.LinearInterpolationFunction, Models",
+                            "Name": "LinearInterpolationFunction",
+                            "ResourceName": null,
+                            "Children": [],
+                            "Enabled": true,
+                            "ReadOnly": false
+                          },
+                          "CanopyType": "PastureSpecies",
+                          "LightProfile": null,
+                          "InitialShootDM": 0.0,
+                          "InitialRootDM": 0.0,
+                          "InitialRootDepth": 0.0,
+                          "initialDMFractionsGrasses": [
+                            0.15,
+                            0.25,
+                            0.25,
+                            0.05,
+                            0.05,
+                            0.1,
+                            0.1,
+                            0.05,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "initialDMFractionsLegumes": [
+                            0.16,
+                            0.23,
+                            0.22,
+                            0.05,
+                            0.03,
+                            0.05,
+                            0.05,
+                            0.01,
+                            0.04,
+                            0.08,
+                            0.08
+                          ],
+                          "initialDMFractionsForbs": [
+                            0.2,
+                            0.2,
+                            0.15,
+                            0.05,
+                            0.1,
+                            0.15,
+                            0.1,
+                            0.05,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "PhotosyntheticEfficiency": 0.01,
+                          "PhotosynthesisCurveFactor": 0.8,
+                          "FractionPAR": 0.5,
+                          "ReferenceCO2": 380.0,
+                          "CO2EffectScaleFactor": 700.0,
+                          "CO2EffectOffsetFactor": 600.0,
+                          "CO2EffectMinimum": 0.7,
+                          "CO2EffectExponent": 2.0,
+                          "ReproSeasonDurationCoeff": 2.0,
+                          "ReproSeasonShouldersLengthFactor": 1.0,
+                          "ReproSeasonOnsetDurationFactor": 0.6,
+                          "RelativeTurnoverEmerging": 2.0,
+                          "DetachmentDroughtCoefficient": 3.0,
+                          "DetachmentDroughtEffectMin": 0.1,
+                          "TurnoverStockFactor": 0.01,
+                          "TurnoverDefoliationEffectMin": 0.025,
+                          "MinimumGreenLeafProp": 0.8,
+                          "MinimumGreenRootProp": 0.5,
+                          "Name": "AGPRyegrass",
+                          "ResourceName": "AGPRyegrass",
                           "Children": [],
                           "Enabled": true,
                           "ReadOnly": false
@@ -140662,7 +140944,7 @@
                           "ColourArgb": -16747854,
                           "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
-                          "FactorToVaryLines": null,
+                          "FactorToVaryLines": "Cultivar",
                           "Marker": 11,
                           "MarkerSize": 1,
                           "Line": 2,
@@ -140689,8 +140971,8 @@
                           "XAxis": 3,
                           "YAxis": 0,
                           "ColourArgb": -16777216,
-                          "FactorToVaryColours": "GrazeFrequency",
-                          "FactorToVaryMarkers": null,
+                          "FactorToVaryColours": "Cultivar",
+                          "FactorToVaryMarkers": "Cultivar",
                           "FactorToVaryLines": null,
                           "Marker": 0,
                           "MarkerSize": 1,
@@ -157939,12 +158221,12 @@
                                 },
                                 {
                                   "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                                  "Title": null,
+                                  "Title": "MonthlyNetGrowthRate (g/m2/day)",
                                   "Position": 0,
                                   "Inverted": false,
                                   "CrossesAtZero": false,
                                   "LabelOnOneLine": false,
-                                  "Minimum": null,
+                                  "Minimum": "NaN",
                                   "Maximum": null,
                                   "Interval": null
                                 }
@@ -157965,7 +158247,7 @@
                                   "ColourArgb": -16736653,
                                   "FactorToVaryColours": "Cultivar",
                                   "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": null,
+                                  "FactorToVaryLines": "Cultivar",
                                   "Marker": 11,
                                   "MarkerSize": 2,
                                   "Line": 0,
@@ -157992,11 +158274,11 @@
                                   "XAxis": 3,
                                   "YAxis": 0,
                                   "ColourArgb": -1663232,
-                                  "FactorToVaryColours": "SimulationName",
+                                  "FactorToVaryColours": "Cultivar",
                                   "FactorToVaryMarkers": null,
                                   "FactorToVaryLines": null,
                                   "Marker": 4,
-                                  "MarkerSize": 1,
+                                  "MarkerSize": 2,
                                   "Line": 4,
                                   "LineThickness": 0,
                                   "TableName": "Observed",
@@ -158231,12 +158513,12 @@
                         },
                         {
                           "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                          "Title": null,
+                          "Title": "CumHarvestWt (g/m2)",
                           "Position": 0,
                           "Inverted": false,
                           "CrossesAtZero": false,
                           "LabelOnOneLine": false,
-                          "Minimum": null,
+                          "Minimum": "NaN",
                           "Maximum": null,
                           "Interval": null
                         }
@@ -158257,7 +158539,7 @@
                           "ColourArgb": -16747854,
                           "FactorToVaryColours": "Cultivar",
                           "FactorToVaryMarkers": null,
-                          "FactorToVaryLines": null,
+                          "FactorToVaryLines": "Cultivar",
                           "Marker": 11,
                           "MarkerSize": 1,
                           "Line": 2,
