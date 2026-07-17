@@ -1,6 +1,6 @@
 {
   "$type": "Models.Core.Simulations, Models",
-  "Version": 216,
+  "Version": 219,
   "Name": "Simulations",
   "ResourceName": null,
   "Children": [
@@ -6646,7 +6646,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###FRNL Ruakura###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with the \"standard\" mixed pasture species are used, this includes ryegrass and white clover (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### FRNL Ruakura, mix 1\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with the \"standard\" mixed pasture species are used, this includes ryegrass and white clover (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -18819,7 +18819,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###FRNL Ruakura###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### FRNL Ruakura, mix 2\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -33605,7 +33605,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Kerikeri###\n\nThis experiment\r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### SFFF Kerikeri\n\nThis experiment\r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -37434,7 +37434,7 @@
                             "",
                             "[AGPRyegrass].RootDepth as Ryegrass.Root.Depth",
                             "[AGPWhiteClover].RootDepth as WhiteClover.Root.Depth",
-                            "[AGPTallFescue].RootDepth as TallFescue .Root.Depth",
+                            "[AGPTallFescue].RootDepth as TallFescue.Root.Depth",
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
@@ -47906,7 +47906,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### SFFF Waikato, Horotiu\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -51666,7 +51666,7 @@
                             "",
                             "[AGPRyegrass].RootDepth as Ryegrass.Root.Depth",
                             "[AGPWhiteClover].RootDepth as WhiteClover.Root.Depth",
-                            "[AGPTallFescue].RootDepth as TallFescue .Root.Depth",
+                            "[AGPTallFescue].RootDepth as TallFescue.Root.Depth",
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
@@ -62393,7 +62393,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### SFFF Waikato, ???\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -65943,7 +65943,7 @@
                             "",
                             "[AGPRyegrass].RootDepth as Ryegrass.Root.Depth",
                             "[AGPWhiteClover].RootDepth as WhiteClover.Root.Depth",
-                            "[AGPTallFescue].RootDepth as TallFescue .Root.Depth",
+                            "[AGPTallFescue].RootDepth as TallFescue.Root.Depth",
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
@@ -77000,7 +77000,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### SFFF Waikato\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -80884,7 +80884,7 @@
                             "",
                             "[AGPRyegrass].RootDepth as Ryegrass.Root.Depth",
                             "[AGPWhiteClover].RootDepth as WhiteClover.Root.Depth",
-                            "[AGPTallFescue].RootDepth as TallFescue .Root.Depth",
+                            "[AGPTallFescue].RootDepth as TallFescue.Root.Depth",
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
@@ -91611,7 +91611,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### SFFF Canterbury\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -95643,7 +95643,7 @@
                             "",
                             "[AGPRyegrass].RootDepth as Ryegrass.Root.Depth",
                             "[AGPWhiteClover].RootDepth as WhiteClover.Root.Depth",
-                            "[AGPTallFescue].RootDepth as TallFescue .Root.Depth",
+                            "[AGPTallFescue].RootDepth as TallFescue.Root.Depth",
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
@@ -106370,7 +106370,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "### SFFF Southland\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -110338,7 +110338,7 @@
                             "",
                             "[AGPRyegrass].RootDepth as Ryegrass.Root.Depth",
                             "[AGPWhiteClover].RootDepth as WhiteClover.Root.Depth",
-                            "[AGPTallFescue].RootDepth as TallFescue .Root.Depth",
+                            "[AGPTallFescue].RootDepth as TallFescue.Root.Depth",
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
