@@ -764,17 +764,17 @@
                         {
                           "$type": "Models.Functions.XYPairs, Models",
                           "X": [
-                            4.0,
-                            10.0,
+                            0.0,
+                            2.0,
+                            5.0,
                             15.0,
-                            21.0,
-                            27.0,
+                            30.0,
                             35.0
                           ],
                           "Y": [
                             0.0,
-                            0.075,
-                            0.35,
+                            0.1,
+                            0.3,
                             1.0,
                             1.0,
                             0.0
@@ -121084,6 +121084,259 @@
                       "Children": [
                         {
                           "$type": "Models.Factorial.Factor, Models",
+                          "Specification": "[NRate]",
+                          "Name": "NRate",
+                          "ResourceName": null,
+                          "Children": [
+                            {
+                              "$type": "Models.Operations, Models",
+                              "OperationsList": null,
+                              "Name": "0",
+                              "ResourceName": null,
+                              "Children": [],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Operations, Models",
+                              "OperationsList": [
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2017-04-01",
+                                  "Action": "[Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)",
+                                  "Line": "2017-04-01 [Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2025-08-08",
+                                  "Action": "[Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)",
+                                  "Line": "2025-08-08 [Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2017-09-22",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2017-09-22 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2017-10-27",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2017-10-27 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2017-12-08",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2017-12-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-01-22",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-01-22 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-02-21",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-02-21 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-03-28",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-03-28 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-05-23",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-05-23 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-08-10",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-08-10 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-09-26",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-09-26 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-11-04",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-11-04 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2018-12-14",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2018-12-14 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-01-25",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-01-25 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-02-28",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-02-28 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-04-08",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-04-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-05-27",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-05-27 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-08-09",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-08-09 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-09-23",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-09-23 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-11-08",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-11-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2019-12-22",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2019-12-22 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-01-23",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-01-23 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-02-26",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-02-26 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-04-08",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-04-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-06-10",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-06-10 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-08-10",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-08-10 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-10-02",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-10-02 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-11-04",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-11-04 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2020-12-14",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2020-12-14 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2021-01-25",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2021-01-25 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2021-03-01",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2021-03-01 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                },
+                                {
+                                  "$type": "Models.Operation, Models",
+                                  "Enabled": true,
+                                  "Date": "2021-04-05",
+                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
+                                  "Line": "2021-04-05 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
+                                }
+                              ],
+                              "Name": "200",
+                              "ResourceName": null,
+                              "Children": [],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            }
+                          ],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.Factorial.Factor, Models",
                           "Specification": "",
                           "Name": "Sowing",
                           "ResourceName": null,
@@ -121125,11 +121378,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -121169,11 +121422,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -121206,8 +121459,8 @@
                                       "$type": "Models.Operation, Models",
                                       "Enabled": true,
                                       "Date": "2017-03-31",
-                                      "Action": "[PlantainForage].Sow(population: 100, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)",
-                                      "Line": "2017-03-31 [PlantainForage].Sow(population: 100, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)"
+                                      "Action": "[PlantainForage].Sow(population: 100, cultivar: \"Tonic\", depth: 5, rowSpacing: 150)",
+                                      "Line": "2017-03-31 [PlantainForage].Sow(population: 100, cultivar: \"Tonic\", depth: 5, rowSpacing: 150)"
                                     }
                                   ],
                                   "Name": "Sowing",
@@ -121264,11 +121517,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -121642,11 +121895,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -121686,11 +121939,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -121781,11 +122034,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -122119,259 +122372,6 @@
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            }
-                          ],
-                          "Enabled": true,
-                          "ReadOnly": false
-                        },
-                        {
-                          "$type": "Models.Factorial.Factor, Models",
-                          "Specification": "[NRate]",
-                          "Name": "NRate",
-                          "ResourceName": null,
-                          "Children": [
-                            {
-                              "$type": "Models.Operations, Models",
-                              "OperationsList": null,
-                              "Name": "0",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Operations, Models",
-                              "OperationsList": [
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2017-04-01",
-                                  "Action": "[Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)",
-                                  "Line": "2017-04-01 [Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2025-08-08",
-                                  "Action": "[Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)",
-                                  "Line": "2025-08-08 [Fertiliser].Apply(amount: 50, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2017-09-22",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2017-09-22 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2017-10-27",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2017-10-27 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2017-12-08",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2017-12-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-01-22",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-01-22 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-02-21",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-02-21 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-03-28",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-03-28 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-05-23",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-05-23 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-08-10",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-08-10 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-09-26",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-09-26 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-11-04",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-11-04 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2018-12-14",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2018-12-14 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-01-25",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-01-25 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-02-28",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-02-28 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-04-08",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-04-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-05-27",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-05-27 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-08-09",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-08-09 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-09-23",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-09-23 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-11-08",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-11-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2019-12-22",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2019-12-22 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-01-23",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-01-23 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-02-26",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-02-26 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-04-08",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-04-08 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-06-10",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-06-10 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-08-10",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-08-10 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-10-02",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-10-02 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-11-04",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-11-04 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2020-12-14",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2020-12-14 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2021-01-25",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2021-01-25 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2021-03-01",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2021-03-01 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                },
-                                {
-                                  "$type": "Models.Operation, Models",
-                                  "Enabled": true,
-                                  "Date": "2021-04-05",
-                                  "Action": "[Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)",
-                                  "Line": "2021-04-05 [Fertiliser].Apply(amount: 25, type: \"UreaN\", depth: 10)"
-                                }
-                              ],
-                              "Name": "200",
-                              "ResourceName": null,
-                              "Children": [],
                               "Enabled": true,
                               "ReadOnly": false
                             }
@@ -122817,225 +122817,225 @@
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-08-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-08-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-08-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-09-20",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-09-20 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-09-20 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-10-25",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-10-25 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-10-25 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-12-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-12-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-12-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-01-19",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-01-19 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-01-19 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-02-19",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-02-19 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-02-19 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-03-26",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-03-26 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-03-26 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-05-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-05-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-05-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-08-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-08-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-08-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-09-23",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-09-23 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-09-23 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-11-02",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-11-02 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-11-02 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-12-10",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-12-10 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-12-10 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-01-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-01-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-01-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-02-26",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-02-26 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-02-26 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-04-04",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-04-04 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-04-04 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-05-24",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-05-24 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-05-24 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-08-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-08-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-08-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-09-23",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-09-23 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-09-23 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-10-31",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-10-31 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-10-31 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-12-16",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-12-16 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-12-16 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-01-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-01-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-01-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-02-24",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-02-24 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-02-24 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-04-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-04-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-04-06 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-06-08",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-06-08 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-06-08 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-08-07",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-08-07 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-08-07 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-09-30",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-09-30 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-09-30 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-11-02",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-11-02 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-11-02 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-12-10",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-12-10 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-12-10 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-01-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-01-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-01-21 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-02-25",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-02-25 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-02-25 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-04-01",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-04-01 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-04-01 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-06-01",
-                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-06-01 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 100, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-06-01 [DefoliationManager].Script.Defoliate(defoliationType: \"Cut\", amountDM: 20, amountType: \"ResidualDM\", duration: 1)"
                                 }
                               ],
                               "Name": "DefoliationSchedule",
@@ -124587,7 +124587,7 @@
                                 },
                                 {
                                   "Key": "DefoliateType",
-                                  "Value": "Cut"
+                                  "Value": "Graze"
                                 },
                                 {
                                   "Key": "DefoliationTriggerType",
@@ -124599,7 +124599,7 @@
                                 },
                                 {
                                   "Key": "TargetStandingBiomass",
-                                  "Value": "200"
+                                  "Value": "100"
                                 },
                                 {
                                   "Key": "DurationOfEachDefoliation",
@@ -124607,7 +124607,7 @@
                                 },
                                 {
                                   "Key": "RemoveAmountType",
-                                  "Value": "DMToRemove"
+                                  "Value": "None_UseDefoliationFractions"
                                 },
                                 {
                                   "Key": "AmountForEachDefoliation",
@@ -124619,23 +124619,23 @@
                                 },
                                 {
                                   "Key": "DMRemoveType",
-                                  "Value": "RemoveAll"
+                                  "Value": "BasedOnDigestibility"
                                 },
                                 {
                                   "Key": "FractionDMToRemove",
-                                  "Value": "1"
+                                  "Value": "0"
                                 },
                                 {
                                   "Key": "NRemoveType",
-                                  "Value": "RemoveNone"
+                                  "Value": "UserDefinedFraction"
                                 },
                                 {
                                   "Key": "FractionNToRemove",
-                                  "Value": "1"
+                                  "Value": "0.25"
                                 },
                                 {
                                   "Key": "ReturnType",
-                                  "Value": "AsResidue"
+                                  "Value": "AsDungUrine"
                                 },
                                 {
                                   "Key": "NDungType",
@@ -124651,7 +124651,7 @@
                                 },
                                 {
                                   "Key": "UrineDepth",
-                                  "Value": "250"
+                                  "Value": "200"
                                 }
                               ],
                               "Name": "DefoliationManager",
@@ -126385,7 +126385,6 @@
                             "[Weather].Radn as SolarRadiation",
                             "[AGPRyegrass].InterceptedRadn ",
                             "[AGPWhiteClover].InterceptedRadn ",
-                            "[PlantainForage].Leaf.RadiationIntercepted",
                             "",
                             "[Weather].Rain as Rainfall",
                             "[Irrigation].IrrigationApplied as IrrigationApplied",
@@ -126446,7 +126445,6 @@
                             "[ExtraVariables].Script.TotalAboveGroundDM as TotalAboveGroundDM",
                             "[ExtraVariables].Script.SpeciesFraction",
                             "",
-                            "",
                             "([AGPRyegrass].TotalWt*0.1) as Ryegrass.Total.Wt",
                             "[AGPRyegrass].LAI",
                             "([AGPRyegrass].AboveGroundLiveWt*0.1+[AGPRyegrass].BelowGroundWt*0.1) as Ryegrass.TotalLive.Wt",
@@ -126461,6 +126459,7 @@
                             "[AGPRyegrass].AboveGroundNConc as Ryegrass.AboveGround.NConc",
                             "([AGPRyegrass].BelowGroundN/([AGPRyegrass].BelowGroundWt+0.000001)) as Ryegrass.BelowGround.NConc",
                             "([AGPRyegrass].AboveGroundLiveN/([AGPRyegrass].AboveGroundLiveWt+0.000001)) as Ryegrass.AboveGroundLive.NConc",
+                            "",
                             "",
                             "([AGPWhiteClover].TotalWt*0.1) as WhiteClover.Total.Wt",
                             "[AGPWhiteClover].LAI",
@@ -126478,9 +126477,12 @@
                             "([AGPWhiteClover].AboveGroundLiveN/([AGPWhiteClover].AboveGroundLiveWt+0.000001)) as WhiteClover.AboveGroundLive.NConc",
                             "",
                             "[PlantainForage].Total.Wt as Plantain.Total.Wt",
+                            "[PlantainForage].Phenology.CurrentStageName",
+                            "[PlantainForage].Leaf.RadiationIntercepted",
                             "[PlantainForage].LAI",
                             "[PlantainForage].Leaf.Fw",
                             "[PlantainForage].Leaf.Fn",
+                            "[PlantainForage].leaf.Photosynthesis",
                             "[PlantainForage].Leaf.Photosynthesis.FT",
                             "[PlantainForage].Leaf.Photosynthesis.FVPD",
                             "[PlantainForage].Leaf.FNmetabolic",
@@ -126498,6 +126500,7 @@
                             "([PlantainForage].AboveGroundLive.N/([PlantainForage].AboveGroundLive.Wt+0.000001)) as Plantain.AboveGroundLive.NConc",
                             "",
                             "[MicroClimate].CanopyCover",
+                            "([AGPWhiteClover].LAIGreen+[AGPRyegrass].LAIGreen+[PlantainForage].LAI) as LAIgreen",
                             "",
                             "[AGPRyegrass].Height as Ryegrass.Height",
                             "[AGPWhiteClover].Height as WhiteClover.Height",
@@ -126508,22 +126511,24 @@
                             "[PlantainForage].Root.Depth as Plantain.Root.Depth",
                             "",
                             "[AGPRyegrass].GlfNSupply",
+                            "[AGPRyegrass].GlfNContent",
                             "[AGPRyegrass].GlfWaterSupply",
                             "[AGPRyegrass].GlfWaterLogging",
-                            "[AGPRyegrass].GlfNContent",
                             "[AGPRyegrass].GlfCO2",
                             "[AGPRyegrass].GlfTemperature",
                             "[AGPRyegrass].GlfColdDamage",
                             "[AGPRyegrass].GlfHeatDamage",
+                            "[AGPRyegrass].GlfSoilFertility",
                             "",
                             "[AGPWhiteClover].GlfNSupply",
+                            "[AGPWhiteClover].GlfNContent",
                             "[AGPWhiteClover].GlfWaterSupply",
                             "[AGPWhiteClover].GlfWaterLogging",
-                            "[AGPWhiteClover].GlfNContent",
                             "[AGPWhiteClover].GlfCO2",
                             "[AGPWhiteClover].GlfTemperature",
                             "[AGPWhiteClover].GlfColdDamage",
-                            "[AGPWhiteClover].GlfHeatDamage"
+                            "[AGPWhiteClover].GlfHeatDamage",
+                            "[AGPWhiteClover].GlfSoilFertility"
                           ],
                           "EventNames": [
                             "[Clock].DoReport"
@@ -127988,7 +127993,7 @@
                           "Axis": [
                             {
                               "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": "Crop cover",
+                              "Title": null,
                               "Position": 0,
                               "Inverted": false,
                               "CrossesAtZero": false,
@@ -128023,9 +128028,9 @@
                               "XAxis": 3,
                               "YAxis": 0,
                               "ColourArgb": -16736653,
-                              "FactorToVaryColours": null,
+                              "FactorToVaryColours": "Sowing",
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "SimulationName",
+                              "FactorToVaryLines": "NRate",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 0,
@@ -128040,7 +128045,36 @@
                               "Cumulative": false,
                               "CumulativeX": false,
                               "Filter": null,
-                              "Name": "Total",
+                              "Name": "Predicted",
+                              "ResourceName": null,
+                              "Children": [],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Series, Models",
+                              "Type": 1,
+                              "XAxis": 3,
+                              "YAxis": 0,
+                              "ColourArgb": -16736653,
+                              "FactorToVaryColours": "Sowing",
+                              "FactorToVaryMarkers": "NRate",
+                              "FactorToVaryLines": null,
+                              "Marker": 4,
+                              "MarkerSize": 0,
+                              "Line": 4,
+                              "LineThickness": 0,
+                              "TableName": "Observed",
+                              "XFieldName": "Date",
+                              "YFieldName": "Cover",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
+                              "ShowInLegend": true,
+                              "IncludeSeriesNameInLegend": true,
+                              "Cumulative": false,
+                              "CumulativeX": false,
+                              "Filter": null,
+                              "Name": "Observed",
                               "ResourceName": null,
                               "Children": [],
                               "Enabled": true,
@@ -128379,7 +128413,7 @@
                               "AnnotationLocation": 0,
                               "DisabledSeries": [],
                               "LegendOutsideGraph": false,
-                              "Name": "LAI",
+                              "Name": "TotalLAI",
                               "ResourceName": null,
                               "Children": [
                                 {
@@ -128388,9 +128422,135 @@
                                   "XAxis": 3,
                                   "YAxis": 0,
                                   "ColourArgb": -1663232,
-                                  "FactorToVaryColours": null,
+                                  "FactorToVaryColours": "Sowing",
                                   "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
+                                  "FactorToVaryLines": "NRate",
+                                  "Marker": 11,
+                                  "MarkerSize": 0,
+                                  "Line": 0,
+                                  "LineThickness": 0,
+                                  "TableName": "Report",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "LAIgreen",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Predicted",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -16736653,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": "NRate",
+                                  "FactorToVaryLines": null,
+                                  "Marker": 4,
+                                  "MarkerSize": 0,
+                                  "Line": 4,
+                                  "LineThickness": 0,
+                                  "TableName": "Observed",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "Total.Leaf.LAI",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Observed",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                }
+                              ],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Graph, Models",
+                              "Caption": null,
+                              "Axis": [
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 0,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                },
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 3,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                }
+                              ],
+                              "LegendPosition": 1,
+                              "LegendOrientation": 0,
+                              "AnnotationLocation": 0,
+                              "DisabledSeries": [],
+                              "LegendOutsideGraph": false,
+                              "Name": "PlantainLAI",
+                              "ResourceName": null,
+                              "Children": [
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -16736653,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": "NRate",
+                                  "FactorToVaryLines": null,
+                                  "Marker": 4,
+                                  "MarkerSize": 0,
+                                  "Line": 4,
+                                  "LineThickness": 0,
+                                  "TableName": "Observed",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "PlantianForage.LAI",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Observed",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -1663232,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": null,
+                                  "FactorToVaryLines": "NRate",
                                   "Marker": 11,
                                   "MarkerSize": 0,
                                   "Line": 0,
@@ -128405,21 +128565,60 @@
                                   "Cumulative": false,
                                   "CumulativeX": false,
                                   "Filter": null,
-                                  "Name": "Plantain",
+                                  "Name": "Predicted",
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
                                   "ReadOnly": false
+                                }
+                              ],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Graph, Models",
+                              "Caption": null,
+                              "Axis": [
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 0,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
                                 },
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 3,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                }
+                              ],
+                              "LegendPosition": 1,
+                              "LegendOrientation": 0,
+                              "AnnotationLocation": 0,
+                              "DisabledSeries": [],
+                              "LegendOutsideGraph": false,
+                              "Name": "PRyegrassLAI",
+                              "ResourceName": null,
+                              "Children": [
                                 {
                                   "$type": "Models.Series, Models",
                                   "Type": 1,
                                   "XAxis": 3,
                                   "YAxis": 0,
                                   "ColourArgb": -16736653,
-                                  "FactorToVaryColours": null,
+                                  "FactorToVaryColours": "Sowing",
                                   "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
+                                  "FactorToVaryLines": "NRate",
                                   "Marker": 11,
                                   "MarkerSize": 0,
                                   "Line": 0,
@@ -128434,7 +128633,7 @@
                                   "Cumulative": false,
                                   "CumulativeX": false,
                                   "Filter": null,
-                                  "Name": "Ryegrass",
+                                  "Name": "Predicted",
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
@@ -128445,10 +128644,78 @@
                                   "Type": 1,
                                   "XAxis": 3,
                                   "YAxis": 0,
+                                  "ColourArgb": -1663232,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": "NRate",
+                                  "FactorToVaryLines": null,
+                                  "Marker": 4,
+                                  "MarkerSize": 0,
+                                  "Line": 4,
+                                  "LineThickness": 0,
+                                  "TableName": "Observed",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "AGPRyegrass.LAI",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Observed",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                }
+                              ],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Graph, Models",
+                              "Caption": null,
+                              "Axis": [
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 0,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                },
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 3,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                }
+                              ],
+                              "LegendPosition": 1,
+                              "LegendOrientation": 0,
+                              "AnnotationLocation": 0,
+                              "DisabledSeries": [],
+                              "LegendOutsideGraph": false,
+                              "Name": "WhiteCloverLAI",
+                              "ResourceName": null,
+                              "Children": [
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
                                   "ColourArgb": -3376729,
-                                  "FactorToVaryColours": null,
+                                  "FactorToVaryColours": "Sowing",
                                   "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
+                                  "FactorToVaryLines": "NRate",
                                   "Marker": 11,
                                   "MarkerSize": 0,
                                   "Line": 0,
@@ -128463,7 +128730,7 @@
                                   "Cumulative": false,
                                   "CumulativeX": false,
                                   "Filter": null,
-                                  "Name": "WhiteClover",
+                                  "Name": "Predicted",
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
@@ -128474,17 +128741,17 @@
                                   "Type": 1,
                                   "XAxis": 3,
                                   "YAxis": 0,
-                                  "ColourArgb": -16747854,
-                                  "FactorToVaryColours": null,
+                                  "ColourArgb": -16736653,
+                                  "FactorToVaryColours": "Sowing",
                                   "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
-                                  "Marker": 11,
+                                  "FactorToVaryLines": null,
+                                  "Marker": 4,
                                   "MarkerSize": 0,
-                                  "Line": 0,
+                                  "Line": 4,
                                   "LineThickness": 0,
-                                  "TableName": "Report",
+                                  "TableName": "Observed",
                                   "XFieldName": "Date",
-                                  "YFieldName": "AGPTallFescue.LAI",
+                                  "YFieldName": "WhiteClover.LAI",
                                   "X2FieldName": null,
                                   "Y2FieldName": null,
                                   "ShowInLegend": true,
@@ -128492,7 +128759,104 @@
                                   "Cumulative": false,
                                   "CumulativeX": false,
                                   "Filter": null,
-                                  "Name": "TallFescue",
+                                  "Name": "observed",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                }
+                              ],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Graph, Models",
+                              "Caption": null,
+                              "Axis": [
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 0,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                },
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 3,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                }
+                              ],
+                              "LegendPosition": 1,
+                              "LegendOrientation": 0,
+                              "AnnotationLocation": 0,
+                              "DisabledSeries": [],
+                              "LegendOutsideGraph": false,
+                              "Name": "Totalcover",
+                              "ResourceName": null,
+                              "Children": [
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -1663232,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": null,
+                                  "FactorToVaryLines": "NRate",
+                                  "Marker": 11,
+                                  "MarkerSize": 0,
+                                  "Line": 0,
+                                  "LineThickness": 0,
+                                  "TableName": "Report",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "LAIgreen",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Predicted",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -16736653,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": "NRate",
+                                  "FactorToVaryLines": null,
+                                  "Marker": 4,
+                                  "MarkerSize": 0,
+                                  "Line": 4,
+                                  "LineThickness": 0,
+                                  "TableName": "Observed",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "Total.Leaf.LAI",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Observed",
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
@@ -128623,35 +128987,6 @@
                                   "Children": [],
                                   "Enabled": true,
                                   "ReadOnly": false
-                                },
-                                {
-                                  "$type": "Models.Series, Models",
-                                  "Type": 1,
-                                  "XAxis": 3,
-                                  "YAxis": 0,
-                                  "ColourArgb": -16747854,
-                                  "FactorToVaryColours": null,
-                                  "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
-                                  "Marker": 11,
-                                  "MarkerSize": 0,
-                                  "Line": 0,
-                                  "LineThickness": 0,
-                                  "TableName": "Report",
-                                  "XFieldName": "Date",
-                                  "YFieldName": "TallFescue.Height",
-                                  "X2FieldName": null,
-                                  "Y2FieldName": null,
-                                  "ShowInLegend": true,
-                                  "IncludeSeriesNameInLegend": true,
-                                  "Cumulative": false,
-                                  "CumulativeX": false,
-                                  "Filter": null,
-                                  "Name": "TallFescue",
-                                  "ResourceName": null,
-                                  "Children": [],
-                                  "Enabled": true,
-                                  "ReadOnly": false
                                 }
                               ],
                               "Enabled": true,
@@ -128774,35 +129109,6 @@
                                   "CumulativeX": false,
                                   "Filter": null,
                                   "Name": "WhiteClover",
-                                  "ResourceName": null,
-                                  "Children": [],
-                                  "Enabled": true,
-                                  "ReadOnly": false
-                                },
-                                {
-                                  "$type": "Models.Series, Models",
-                                  "Type": 1,
-                                  "XAxis": 3,
-                                  "YAxis": 0,
-                                  "ColourArgb": -16747854,
-                                  "FactorToVaryColours": null,
-                                  "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
-                                  "Marker": 11,
-                                  "MarkerSize": 0,
-                                  "Line": 0,
-                                  "LineThickness": 0,
-                                  "TableName": "Report",
-                                  "XFieldName": "Date",
-                                  "YFieldName": "TallFescue.Height",
-                                  "X2FieldName": null,
-                                  "Y2FieldName": null,
-                                  "ShowInLegend": true,
-                                  "IncludeSeriesNameInLegend": true,
-                                  "Cumulative": false,
-                                  "CumulativeX": false,
-                                  "Filter": null,
-                                  "Name": "TallFescue",
                                   "ResourceName": null,
                                   "Children": [],
                                   "Enabled": true,
@@ -129166,35 +129472,6 @@
                               "CumulativeX": false,
                               "Filter": null,
                               "Name": "Ryegrass",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "SimulationName",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "AGPTallFescue.InterceptedRadn",
-                              "X2FieldName": null,
-                              "Y2FieldName": null,
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "TellFescue",
                               "ResourceName": null,
                               "Children": [],
                               "Enabled": true,
@@ -129985,9 +130262,9 @@
                               "XAxis": 3,
                               "YAxis": 0,
                               "ColourArgb": -16777216,
-                              "FactorToVaryColours": "NRate",
+                              "FactorToVaryColours": "Sowing",
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": null,
+                              "FactorToVaryLines": "NRate",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 2,
@@ -129995,8 +130272,8 @@
                               "TableName": "Report",
                               "XFieldName": "Date",
                               "YFieldName": "TopSoilN",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -130452,7 +130729,7 @@
                                 },
                                 {
                                   "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                                  "Title": "Crop biomass (g/m2)",
+                                  "Title": null,
                                   "Position": 0,
                                   "Inverted": false,
                                   "CrossesAtZero": false,
@@ -130492,7 +130769,7 @@
                                   "IncludeSeriesNameInLegend": true,
                                   "Cumulative": false,
                                   "CumulativeX": false,
-                                  "Filter": null,
+                                  "Filter": "Sowing =\"PT1000\"",
                                   "Name": "Plantain",
                                   "ResourceName": null,
                                   "Children": [],
@@ -130525,7 +130802,7 @@
                                   "Name": "Ryegrass",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 },
                                 {
@@ -130554,36 +130831,7 @@
                                   "Name": "WhiteClover",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
-                                  "ReadOnly": false
-                                },
-                                {
-                                  "$type": "Models.Series, Models",
-                                  "Type": 1,
-                                  "XAxis": 3,
-                                  "YAxis": 0,
-                                  "ColourArgb": -16747854,
-                                  "FactorToVaryColours": null,
-                                  "FactorToVaryMarkers": null,
-                                  "FactorToVaryLines": "SimulationName",
-                                  "Marker": 11,
-                                  "MarkerSize": 0,
-                                  "Line": 0,
-                                  "LineThickness": 0,
-                                  "TableName": "Report",
-                                  "XFieldName": "Date",
-                                  "YFieldName": "TotalAboveGroundDM",
-                                  "X2FieldName": null,
-                                  "Y2FieldName": null,
-                                  "ShowInLegend": true,
-                                  "IncludeSeriesNameInLegend": true,
-                                  "Cumulative": false,
-                                  "CumulativeX": false,
-                                  "Filter": null,
-                                  "Name": "TotalAboveground",
-                                  "ResourceName": null,
-                                  "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
@@ -130607,12 +130855,12 @@
                                 },
                                 {
                                   "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                                  "Title": "Crop biomass (g/m2)",
+                                  "Title": "",
                                   "Position": 0,
                                   "Inverted": false,
                                   "CrossesAtZero": false,
                                   "LabelOnOneLine": false,
-                                  "Minimum": null,
+                                  "Minimum": "NaN",
                                   "Maximum": null,
                                   "Interval": null
                                 }
@@ -130647,7 +130895,7 @@
                                   "IncludeSeriesNameInLegend": true,
                                   "Cumulative": false,
                                   "CumulativeX": false,
-                                  "Filter": null,
+                                  "Filter": "Sowing =\"PT1000\"",
                                   "Name": "Plantain",
                                   "ResourceName": null,
                                   "Children": [],
@@ -130680,7 +130928,7 @@
                                   "Name": "Ryegrass",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 },
                                 {
@@ -130709,7 +130957,7 @@
                                   "Name": "WhiteClover",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
@@ -131116,6 +131364,193 @@
                                   "Name": "TellFescue",
                                   "ResourceName": null,
                                   "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                }
+                              ],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Graph, Models",
+                              "Caption": null,
+                              "Axis": [
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 3,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                },
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 0,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                }
+                              ],
+                              "LegendPosition": 0,
+                              "LegendOrientation": 0,
+                              "AnnotationLocation": 0,
+                              "DisabledSeries": [],
+                              "LegendOutsideGraph": false,
+                              "Name": "AboveGround1",
+                              "ResourceName": null,
+                              "Children": [
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -16747854,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": null,
+                                  "FactorToVaryLines": "NRate",
+                                  "Marker": 11,
+                                  "MarkerSize": 0,
+                                  "Line": 0,
+                                  "LineThickness": 0,
+                                  "TableName": "Report",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "TotalAboveGroundDM",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": "Sowing =\"PT1000\"",
+                                  "Name": "Predicted",
+                                  "ResourceName": null,
+                                  "Children": [
+                                    {
+                                      "$type": "Models.EventNamesOnGraph, Models",
+                                      "ColumnName": "PlantainForage.Phenology.CurrentStageName",
+                                      "SimulationName": "LincolnMixNRate0SowingPT1000",
+                                      "Name": "EventNamesOnGraph",
+                                      "ResourceName": null,
+                                      "Children": [],
+                                      "Enabled": true,
+                                      "ReadOnly": false
+                                    }
+                                  ],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                },
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -16747854,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": "NRate",
+                                  "FactorToVaryLines": null,
+                                  "Marker": 4,
+                                  "MarkerSize": 0,
+                                  "Line": 4,
+                                  "LineThickness": 0,
+                                  "TableName": "Observed",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "HarvestedWt",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": "",
+                                  "Name": "Observed",
+                                  "ResourceName": null,
+                                  "Children": [],
+                                  "Enabled": true,
+                                  "ReadOnly": false
+                                }
+                              ],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            },
+                            {
+                              "$type": "Models.Graph, Models",
+                              "Caption": null,
+                              "Axis": [
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 3,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                },
+                                {
+                                  "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                                  "Title": null,
+                                  "Position": 0,
+                                  "Inverted": false,
+                                  "CrossesAtZero": false,
+                                  "LabelOnOneLine": false,
+                                  "Minimum": null,
+                                  "Maximum": null,
+                                  "Interval": null
+                                }
+                              ],
+                              "LegendPosition": 0,
+                              "LegendOrientation": 0,
+                              "AnnotationLocation": 0,
+                              "DisabledSeries": [],
+                              "LegendOutsideGraph": false,
+                              "Name": "Photosynthesis",
+                              "ResourceName": null,
+                              "Children": [
+                                {
+                                  "$type": "Models.Series, Models",
+                                  "Type": 1,
+                                  "XAxis": 3,
+                                  "YAxis": 0,
+                                  "ColourArgb": -16747854,
+                                  "FactorToVaryColours": "Sowing",
+                                  "FactorToVaryMarkers": null,
+                                  "FactorToVaryLines": "NRate",
+                                  "Marker": 11,
+                                  "MarkerSize": 0,
+                                  "Line": 0,
+                                  "LineThickness": 0,
+                                  "TableName": "Report",
+                                  "XFieldName": "Date",
+                                  "YFieldName": "PlantainForage.leaf.Photosynthesis",
+                                  "X2FieldName": null,
+                                  "Y2FieldName": null,
+                                  "ShowInLegend": true,
+                                  "IncludeSeriesNameInLegend": true,
+                                  "Cumulative": false,
+                                  "CumulativeX": false,
+                                  "Filter": null,
+                                  "Name": "Plantain",
+                                  "ResourceName": null,
+                                  "Children": [
+                                    {
+                                      "$type": "Models.EventNamesOnGraph, Models",
+                                      "ColumnName": "PlantainForage.Phenology.CurrentStageName",
+                                      "SimulationName": "LincolnMixNRate0SowingPT1000",
+                                      "Name": "EventNamesOnGraph",
+                                      "ResourceName": null,
+                                      "Children": [],
+                                      "Enabled": true,
+                                      "ReadOnly": false
+                                    }
+                                  ],
                                   "Enabled": true,
                                   "ReadOnly": false
                                 }
@@ -133105,7 +133540,7 @@
                           "Axis": [
                             {
                               "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": "Growth limiting factor",
+                              "Title": null,
                               "Position": 0,
                               "Inverted": false,
                               "CrossesAtZero": false,
@@ -133139,35 +133574,6 @@
                               "Type": 1,
                               "XAxis": 3,
                               "YAxis": 0,
-                              "ColourArgb": -11094807,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "Chicory.Leaf.Photosynthesis.FCO2",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Chicory",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
                               "ColourArgb": -1663232,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
@@ -133179,8 +133585,8 @@
                               "TableName": "Report",
                               "XFieldName": "Date",
                               "YFieldName": "Plantain.Leaf.Photosynthesis.FCO2",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133200,16 +133606,16 @@
                               "ColourArgb": -16736653,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
+                              "FactorToVaryLines": "SimulationName",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 0,
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "Ryegrass.GlfCO2",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPRyegrass.GlfCO2",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133226,48 +133632,19 @@
                               "Type": 1,
                               "XAxis": 3,
                               "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "AGPLucerne.GlfCO2",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Lucerne",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
                               "ColourArgb": -3376729,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
+                              "FactorToVaryLines": "SimulationName",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 0,
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "WhiteClover.Leaf.Photosynthesis.FCO2",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPWhiteClover.GlfCO2",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133289,7 +133666,7 @@
                           "Axis": [
                             {
                               "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": "Growth limiting factor",
+                              "Title": null,
                               "Position": 0,
                               "Inverted": false,
                               "CrossesAtZero": false,
@@ -133323,48 +133700,19 @@
                               "Type": 1,
                               "XAxis": 3,
                               "YAxis": 0,
-                              "ColourArgb": -11094807,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "Chicory.Leaf.Photosynthesis.FN",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Chicory",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
                               "ColourArgb": -1663232,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
+                              "FactorToVaryLines": "SimulationName",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 0,
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "Plantain.Leaf.Photosynthesis.FN",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "PlantainForage.Leaf.Fn",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133391,44 +133739,15 @@
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "Ryegrass.GlfNSupply",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPWhiteClover.GlfNSupply",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
                               "CumulativeX": false,
                               "Filter": null,
                               "Name": "Ryegrass",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "AGPLucerne.GlfNSupply",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Lucerne",
                               "ResourceName": null,
                               "Children": [],
                               "Enabled": true,
@@ -133449,9 +133768,9 @@
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "WhiteClover.Leaf.Photosynthesis.FN",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPWhiteClover.GlfNSupply",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133473,7 +133792,7 @@
                           "Axis": [
                             {
                               "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": "Growth limiting factor",
+                              "Title": null,
                               "Position": 0,
                               "Inverted": false,
                               "CrossesAtZero": false,
@@ -133507,35 +133826,6 @@
                               "Type": 1,
                               "XAxis": 3,
                               "YAxis": 0,
-                              "ColourArgb": -11094807,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "Chicory.Leaf.Photosynthesis.FW",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Chicory",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
                               "ColourArgb": -1663232,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
@@ -133546,9 +133836,9 @@
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "Plantain.Leaf.Photosynthesis.FW",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "PlantainForage.Leaf.Fw",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133575,44 +133865,15 @@
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "Ryegrass.GlfWaterSupply",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPRyegrass.GlfWaterSupply",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
                               "CumulativeX": false,
                               "Filter": null,
                               "Name": "Ryegrass",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "AGPLucerne.GlfWaterSupply",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Lucerne",
                               "ResourceName": null,
                               "Children": [],
                               "Enabled": true,
@@ -133633,9 +133894,9 @@
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "WhiteClover.Leaf.Photosynthesis.FW",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPWhiteClover.GlfWaterSupply",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133691,35 +133952,6 @@
                               "Type": 1,
                               "XAxis": 3,
                               "YAxis": 0,
-                              "ColourArgb": -11094807,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "Chicory.Leaf.Photosynthesis.FT",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Chicory",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
                               "ColourArgb": -1663232,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
@@ -133752,16 +133984,16 @@
                               "ColourArgb": -16736653,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
+                              "FactorToVaryLines": "SimulationName",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 0,
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "Ryegrass.GlfTemperature",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPRyegrass.GlfTemperature",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -133778,48 +134010,19 @@
                               "Type": 1,
                               "XAxis": 3,
                               "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "AGPLucerne.GlfTemperature",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Lucerne",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
                               "ColourArgb": -3376729,
                               "FactorToVaryColours": null,
                               "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "NRate",
+                              "FactorToVaryLines": "SimulationName",
                               "Marker": 11,
                               "MarkerSize": 0,
                               "Line": 0,
                               "LineThickness": 0,
                               "TableName": "Report",
                               "XFieldName": "Date",
-                              "YFieldName": "WhiteClover.Leaf.Photosynthesis.FT",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
+                              "YFieldName": "AGPWhiteClover.GlfTemperature",
+                              "X2FieldName": null,
+                              "Y2FieldName": null,
                               "ShowInLegend": true,
                               "IncludeSeriesNameInLegend": true,
                               "Cumulative": false,
@@ -134069,7 +134272,7 @@
                           "ColourArgb": -16747854,
                           "FactorToVaryColours": "Sowing",
                           "FactorToVaryMarkers": null,
-                          "FactorToVaryLines": "Sowing",
+                          "FactorToVaryLines": "NRate",
                           "Marker": 11,
                           "MarkerSize": 1,
                           "Line": 2,
@@ -135645,7 +135848,7 @@
                               "YAxis": 0,
                               "ColourArgb": -1663232,
                               "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
+                              "FactorToVaryMarkers": "NRate",
                               "FactorToVaryLines": "Sowing",
                               "Marker": 11,
                               "MarkerSize": 1,
@@ -135797,7 +136000,7 @@
                             },
                             {
                               "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": "Biomass fraction",
+                              "Title": null,
                               "Position": 0,
                               "Inverted": false,
                               "CrossesAtZero": false,
@@ -135822,7 +136025,7 @@
                               "YAxis": 0,
                               "ColourArgb": -16736653,
                               "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
+                              "FactorToVaryMarkers": "NRate",
                               "FactorToVaryLines": "Sowing",
                               "Marker": 11,
                               "MarkerSize": 1,
@@ -135859,7 +136062,7 @@
                               "LineThickness": 0,
                               "TableName": "Observed",
                               "XFieldName": "Date",
-                              "YFieldName": "Grass.BiomassFraction",
+                              "YFieldName": "Ryegrass.BiomassFraction",
                               "X2FieldName": null,
                               "Y2FieldName": null,
                               "ShowInLegend": true,
@@ -135999,7 +136202,7 @@
                               "YAxis": 0,
                               "ColourArgb": -3376729,
                               "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
+                              "FactorToVaryMarkers": "NRate",
                               "FactorToVaryLines": "Sowing",
                               "Marker": 11,
                               "MarkerSize": 1,
@@ -136105,183 +136308,6 @@
                               "TableName": "PredictedObserved",
                               "XFieldName": "Observed.WhiteClover.BiomassFraction",
                               "YFieldName": "Predicted.WhiteClover.BiomassFraction",
-                              "X2FieldName": "",
-                              "Y2FieldName": "",
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": false,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "PO",
-                              "ResourceName": null,
-                              "Children": [
-                                {
-                                  "$type": "Models.Regression, Models",
-                                  "ForEachSeries": false,
-                                  "showOneToOne": true,
-                                  "showEquation": true,
-                                  "Name": "Regression",
-                                  "ResourceName": null,
-                                  "Children": [],
-                                  "Enabled": false,
-                                  "ReadOnly": false
-                                }
-                              ],
-                              "Enabled": false,
-                              "ReadOnly": false
-                            }
-                          ],
-                          "Enabled": false,
-                          "ReadOnly": false
-                        },
-                        {
-                          "$type": "Models.Graph, Models",
-                          "Caption": null,
-                          "Axis": [
-                            {
-                              "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": null,
-                              "Position": 3,
-                              "Inverted": false,
-                              "CrossesAtZero": false,
-                              "LabelOnOneLine": false,
-                              "Minimum": null,
-                              "Maximum": null,
-                              "Interval": null
-                            },
-                            {
-                              "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": "Biomass fraction",
-                              "Position": 0,
-                              "Inverted": false,
-                              "CrossesAtZero": false,
-                              "LabelOnOneLine": false,
-                              "Minimum": null,
-                              "Maximum": null,
-                              "Interval": null
-                            }
-                          ],
-                          "LegendPosition": 1,
-                          "LegendOrientation": 0,
-                          "AnnotationLocation": 0,
-                          "DisabledSeries": [],
-                          "LegendOutsideGraph": false,
-                          "Name": "TallFescue",
-                          "ResourceName": null,
-                          "Children": [
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": null,
-                              "FactorToVaryLines": "Sowing",
-                              "Marker": 11,
-                              "MarkerSize": 0,
-                              "Line": 0,
-                              "LineThickness": 0,
-                              "TableName": "Report",
-                              "XFieldName": "Date",
-                              "YFieldName": "ExtraVariables.Script.SpeciesFraction(4)",
-                              "X2FieldName": null,
-                              "Y2FieldName": null,
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Predicted",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            },
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": "Sowing",
-                              "FactorToVaryLines": null,
-                              "Marker": 0,
-                              "MarkerSize": 1,
-                              "Line": 4,
-                              "LineThickness": 0,
-                              "TableName": "Observed",
-                              "XFieldName": "Date",
-                              "YFieldName": "Grass.BiomassFraction",
-                              "X2FieldName": null,
-                              "Y2FieldName": null,
-                              "ShowInLegend": true,
-                              "IncludeSeriesNameInLegend": true,
-                              "Cumulative": false,
-                              "CumulativeX": false,
-                              "Filter": null,
-                              "Name": "Observed",
-                              "ResourceName": null,
-                              "Children": [],
-                              "Enabled": true,
-                              "ReadOnly": false
-                            }
-                          ],
-                          "Enabled": true,
-                          "ReadOnly": false
-                        },
-                        {
-                          "$type": "Models.Graph, Models",
-                          "Caption": null,
-                          "Axis": [
-                            {
-                              "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": null,
-                              "Position": 3,
-                              "Inverted": false,
-                              "CrossesAtZero": false,
-                              "LabelOnOneLine": false,
-                              "Minimum": null,
-                              "Maximum": null,
-                              "Interval": null
-                            },
-                            {
-                              "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
-                              "Title": null,
-                              "Position": 0,
-                              "Inverted": false,
-                              "CrossesAtZero": false,
-                              "LabelOnOneLine": false,
-                              "Minimum": null,
-                              "Maximum": null,
-                              "Interval": null
-                            }
-                          ],
-                          "LegendPosition": 1,
-                          "LegendOrientation": 0,
-                          "AnnotationLocation": 0,
-                          "DisabledSeries": [],
-                          "LegendOutsideGraph": false,
-                          "Name": "TallFescue_PO",
-                          "ResourceName": null,
-                          "Children": [
-                            {
-                              "$type": "Models.Series, Models",
-                              "Type": 1,
-                              "XAxis": 3,
-                              "YAxis": 0,
-                              "ColourArgb": -16747854,
-                              "FactorToVaryColours": null,
-                              "FactorToVaryMarkers": "NRate",
-                              "FactorToVaryLines": null,
-                              "Marker": 0,
-                              "MarkerSize": 1,
-                              "Line": 4,
-                              "LineThickness": 0,
-                              "TableName": "PredictedObserved",
-                              "XFieldName": "Observed.Lucerne.BiomassFraction",
-                              "YFieldName": "Predicted.Lucerne.BiomassFraction",
                               "X2FieldName": "",
                               "Y2FieldName": "",
                               "ShowInLegend": true,
