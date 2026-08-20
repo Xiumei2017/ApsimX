@@ -332,7 +332,10 @@ namespace APSIM.Shared.Utilities
 
                 for(int j = 0; j < numColumns; j++)
                 {
-                    row.Inputs.Add(values[i+j].ToString());
+                    if (columns[j].ToLower() == "date")
+                        row.Inputs.Add(row.Date.ToString("yyyy-MM-dd"));
+                    else
+                        row.Inputs.Add(values[i+j].ToString());
                     row.Values.Add(values[i+j]);
                 }
                 data.Rows.Add(row);
@@ -860,6 +863,9 @@ namespace APSIM.Shared.Utilities
                     metData.Contants.Add(new MetConstant("! "+ trimmed));
                 }
             }
+
+            if (string.IsNullOrEmpty(columnNameLine))
+                throw new Exception("A row without symbols and with the required columns maxt, mint and rain was never found. Unable to read met file.");
             
             //work out our column names and units
             string[] columnParts = columnNameLine.Split(" ");
