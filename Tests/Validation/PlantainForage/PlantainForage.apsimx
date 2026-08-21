@@ -88829,7 +88829,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###Massey university research farm###\r\n\r\nSimulation setup based on field trial performed at No1 Dairy Unit at Massey University in Palmerston North. A grazing experiment was conducted during 2011-2012 (first growing season) and 2012-2013 (second growing season), New Zealand (40° 22′S, 175° 36′E). Three pasture treatments were evaluated: (i) chicory, (ii) plantain, and (iii) an herb-clover mix pasture, containing chicory, plantain, red clover and white clover, under two grazing frequencies; every two or four weeks. Perennial ryegrass/white clover pasture was also established and grazed to provide a benchmark.\n\r\nThe soil at the experimental site was a Manawatu silt loam over sand. Soils tests to 75 mm depth were conducted \nat the experimental site and showed levels of soil fertility of Olsen phosphate of 31 ppm, sulphate of 13 ppm, potassium of 0.42 me/100g, and pH 5.7. Before sowing, the paddock was ploughed, power harrowed, fertilised with 27, 18, 18 kg/ha nitrogen (N), phosphorus (P) and potassium (K), respectively.  \r\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
+                  "Text": "###Plantain Potency and Practice SFFF###\r\n\r\nSimulation setup based on plantain small plot field trials conducted at DairyNZ site in Waikato (-37.769011, 175.369699), New Zealand during 2022-2024. The experiment consisted of a randomised complete block design with 20 cultivar treatments and five blocks. The treatments consisted of nine breeding lines and nine commercially available diploid plantain cultivars and two diploid ryegrass control (cv. “Legion AR37”). Legion AR37 is marketed as a perennial ryegrass, however, it is certified as Lolium x boucheanum Kunth due to a small number of tip awns. To maintain experimental integrity, the identities of the plantain cultivars were blinded by assigning each a number from one to twenty. The simulatios included all plantain cultivars and pereninal ryegrass. However, only “AgriTonic” (treatment Two) was enabled in this siumlation, beacuse other cultivars need further parameteriation. \n\r\nThe soil at the experimental site was a MTypic Sandy Gley. Soils tests to 75 mm depth were conducted at the experimental site and showed pH of 5.9, Olsen P (mg L-1) of 36, K (me100g-1) of 0.67, Ca (me 100g-1) of 7.9, Mg (me 100g-1) of 1.3,\tNa (me 100g-1) of 0.11,\tCation Exchange Capacity (me 100g-1) of 20, Sulphate S (mg kg-1) of 25, and Organic S (mg kg-1) of 12. This site was grazed pasture previously, it received a double spray with a glyphosate product four weeks apart, then ploughed, power-harrowed, rolled, and levelled to create a firm, fine seedbed.  \r\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -88870,11 +88870,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -88930,11 +88930,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -88960,11 +88960,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -88990,11 +88990,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89020,11 +89020,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89050,11 +89050,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89080,11 +89080,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89110,11 +89110,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89147,11 +89147,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89177,11 +89177,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89207,11 +89207,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89237,11 +89237,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89267,11 +89267,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89297,11 +89297,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89327,11 +89327,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89357,11 +89357,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89387,11 +89387,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89417,11 +89417,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89447,11 +89447,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         }
                       ],
@@ -106548,7 +106548,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###Massey university research farm###\r\n\r\nSimulation setup based on field trial performed at No1 Dairy Unit at Massey University in Palmerston North. A grazing experiment was conducted during 2011-2012 (first growing season) and 2012-2013 (second growing season), New Zealand (40° 22′S, 175° 36′E). Three pasture treatments were evaluated: (i) chicory, (ii) plantain, and (iii) an herb-clover mix pasture, containing chicory, plantain, red clover and white clover, under two grazing frequencies; every two or four weeks. Perennial ryegrass/white clover pasture was also established and grazed to provide a benchmark.\n\r\nThe soil at the experimental site was a Manawatu silt loam over sand. Soils tests to 75 mm depth were conducted \nat the experimental site and showed levels of soil fertility of Olsen phosphate of 31 ppm, sulphate of 13 ppm, potassium of 0.42 me/100g, and pH 5.7. Before sowing, the paddock was ploughed, power harrowed, fertilised with 27, 18, 18 kg/ha nitrogen (N), phosphorus (P) and potassium (K), respectively.  \r\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
+                  "Text": "###Plantain Potency and Practice SFFF###\n\nSimulation setup based on plantain small plot field trials conducted at Agricom site in Manawatū (-40.121756, 175.642837), New Zealand during 2022-2024. The experiment consisted of a randomised complete block design with 10 cultivar treatments and five blocks. The treatments consisted of nine commercially available diploid plantain cultivars and a diploid ryegrass control (cv. “Legion AR37”). Legion AR37 is marketed as a perennial ryegrass, however, it is certified as Lolium x boucheanum Kunth due to a small number of tip awns. To maintain experimental integrity, the identities of the plantain cultivars were blinded by assigning each a number from one to nine. This simulation included all plantain cultivars and pereninal ryegrass. However, only “AgriTonic” (treatment Two) was enabled, beacuse other cultivars need further parameteriation.\n\nThe soil at the experimental site was Argillic-fragic Perch-gley Pallic. Soils tests to 75 mm depth were conducted at the experimental site and showed pH of 5.9, Olsen P (mg L-1) of 22, K (me100g-1) of 0.17, Ca (me 100g-1) of 7.7, Mg (me 100g-1) of 0.78, Na (me 100g-1) of 0.10, Cation Exchange Capacity (me 100g-1) of 15, Sulphate S (mg kg-1) of 6, Organic S (mg kg-1) of 6, potentially available N (kg ha-1) of 183 and anaerobically mineralisable N (ug kg-1)of 141. This site was non-grazed maize crop previously, it was ploughed, power-harrowed, rolled, and levelled to create a firm, fine seedbed.\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -106589,11 +106589,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106649,11 +106649,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106679,11 +106679,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106709,11 +106709,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106739,11 +106739,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106769,11 +106769,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106799,11 +106799,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106829,11 +106829,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -106866,11 +106866,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         }
                       ],
@@ -123976,7 +123976,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###Massey university research farm###\r\n\r\nSimulation setup based on field trial performed at No1 Dairy Unit at Massey University in Palmerston North. A grazing experiment was conducted during 2011-2012 (first growing season) and 2012-2013 (second growing season), New Zealand (40° 22′S, 175° 36′E). Three pasture treatments were evaluated: (i) chicory, (ii) plantain, and (iii) an herb-clover mix pasture, containing chicory, plantain, red clover and white clover, under two grazing frequencies; every two or four weeks. Perennial ryegrass/white clover pasture was also established and grazed to provide a benchmark.\n\r\nThe soil at the experimental site was a Manawatu silt loam over sand. Soils tests to 75 mm depth were conducted \nat the experimental site and showed levels of soil fertility of Olsen phosphate of 31 ppm, sulphate of 13 ppm, potassium of 0.42 me/100g, and pH 5.7. Before sowing, the paddock was ploughed, power harrowed, fertilised with 27, 18, 18 kg/ha nitrogen (N), phosphorus (P) and potassium (K), respectively.  \r\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
+                  "Text": "###Plantain Potency and Practice SFFF###\n\nSimulation setup based on plantain small plot field trials conducted at Agricom site in Manawatū (-43.615591, 172.475529), New Zealand during 2022-2024. The experiment consisted of a randomised complete block design with 20 cultivar treatments and five blocks. The treatments consisted of nine breeding lines and nine commercially available diploid plantain cultivars and two diploid ryegrass control (cv. “Legion AR37”). Legion AR37 is marketed as a perennial ryegrass, however, it is certified as Lolium x boucheanum Kunth due to a small number of tip awns. To maintain experimental integrity, the identities of the plantain cultivars were blinded by assigning each a number from one to twenty. This simulation included all plantain cultivars and pereninal ryegrass. However, only “AgriTonic” (treatment Two) was enabled, beacuse other cultivars need further parameteriation.\n\nThe soil at the experimental site was a Immature Pallic. Soils tests to 75 mm depth were conducted at the experimental site and showed pH of 6.0, Olsen P (mg L-1) of 35, K (me100g-1) of 0.97, Ca (me 100g-1) of 7.7, Mg (me 100g-1) of 0.93, Na (me 100g-1) of 0.37, Cation Exchange Capacity (me 100g-1) of 15, Sulphate S (mg kg-1) of 10, Organic S (mg kg-1) of 4, potentially available N (kg ha-1) of 82 and anaerobically mineralisable N (ug kg-1) of 59. This site was non-grazed fodder beet crop previously, it was ploughed, power-harrowed, rolled, and levelled to create a firm, fine seedbed.\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -124017,11 +124017,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124077,11 +124077,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124107,11 +124107,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124137,11 +124137,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124167,11 +124167,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124197,11 +124197,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124227,11 +124227,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124257,11 +124257,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124294,11 +124294,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124324,11 +124324,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124354,11 +124354,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124384,11 +124384,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124414,11 +124414,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124444,11 +124444,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124474,11 +124474,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124504,11 +124504,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124534,11 +124534,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124564,11 +124564,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -124594,11 +124594,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         }
                       ],
@@ -141793,7 +141793,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###Massey university research farm###\r\n\r\nSimulation setup based on field trial performed at No1 Dairy Unit at Massey University in Palmerston North. A grazing experiment was conducted during 2011-2012 (first growing season) and 2012-2013 (second growing season), New Zealand (40° 22′S, 175° 36′E). Three pasture treatments were evaluated: (i) chicory, (ii) plantain, and (iii) an herb-clover mix pasture, containing chicory, plantain, red clover and white clover, under two grazing frequencies; every two or four weeks. Perennial ryegrass/white clover pasture was also established and grazed to provide a benchmark.\n\r\nThe soil at the experimental site was a Manawatu silt loam over sand. Soils tests to 75 mm depth were conducted \nat the experimental site and showed levels of soil fertility of Olsen phosphate of 31 ppm, sulphate of 13 ppm, potassium of 0.42 me/100g, and pH 5.7. Before sowing, the paddock was ploughed, power harrowed, fertilised with 27, 18, 18 kg/ha nitrogen (N), phosphorus (P) and potassium (K), respectively.  \r\n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
+                  "Text": "###Plantain Potency and Practice SFFF###\n\nSimulation setup based on plantain small plot field trials conducted at Lincoln University and DairyNZ site in Southland (-46.311809, 168.310138), New Zealand during 2022-2024. The experiment consisted of a randomised complete block design with 10 cultivar treatments and five blocks. The treatments consisted of nine commercially available diploid plantain cultivars and a diploid ryegrass control (cv. “Legion AR37”). Legion AR37 is marketed as a perennial ryegrass, however, it is certified as Lolium x boucheanum Kunth due to a small number of tip awns. To maintain experimental integrity, the identities of the plantain cultivars were blinded by assigning each a number from one to nine. The simulatios included all plantain cultivars and pereninal ryegrass. However, only “AgriTonic” (treatment Two) was enabled in this siumlation, beacuse other cultivars need further parameteriation.\n\nThe soil at the experimental site was Typic Firm Brown. Soils tests to 75 mm depth were conducted at the experimental site and showed pH of 5.7, Olsen P (mg L-1) of 46, K (me100g-1) of 0.37, Ca (me 100g-1) of 6.1, Mg (me 100g-1) of 0.97, Na (me 100g-1) of 0.19, Cation Exchange Capacity (me 100g-1) of 19, Sulphate S (mg kg-1) of 48, Organic S (mg kg-1) of 9, potentially available N (kg ha-1) of 189 and anaerobically mineralisable N (ug kg-1) of 161. This site was grazed pasture previously, it received a double spray with a glyphosate product four weeks apart, then ploughed, power-harrowed, rolled, and levelled to create a firm, fine seedbed. \n\nWeather data was obtained from nearby weather station (NIWA).\r\n\r\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -141834,11 +141834,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -141894,11 +141894,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -141924,11 +141924,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -141954,11 +141954,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -141984,11 +141984,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -142014,11 +142014,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -142044,11 +142044,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -142074,11 +142074,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -142111,11 +142111,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         }
                       ],
@@ -159298,7 +159298,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###Lincoln univerity Thinzar PhD###\r\n\r\n\n",
+                  "Text": "###Lincoln univerity Thinzar PhD###\r\n\r\nSimulation setup was based on a pasture mixture with plantain experiment conducted at Lincoln University (-43.3857, 172.2800), New Zealand between 2017 and 2021. The original experiment included ten mixtures of perennial ryegrass cv. Rely AR37 (PR), white  clover  cv. Quartz  (WC)  and  plantain  cv. Tonic (P) were grown ±N fertiliser under irrigated condition (Soe Myint et al., 2022). In brief, there were three single-species mixtures  (monocultures),  three  binary  mixtures  (50%  of each of two species), one even mixture (33.3% of each species) and three mixtures dominated in turn by each species (66.6% of one species and 16.6% of each of the other species). This simulation only included the plantain monoculture with ±N fertiliser levels at two seed densities (1000 and 2000 seeds/m2) under irrigated condition. The annual irrigation was 220 mm in the 2017/2018 season, 217 mm in the 2018/2019 season, 435 mm in the 2019/2020 season, and 540 mm in the 2020/2021 growing season.  \n\nThe soil type is a Wakanui silt loam and classified as a Mottled Immature Pallic Soil in the New Zealand. Soil Classification and Udic Ustochrept in USDA Soil Taxonomy. The soil had a \nmedium fertility (pH 6, Olsen P 16 mg/L, Ca 7.3 me/100 g, Mg 0.98 me/100 g, K 0.40 me/100 g, Na 0.14 me/100 g and SO4-S 4 μg/g in top 75 mm) when sampled on 20 March 2017. This site was grazed pasture previously and was sprayed out on 16 March 2017 (glyphosate, 470 g/L at 2 L/ha with 200 L/ha water; WeedMaster TS470, Nufarm, NZ), cultivated on 22 March 2017 (rota crumbler), fertilised on 23 March 2017 (9% P, 11% S, 20% Ca at 300 kg/ha; Superphosphate, Ravensdown, NZ), cultivated into a seed bed on 29 March 2017 (heavy grubber then power harrow and Cambridge roller).\n\nWeather data was obtained from nearby weather station (NIWA).\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -159648,8 +159648,8 @@
                                       "$type": "Models.Operation, Models",
                                       "Enabled": true,
                                       "Date": "2017-03-31",
-                                      "Action": "[PlantainForage].Sow(population: 100, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)",
-                                      "Line": "2017-03-31 [PlantainForage].Sow(population: 100, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)"
+                                      "Action": "[PlantainForage].Sow(population: 200, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)",
+                                      "Line": "2017-03-31 [PlantainForage].Sow(population: 200, cultivar: \"Tonic\", depth: 10, rowSpacing: 150)"
                                     }
                                   ],
                                   "Name": "Sowing",
@@ -160104,225 +160104,225 @@
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-08-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-08-06 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-08-06 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-09-20",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-09-20 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-09-20 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-10-25",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-10-25 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-10-25 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2017-12-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2017-12-06 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2017-12-06 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-01-19",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-01-19 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-01-19 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-02-19",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-02-19 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-02-19 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-03-26",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-03-26 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-03-26 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-05-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-05-21 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-05-21 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-08-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-08-06 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-08-06 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-09-23",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-09-23 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-09-23 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-11-02",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-11-02 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-11-02 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2018-12-10",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2018-12-10 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2018-12-10 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-01-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-01-21 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-01-21 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-02-26",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-02-26 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-02-26 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-04-04",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-04-04 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-04-04 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-05-24",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-05-24 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-05-24 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-08-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-08-06 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-08-06 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-09-23",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-09-23 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-09-23 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-10-31",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-10-31 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-10-31 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2019-12-16",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2019-12-16 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2019-12-16 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-01-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-01-21 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-01-21 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-02-24",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-02-24 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-02-24 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-04-06",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-04-06 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-04-06 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-06-08",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-06-08 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-06-08 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-08-07",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-08-07 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-08-07 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-09-30",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-09-30 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-09-30 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-11-02",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-11-02 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-11-02 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2020-12-10",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2020-12-10 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2020-12-10 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-01-21",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-01-21 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-01-21 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-02-25",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-02-25 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-02-25 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-04-01",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-04-01 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-04-01 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 },
                                 {
                                   "$type": "Models.Operation, Models",
                                   "Enabled": true,
                                   "Date": "2021-06-01",
-                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)",
-                                  "Line": "2021-06-01 [DefoliationManager].Script.Defoliate(amountDM: 40, amountType: \"ResidualDM\", duration: 1)"
+                                  "Action": "[DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)",
+                                  "Line": "2021-06-01 [DefoliationManager].Script.Defoliate(amountDM: 10, amountType: \"ResidualDM\", duration: 1)"
                                 }
                               ],
                               "Name": "DefoliationSchedule",
@@ -162908,6 +162908,7 @@
                           "VariableNames": [
                             "[Clock].Today as Date",
                             "[Clock].Today.DayOfYear as DayOfYear",
+                            "[MicroClimate].CanopyCover as Cover",
                             "",
                             "[PlantainForage].Population as Population",
                             "[PlantainForage].AboveGround.Wt as AboveGround.Wt",
@@ -176665,6 +176666,183 @@
                           "TableName": "PredictedObserved",
                           "XFieldName": "Observed.MeanGrowthRate",
                           "YFieldName": "Predicted.MeanGrowthRate",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": false,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "PO",
+                          "ResourceName": null,
+                          "Children": [
+                            {
+                              "$type": "Models.Regression, Models",
+                              "ForEachSeries": false,
+                              "showOneToOne": true,
+                              "showEquation": true,
+                              "Name": "Regression",
+                              "ResourceName": null,
+                              "Children": [],
+                              "Enabled": true,
+                              "ReadOnly": false
+                            }
+                          ],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        }
+                      ],
+                      "Enabled": true,
+                      "ReadOnly": false
+                    },
+                    {
+                      "$type": "Models.Graph, Models",
+                      "Caption": null,
+                      "Axis": [
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 0,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        },
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 3,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        }
+                      ],
+                      "LegendPosition": 1,
+                      "LegendOrientation": 0,
+                      "AnnotationLocation": 0,
+                      "DisabledSeries": [],
+                      "LegendOutsideGraph": false,
+                      "Name": "Cover",
+                      "ResourceName": null,
+                      "Children": [
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -16736653,
+                          "FactorToVaryColours": "NRate",
+                          "FactorToVaryMarkers": null,
+                          "FactorToVaryLines": "SowingRate",
+                          "Marker": 11,
+                          "MarkerSize": 0,
+                          "Line": 0,
+                          "LineThickness": 0,
+                          "TableName": "ValidationReport",
+                          "XFieldName": "Date",
+                          "YFieldName": "Cover",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": true,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "Predicted",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -2793984,
+                          "FactorToVaryColours": "NRate",
+                          "FactorToVaryMarkers": "SowingRate",
+                          "FactorToVaryLines": null,
+                          "Marker": 11,
+                          "MarkerSize": 0,
+                          "Line": 4,
+                          "LineThickness": 0,
+                          "TableName": "Observed",
+                          "XFieldName": "Date",
+                          "YFieldName": "Cover",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": true,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "Observed",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        }
+                      ],
+                      "Enabled": true,
+                      "ReadOnly": false
+                    },
+                    {
+                      "$type": "Models.Graph, Models",
+                      "Caption": null,
+                      "Axis": [
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 3,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        },
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 0,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        }
+                      ],
+                      "LegendPosition": 0,
+                      "LegendOrientation": 0,
+                      "AnnotationLocation": 3,
+                      "DisabledSeries": [],
+                      "LegendOutsideGraph": false,
+                      "Name": "Cover_PO",
+                      "ResourceName": null,
+                      "Children": [
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -16777216,
+                          "FactorToVaryColours": "NRate",
+                          "FactorToVaryMarkers": "SowingRate",
+                          "FactorToVaryLines": null,
+                          "Marker": 0,
+                          "MarkerSize": 1,
+                          "Line": 4,
+                          "LineThickness": 0,
+                          "TableName": "PredictedObserved",
+                          "XFieldName": "Observed.Cover",
+                          "YFieldName": "Predicted.Cover",
                           "X2FieldName": null,
                           "Y2FieldName": null,
                           "ShowInLegend": true,
