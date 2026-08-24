@@ -33605,7 +33605,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Kerikeri###\n\nThis experiment\r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "###SFFF Kerikeri mixture###\n\nSimulation setup was based on a pasture mixture with plantain experiment conducted in Kerikeri (-35.183540, 173.939263), New Zealand between 2021 and 2023. The original experimental design consisted of a randomised complete block design with 10 treatments and 5 to 8 replicates. The treatments consisted of 100% perennial ryegrass, 100% plantain, 15% plantain and perennial ryegrass, 30% plantain and perennial ryegrass, 50% plantain and perennial ryegrass, 30% plantain and perennial ryegrass and white clover, 30% plantain and tall fescue, 30% plantain and tetraploid perennial, 30% plantain and diploid Italian, and 30% plantain and mohaka tetraploid hybrid. This simulation included all treatments, but plantian and perennial ryegrass monoculture were disabled. Nitrogen fertiliser was applied to replace the N removed postharvest, calculated assuming an N concentration of 3% in the harvested herbage.\n\nThe soil at the experimental site was a Clayey loam, Nodular Perch-Gley Oxidic. The parameters required were inferred using data from soil sample analysis down to 100 cm in depth with intervals of 10 cm from soil surface to 40 cm, and 20 cm intervals from 40 to 100 cm.\n\nWeather data was obtained from nearby Ruakura weather station (NIWA).",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -33667,11 +33667,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -33697,11 +33697,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -47314,7 +47314,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "###SFFF Waikato Allophanic mixture###\n\nSimulation setup was based on a pasture mixture with plantain experiment conducted in Waikato (-37.916372, 175.194547), New Zealand between 2021 and 2024. The original experimental design consisted of a randomised complete block design with 10 treatments and 5 to 8 replicates. The treatments consisted of 100% perennial ryegrass, 100% plantain, 15% plantain and perennial ryegrass, 30% plantain and perennial ryegrass, 50% plantain and perennial ryegrass, 30% plantain and perennial ryegrass and white clover, 30% plantain and tall fescue, 30% plantain and tetraploid perennial, 30% plantain and diploid Italian, and 30% plantain and mohaka tetraploid hybrid. This simulation included all treatments, but plantian and perennial ryegrass monoculture were disabled. Nitrogen fertiliser was applied to replace the N removed postharvest, calculated assuming an N concentration of 3% in the harvested herbage.\n\nThe soil at the experimental site was a Typic Orthic Allophanic Soil (NZ), Typic Udivitrand (US). The parameters required were inferred using data from soil sample analysis down to 100 cm in depth with intervals of 10 cm from soil surface to 40 cm, and 20 cm intervals from 40 to 100 cm.\n\nWeather data was obtained from nearby Hamilton weather station (NIWA).\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -47376,11 +47376,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -47427,11 +47427,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -61180,7 +61180,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "###SFFF Waikato Gley mixture###\n\nSimulation setup was based on a pasture mixture with plantain experiment conducted in Waikato (-37.916372, 175.194547), New Zealand between 2021 and 2024. The original experimental design consisted of a randomised complete block design with 10 treatments and 5 to 8 replicates. The treatments consisted of 100% perennial ryegrass, 100% plantain, 15% plantain and perennial ryegrass, 30% plantain and perennial ryegrass, 50% plantain and perennial ryegrass, 30% plantain and perennial ryegrass and white clover, 30% plantain and tall fescue, 30% plantain and tetraploid perennial, 30% plantain and diploid Italian, and 30% plantain and mohaka tetraploid hybrid. This simulation included all treatments, but plantian and perennial ryegrass monoculture were disabled. Nitrogen fertiliser was applied to replace the N removed postharvest, calculated assuming an N concentration of 3% in the harvested herbage.\n\nThe soil at the experimental site was a  Typic Orthic Gley. The parameters required were inferred using data from soil sample analysis down to 100 cm in depth with intervals of 10 cm from soil surface to 40 cm, and 20 cm intervals from 40 to 100 cm.\n\nWeather data was obtained from nearby Hamilton weather station (NIWA).\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -61242,11 +61242,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -61293,11 +61293,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -75195,7 +75195,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "###SFFF Manawatu mixture###\n\nThis simulation setup was based on a pasture mixture with plantain experiment conducted in Manawatu (-40.406, 175.536), New Zealand between 2021 and 2024. The original experimental design consisted of a randomised complete block design with 10 treatments and 5 to 8 replicates. The treatments consisted of 100% perennial ryegrass, 100% plantain, 15% plantain and perennial ryegrass, 30% plantain and perennial ryegrass, 50% plantain and perennial ryegrass, 30% plantain and perennial ryegrass and white clover, 30% plantain and tall fescue, 30% plantain and tetraploid perennial, 30% plantain and diploid Italian, and 30% plantain and mohaka tetraploid hybrid. This simulation included all treatments, but plantian and perennial ryegrass monoculture were  disabled. Nitrogen fertiliser was applied to replace the N removed postharvest, calculated assuming an N concentration of 3% in the harvested herbage.\n\nThe soil at the experimental site was a Mottled Immature Pallic. The parameters required were inferred using data from soil sample analysis down to 100 cm in depth with intervals of 10 cm from soil surface to 40 cm, and 20 cm intervals from 40 to 100 cm.\n\nWeather data was obtained from nearby Palmerston North weather station (NIWA).\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -75257,11 +75257,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -75308,11 +75308,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89185,7 +89185,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "###SFFF Kimihia mixture###\n\nThis simulation setup was based on a pasture mixture with plantain experiment conducted in Kimihia (-43.61241331, 172.46888931), New Zealand between 2021 and 2024. The original experimental design consisted of a randomised complete block design with 10 treatments and 5 to 8 replicates. The treatments consisted of 100% perennial ryegrass, 100% plantain, 15% plantain and perennial ryegrass, 30% plantain and perennial ryegrass, 50% plantain and perennial ryegrass, 30% plantain and perennial ryegrass and white clover, 30% plantain and tall fescue, 30% plantain and tetraploid perennial, 30% plantain and diploid Italian, and 30% plantain and mohaka tetraploid hybrid. This simulation included all treatments, but plantian and perennial ryegrass monoculture were  disabled. Nitrogen fertiliser was applied to replace the N removed postharvest, calculated assuming an N concentration of 3% in the harvested herbage.\n\nThe soil at the experimental site was a Templeton Fine Sandy Loam. The parameters required were inferred using data from soil sample analysis down to 100 cm in depth with intervals of 10 cm from soil surface to 40 cm, and 20 cm intervals from 40 to 100 cm.\n\nWeather data was obtained from nearby Broadfields weather station (NIWA).\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -89247,11 +89247,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -89299,7 +89299,7 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -89505,11 +89505,11 @@
                               "Name": "DefoliationSchedule",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -103323,7 +103323,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###SFFF Waikato###\r\n\r\nThis simulation setup was based on field trials performed at DairyNZ's Scott Farm, in Ruakura, New Zealand, between 2014 and 2016.  The experiment was part of the FRNL (Forages for Reduced Nitrogen Leaching) program and the data is basically unpublished (references will be added when they come about).  Here only plots with mixed pasture species are used.  The species included were ryegrass, white clover, lucerne, chicory, and plantain (weeds also occured, but are not included in the simulation - the fraction of biomass was fairly small).  \r\nThe experiment consisted of six fertiliser treatments (nominally at N rates of 0, 50, 100, 200, 350 and 500 kg/ha/yr) in three replicates; actual amounts varied as fertiliser applications followed pasture harvests.  Measurements comprised yield, for each species, and quality indicators (here N content is used), for whole sward.  \r\nObserved data supplied by Grant Edwards, Lincoln University.  \r\n\r\nThe soil at the experimental site was a Horotiu silt loam (an Orthic Allophanic soil; USDA: Typic Udivitrand), the parameters required were inferred using data from the New Zealand National Soils Database (Landcare Research).  \r\nWeather data was obtained from nearby Ruakura weather station (NIWA).  \r\nSimulation of ryegrass and lucerne are done using the AgPasture model as the PMF versions are still under development.  \n",
+                  "Text": "###SFFF Southland mixture###\n\nThis simulation setup was based on a pasture mixture with plantain experiment conducted in Southland (-46.34154004, 168.78066643), New Zealand between 2021 and 2024. The original experimental design consisted of a randomised complete block design with 10 treatments and 5 to 8 replicates. The treatments consisted of 100% perennial ryegrass, 100% plantain, 15% plantain and perennial ryegrass, 30% plantain and perennial ryegrass, 50% plantain and perennial ryegrass, 30% plantain and perennial ryegrass and white clover, 30% plantain and tall fescue, 30% plantain and tetraploid perennial, 30% plantain and diploid Italian, and 30% plantain and mohaka tetraploid hybrid. This simulation included all treatments, but plantian and perennial ryegrass monoculture were  disabled. Nitrogen fertiliser was applied to replace the N removed postharvest, calculated assuming an N concentration of 3% in the harvested herbage.\n\nThe soil at the experimental site was a Typic Orthic Brown. The parameters required were inferred using data from soil sample analysis down to 100 cm in depth with intervals of 10 cm from soil surface to 40 cm, and 20 cm intervals from 40 to 100 cm.\n\nWeather data was obtained from nearby weather station (NIWA).",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -103385,11 +103385,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -103436,11 +103436,11 @@
                               "Name": "Sowing",
                               "ResourceName": null,
                               "Children": [],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             }
                           ],
-                          "Enabled": true,
+                          "Enabled": false,
                           "ReadOnly": false
                         },
                         {
@@ -103940,7 +103940,7 @@
                     {
                       "$type": "Models.Climate.Weather, Models",
                       "ConstantsFile": null,
-                      "FileName": "SouthlandNASA.met",
+                      "FileName": "Southland.met",
                       "ExcelWorkSheetName": "",
                       "Name": "Weather",
                       "ResourceName": null,
@@ -118018,7 +118018,7 @@
               "Children": [
                 {
                   "$type": "Models.Memo, Models",
-                  "Text": "###Lincoln univerity Thinzar PhD###\r\n\r\n\n",
+                  "Text": "###Lincoln univerity Thinzar PhD###\r\n\r\nSimulation setup was based on a pasture mixture with plantain experiment conducted at Lincoln University (-43.3857, 172.2800), New Zealand between 2017 and 2021. The original experiment included ten mixtures of perennial ryegrass cv. Rely AR37 (PR), white  clover  cv. Quartz  (WC)  and  plantain  cv. Tonic (P) were grown ±N fertiliser at two seed densities (1000 and 2000 seeds/m2) under irrigated condition (Soe Myint et al., 2022). In brief, there were three single-species mixtures  (monocultures),  three  binary  mixtures  (50%  of each of two species), one even mixture (33.3% of each species) and three mixtures dominated in turn by each species (66.6% of one species and 16.6% of each of the other species). The annual irrigation was 220 mm in the 2017/2018 season, 217 mm in the 2018/2019 season, 435 mm in the 2019/2020 season, and 540 mm in the 2020/2021 growing season.\n\nThe soil type is a Wakanui silt loam and classified as a Mottled Immature Pallic Soil in the New Zealand. Soil Classification and Udic Ustochrept in USDA Soil Taxonomy. The soil had a medium fertility (pH 6, Olsen P 16 mg/L, Ca 7.3 me/100 g, Mg 0.98 me/100 g, K 0.40 me/100 g, Na 0.14 me/100 g and SO4-S 4 μg/g in top 75 mm) when sampled on 20 March 2017. This site was grazed pasture previously and was sprayed out on 16 March 2017 (glyphosate, 470 g/L at 2 L/ha with 200 L/ha water; WeedMaster TS470, Nufarm, NZ), cultivated on 22 March 2017 (rota crumbler), fertilised on 23 March 2017 (9% P, 11% S, 20% Ca at 300 kg/ha; Superphosphate, Ravensdown, NZ), cultivated into a seed bed on 29 March 2017 (heavy grubber then power harrow and Cambridge roller).\n\nWeather data was obtained from nearby weather station (NIWA).\n",
                   "Name": "Memo",
                   "ResourceName": null,
                   "Children": [],
@@ -118419,11 +118419,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -118470,11 +118470,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": false,
+                                  "Enabled": true,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": false,
+                              "Enabled": true,
                               "ReadOnly": false
                             },
                             {
@@ -118936,11 +118936,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": true,
+                                  "Enabled": false,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": true,
+                              "Enabled": false,
                               "ReadOnly": false
                             },
                             {
@@ -118987,11 +118987,11 @@
                                   "Name": "Sowing",
                                   "ResourceName": null,
                                   "Children": [],
-                                  "Enabled": false,
+                                  "Enabled": true,
                                   "ReadOnly": false
                                 }
                               ],
-                              "Enabled": false,
+                              "Enabled": true,
                               "ReadOnly": false
                             },
                             {
