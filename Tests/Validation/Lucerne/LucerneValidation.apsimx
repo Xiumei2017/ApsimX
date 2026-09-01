@@ -1,6 +1,6 @@
 {
   "$type": "Models.Core.Simulations, Models",
-  "Version": 213,
+  "Version": 220,
   "Name": "Simulations",
   "ResourceName": null,
   "Children": [
@@ -148,6 +148,9 @@
             "([Lucerne].Leaf.Transpiration + [Soil].SoilWater.Es +[MicroClimate].PrecipitationInterception)",
             "[Weather].DaysSinceWinterSolstice",
             "[Weather].StartDate",
+            "[MicroClimate].PetTotal",
+            "[MicroClimate].",
+            "[ISoilWater].Eo",
             "[Irrigation].IrrigationApplied",
             "[Phenology].Photoperiod",
             "[Phenology].DeltaPhotoperiod",
@@ -1471,8 +1474,7 @@
                       "Specifications": [
                         "[IrrigationEvents]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "dry",
                       "ResourceName": null,
                       "Children": [
@@ -1586,8 +1588,7 @@
                       "Specifications": [
                         "[IrrigationEvents]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "irr",
                       "ResourceName": null,
                       "Children": [
@@ -1979,7 +1980,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Iversen_8LL",
               "ResourceName": null,
               "Children": [
@@ -5278,6 +5278,132 @@
                       ],
                       "Enabled": true,
                       "ReadOnly": false
+                    },
+                    {
+                      "$type": "Models.Graph, Models",
+                      "Caption": null,
+                      "Axis": [
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": "Date",
+                          "Position": 3,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        },
+                        {
+                          "$type": "APSIM.Shared.Graphing.Axis, APSIM.Shared",
+                          "Title": null,
+                          "Position": 0,
+                          "Inverted": false,
+                          "CrossesAtZero": false,
+                          "LabelOnOneLine": false,
+                          "Minimum": null,
+                          "Maximum": null,
+                          "Interval": null
+                        }
+                      ],
+                      "LegendPosition": 0,
+                      "LegendOrientation": 0,
+                      "AnnotationLocation": 0,
+                      "DisabledSeries": [],
+                      "LegendOutsideGraph": false,
+                      "Name": "ET0",
+                      "ResourceName": null,
+                      "Children": [
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -1663232,
+                          "FactorToVaryColours": null,
+                          "FactorToVaryMarkers": null,
+                          "FactorToVaryLines": "SimulationName",
+                          "Marker": 11,
+                          "MarkerSize": 0,
+                          "Line": 4,
+                          "LineThickness": 0,
+                          "TableName": "Report",
+                          "XFieldName": "Clock.Today",
+                          "YFieldName": "Soil.SoilWater.Eo",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": false,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "SoilEo",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -16736653,
+                          "FactorToVaryColours": null,
+                          "FactorToVaryMarkers": null,
+                          "FactorToVaryLines": "SimulationName",
+                          "Marker": 11,
+                          "MarkerSize": 0,
+                          "Line": 4,
+                          "LineThickness": 0,
+                          "TableName": "Report",
+                          "XFieldName": "Clock.Today",
+                          "YFieldName": "MicroClimate.PetTotal",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": false,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "MicroClimEo",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        },
+                        {
+                          "$type": "Models.Series, Models",
+                          "Type": 1,
+                          "XAxis": 3,
+                          "YAxis": 0,
+                          "ColourArgb": -11094807,
+                          "FactorToVaryColours": null,
+                          "FactorToVaryMarkers": null,
+                          "FactorToVaryLines": "SimulationName",
+                          "Marker": 11,
+                          "MarkerSize": 0,
+                          "Line": 4,
+                          "LineThickness": 0,
+                          "TableName": "Report",
+                          "XFieldName": "Clock.Today",
+                          "YFieldName": "(Lucerne.Leaf.Transpiration + Soil.SoilWater.Es +MicroClimate.PrecipitationInterception)",
+                          "X2FieldName": null,
+                          "Y2FieldName": null,
+                          "ShowInLegend": true,
+                          "IncludeSeriesNameInLegend": false,
+                          "Cumulative": false,
+                          "CumulativeX": false,
+                          "Filter": null,
+                          "Name": "ETc",
+                          "ResourceName": null,
+                          "Children": [],
+                          "Enabled": true,
+                          "ReadOnly": false
+                        }
+                      ],
+                      "Enabled": true,
+                      "ReadOnly": false
                     }
                   ],
                   "Enabled": true,
@@ -5338,8 +5464,7 @@
                             "[Clock].StartDate = 2000-10-24",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SD1",
                           "ResourceName": null,
                           "Children": [
@@ -5434,8 +5559,7 @@
                             "[Clock].StartDate = 2000-11-14",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SD2",
                           "ResourceName": null,
                           "Children": [
@@ -5523,8 +5647,7 @@
                             "[Clock].StartDate = 2000-12-05",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SD3",
                           "ResourceName": null,
                           "Children": [
@@ -5612,8 +5735,7 @@
                             "[Clock].StartDate = 2000-12-27",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SD4",
                           "ResourceName": null,
                           "Children": [
@@ -5701,8 +5823,7 @@
                             "[Clock].StartDate = 2001-07-31",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SD6",
                           "ResourceName": null,
                           "Children": [
@@ -5734,8 +5855,7 @@
                             "[Clock].StartDate = 2001-10-02",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SD7",
                           "ResourceName": null,
                           "Children": [
@@ -5776,8 +5896,7 @@
                             "[IrrigationEvents]",
                             "[ClimateControl]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "dry",
                           "ResourceName": null,
                           "Children": [
@@ -5862,8 +5981,7 @@
                           "Specifications": [
                             "[IrrigationEvents]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "irr",
                           "ResourceName": null,
                           "Children": [
@@ -5965,7 +6083,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Simulation0",
               "ResourceName": null,
               "Children": [
@@ -8920,8 +9037,7 @@
                       "Specifications": [
                         "[Cutting]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "LL",
                       "ResourceName": null,
                       "Children": [
@@ -9050,8 +9166,7 @@
                         "[Cutting]",
                         "[PopulationSet]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SL",
                       "ResourceName": null,
                       "Children": [
@@ -9264,8 +9379,7 @@
                         "[Cutting]",
                         "[PopulationSet]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SS",
                       "ResourceName": null,
                       "Children": [
@@ -9492,8 +9606,7 @@
                         "[Cutting]",
                         "[PopulationSet]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "LS",
                       "ResourceName": null,
                       "Children": [
@@ -9696,7 +9809,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Iversen_91",
               "ResourceName": null,
               "Children": [
@@ -15327,8 +15439,7 @@
                             "[Cutting]",
                             "[PopulationSet]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "SS",
                           "ResourceName": null,
                           "Children": [
@@ -15722,8 +15833,7 @@
                           "Specifications": [
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "LL",
                           "ResourceName": null,
                           "Children": [
@@ -15963,8 +16073,7 @@
                           "Specifications": [
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "HH",
                           "ResourceName": null,
                           "Children": [
@@ -16123,8 +16232,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = FD2"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD2",
                           "ResourceName": null,
                           "Children": [],
@@ -16136,8 +16244,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = FD5"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD5",
                           "ResourceName": null,
                           "Children": [],
@@ -16149,8 +16256,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = FD10"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD10",
                           "ResourceName": null,
                           "Children": [],
@@ -16171,7 +16277,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Simulation5",
               "ResourceName": null,
               "Children": [
@@ -21229,8 +21334,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2010-10-04"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD1",
                       "ResourceName": null,
                       "Children": [
@@ -21332,8 +21436,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2010-11-04"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD2",
                       "ResourceName": null,
                       "Children": [
@@ -21428,8 +21531,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2010-12-02"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD3",
                       "ResourceName": null,
                       "Children": [
@@ -21517,8 +21619,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-01-10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD4",
                       "ResourceName": null,
                       "Children": [
@@ -21599,8 +21700,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-02-7"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD5",
                       "ResourceName": null,
                       "Children": [
@@ -21681,8 +21781,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-10-10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD6",
                       "ResourceName": null,
                       "Children": [
@@ -21735,8 +21834,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-11-07"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD7",
                       "ResourceName": null,
                       "Children": [
@@ -21782,8 +21880,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-12-09"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD8",
                       "ResourceName": null,
                       "Children": [
@@ -21822,8 +21919,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2012-01-10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD9",
                       "ResourceName": null,
                       "Children": [
@@ -21855,8 +21951,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2012-02-17"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD10",
                       "ResourceName": null,
                       "Children": [
@@ -21883,7 +21978,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Simulation3",
               "ResourceName": null,
               "Children": [
@@ -24914,8 +25008,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2010-10-21"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD1",
                       "ResourceName": null,
                       "Children": [
@@ -24989,8 +25082,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2010-11-09"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD2",
                       "ResourceName": null,
                       "Children": [
@@ -25064,8 +25156,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2010-12-08"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD3",
                       "ResourceName": null,
                       "Children": [
@@ -25132,8 +25223,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-01-13"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD4",
                       "ResourceName": null,
                       "Children": [
@@ -25200,8 +25290,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-02-03"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD5",
                       "ResourceName": null,
                       "Children": [
@@ -25261,8 +25350,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-10-10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD6",
                       "ResourceName": null,
                       "Children": [
@@ -25308,8 +25396,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-11-07"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD7",
                       "ResourceName": null,
                       "Children": [
@@ -25348,8 +25435,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2011-12-09"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD8",
                       "ResourceName": null,
                       "Children": [
@@ -25381,8 +25467,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2012-01-10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD9",
                       "ResourceName": null,
                       "Children": [
@@ -25414,8 +25499,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 2012-02-17"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD10",
                       "ResourceName": null,
                       "Children": [
@@ -25442,7 +25526,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "AshleyDene",
               "ResourceName": null,
               "Children": [
@@ -28450,7 +28533,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "P1 Base Simulation",
               "ResourceName": null,
               "Children": [
@@ -31428,7 +31510,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "NekiaBaseSimulation",
               "ResourceName": null,
               "Children": [
@@ -36895,7 +36976,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "1979_83 Hunter River",
               "ResourceName": null,
               "Children": [
@@ -38473,7 +38553,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "1994_95 Hunter River",
               "ResourceName": null,
               "Children": [
@@ -40548,8 +40627,7 @@
                       "Specifications": [
                         "[IrrigationEvents]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "dry",
                       "ResourceName": null,
                       "Children": [
@@ -40571,8 +40649,7 @@
                       "Specifications": [
                         "[IrrigationEvents]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "irr",
                       "ResourceName": null,
                       "Children": [
@@ -40950,7 +41027,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "1998_2001 Sceptre",
               "ResourceName": null,
               "Children": [
@@ -43277,7 +43353,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "RutherglenCL_Swim3",
               "ResourceName": null,
               "Children": [
@@ -45474,7 +45549,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "1998_01 Trifecta",
               "ResourceName": null,
               "Children": [
@@ -46976,8 +47050,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 1997-06-10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "Strip7",
                       "ResourceName": null,
                       "Children": [
@@ -47100,8 +47173,7 @@
                         "[Cutting]",
                         "[Clock].StartDate =1997-05-30"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "Strip8",
                       "ResourceName": null,
                       "Children": [
@@ -47232,8 +47304,7 @@
                         "[Cutting]",
                         "[Clock].StartDate = 1999-07-21"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "Strip3a",
                       "ResourceName": null,
                       "Children": [
@@ -47287,8 +47358,7 @@
                         "[Cutting]",
                         "[Clock].StartDate =1997-05-30"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "Strip6",
                       "ResourceName": null,
                       "Children": [
@@ -47393,7 +47463,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "1997_2000 Trifecta Grant",
               "ResourceName": null,
               "Children": [
@@ -49025,8 +49094,7 @@
                         "[Clock].StartDate = 1988-05-26",
                         "[Operations]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD1",
                       "ResourceName": null,
                       "Children": [
@@ -49191,8 +49259,7 @@
                         "[Clock].StartDate = 1989-06-20",
                         "[Operations]"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "SD2",
                       "ResourceName": null,
                       "Children": [
@@ -49353,7 +49420,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "1989_93 Trifecta ",
               "ResourceName": null,
               "Children": [
@@ -50881,7 +50947,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Lysimeter1",
               "ResourceName": null,
               "Children": [
@@ -61432,7 +61497,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "MooraLucerne",
               "ResourceName": null,
               "Children": [
@@ -63729,8 +63793,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = FD2"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD2",
                       "ResourceName": null,
                       "Children": [],
@@ -63742,8 +63805,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = FD10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD10",
                       "ResourceName": null,
                       "Children": [],
@@ -63760,7 +63822,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Forth",
               "ResourceName": null,
               "Children": [
@@ -65381,8 +65442,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = FD2"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD2",
                       "ResourceName": null,
                       "Children": [],
@@ -65394,8 +65454,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = FD10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD10",
                       "ResourceName": null,
                       "Children": [],
@@ -65412,7 +65471,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Cranbrook",
               "ResourceName": null,
               "Children": [
@@ -67067,8 +67125,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = DuPuits"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD3",
                       "ResourceName": null,
                       "Children": [],
@@ -67080,8 +67137,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = Kaituna"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD5",
                       "ResourceName": null,
                       "Children": [],
@@ -67093,8 +67149,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = SARDI7"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD7",
                       "ResourceName": null,
                       "Children": [],
@@ -67106,8 +67161,7 @@
                       "Specifications": [
                         "[LucerneSowingRule].Script.CultivarName = SARDI10"
                       ],
-                      "Paths": null,
-                      "Values": null,
+                      "CustomDescriptors": [],
                       "Name": "FD10",
                       "ResourceName": null,
                       "Children": [],
@@ -67124,7 +67178,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Cambridge",
               "ResourceName": null,
               "Children": [
@@ -68630,8 +68683,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = DuPuits"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD3",
                           "ResourceName": null,
                           "Children": [],
@@ -68644,8 +68696,7 @@
                             "[LucerneSowingRule].Script.CultivarName = Kaituna",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD5",
                           "ResourceName": null,
                           "Children": [
@@ -68718,8 +68769,7 @@
                             "[LucerneSowingRule].Script.CultivarName = SARDI7",
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD7",
                           "ResourceName": null,
                           "Children": [
@@ -68791,8 +68841,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = SARDI10"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD10",
                           "ResourceName": null,
                           "Children": [],
@@ -68814,8 +68863,7 @@
                           "Specifications": [
                             "[IrrigationEvents]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Dry",
                           "ResourceName": null,
                           "Children": [
@@ -68852,8 +68900,7 @@
                           "Specifications": [
                             "[IrrigationEvents]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Irr",
                           "ResourceName": null,
                           "Children": [
@@ -68955,7 +69002,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Elliott",
               "ResourceName": null,
               "Children": [
@@ -70603,7 +70649,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "winter active Trenque Lauquen",
               "ResourceName": null,
               "Children": [
@@ -71988,7 +72033,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Balcarce",
               "ResourceName": null,
               "Children": [
@@ -74430,7 +74474,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Winter dormant Pergamino",
               "ResourceName": null,
               "Children": [
@@ -75735,7 +75778,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "Winter dormant Rafaela",
               "ResourceName": null,
               "Children": [
@@ -77115,8 +77157,7 @@
                           "Specifications": [
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Feb",
                           "ResourceName": null,
                           "Children": [
@@ -77265,8 +77306,7 @@
                           "Specifications": [
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "March",
                           "ResourceName": null,
                           "Children": [
@@ -77436,8 +77476,7 @@
                           "Specifications": [
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "May",
                           "ResourceName": null,
                           "Children": [
@@ -77621,8 +77660,7 @@
                           "Specifications": [
                             "[Cutting]"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "Never",
                           "ResourceName": null,
                           "Children": [
@@ -77830,8 +77868,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = FD6"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD6",
                           "ResourceName": null,
                           "Children": [],
@@ -77843,8 +77880,7 @@
                           "Specifications": [
                             "[LucerneSowingRule].Script.CultivarName = FD10"
                           ],
-                          "Paths": null,
-                          "Values": null,
+                          "CustomDescriptors": [],
                           "Name": "FD10",
                           "ResourceName": null,
                           "Children": [],
@@ -77865,7 +77901,6 @@
             },
             {
               "$type": "Models.Core.Simulation, Models",
-              "Descriptors": null,
               "Name": "FD6",
               "ResourceName": null,
               "Children": [
@@ -79531,8 +79566,7 @@
                                 "[Clock].EndDate = 1995-06-10",
                                 "[Cutting]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD1",
                               "ResourceName": null,
                               "Children": [
@@ -79761,8 +79795,7 @@
                                 "[Clock].EndDate = 1996-06-10",
                                 "[Cutting]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD2",
                               "ResourceName": null,
                               "Children": [
@@ -79998,8 +80031,7 @@
                               "Specifications": [
                                 "[IrrigationEvents]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "dry",
                               "ResourceName": null,
                               "Children": [
@@ -80029,8 +80061,7 @@
                               "Specifications": [
                                 "[IrrigationEvents]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "irr",
                               "ResourceName": null,
                               "Children": [
@@ -80272,7 +80303,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "Simulationtesting",
                   "ResourceName": null,
                   "Children": [
@@ -82766,8 +82796,7 @@
                               "Specifications": [
                                 "[Cutting]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "LL",
                               "ResourceName": null,
                               "Children": [
@@ -82895,8 +82924,7 @@
                               "Specifications": [
                                 "[Cutting]"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SS",
                               "ResourceName": null,
                               "Children": [
@@ -83076,8 +83104,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 500"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD1_500",
                               "ResourceName": null,
                               "Children": [],
@@ -83089,8 +83116,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 400"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD2_400",
                               "ResourceName": null,
                               "Children": [],
@@ -83102,8 +83128,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 300"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD3_300",
                               "ResourceName": null,
                               "Children": [],
@@ -83115,8 +83140,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 200"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD4_200",
                               "ResourceName": null,
                               "Children": [],
@@ -83128,8 +83152,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 100"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD5_100",
                               "ResourceName": null,
                               "Children": [],
@@ -83141,8 +83164,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 50"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD6_50",
                               "ResourceName": null,
                               "Children": [],
@@ -83154,8 +83176,7 @@
                               "Specifications": [
                                 "[LucerneSowingRule].Script.StemPopulation = 1"
                               ],
-                              "Paths": null,
-                              "Values": null,
+                              "CustomDescriptors": [],
                               "Name": "SD8_0",
                               "ResourceName": null,
                               "Children": [],
@@ -83176,7 +83197,6 @@
                 },
                 {
                   "$type": "Models.Core.Simulation, Models",
-                  "Descriptors": null,
                   "Name": "Iversen_91_PopulationTest",
                   "ResourceName": null,
                   "Children": [
@@ -87287,7 +87307,6 @@
       "Children": [
         {
           "$type": "Models.Core.Simulation, Models",
-          "Descriptors": null,
           "Name": "SheepGrazingRotation",
           "ResourceName": null,
           "Children": [
